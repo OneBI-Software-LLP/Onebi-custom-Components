@@ -1,0 +1,79 @@
+:root {
+  /* Premium Colors - Modern Palette */
+  --ct-primary: #6366f1; /* Indigo 500 */
+  --ct-primary-hover: #4f46e5;
+  --ct-primary-light: #eef2ff;
+  --ct-primary-text: #ffffff;
+  
+  --ct-bg-main: #ffffff;
+  --ct-bg-header: #f8fafc;
+  --ct-bg-row-hover: #f1f5f9;
+  --ct-bg-row-striped: #fafafa;
+  --ct-bg-selected: #f0f9ff;
+  
+  --ct-border-color: #e2e8f0;
+  --ct-border-focus: #6366f1;
+  --ct-border-handle: #cbd5e1;
+  
+  --ct-text-main: #1e293b;
+  --ct-text-muted: #64748b;
+  --ct-text-header: #334155;
+  
+  /* Status Colors */
+  --ct-success: #10b981;
+  --ct-success-bg: #ecfdf5;
+  --ct-warning: #f59e0b;
+  --ct-warning-bg: #fffbeb;
+  --ct-danger: #ef4444;
+  --ct-danger-bg: #fef2f2;
+  --ct-info: #3b82f6;
+
+  /* Spacing / Sizes */
+  --ct-cell-padding-x: 16px;
+  --ct-cell-padding-y: 14px;
+  --ct-font-size: 14px;
+  --ct-font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Shadows & Radius */
+  --ct-radius-lg: 12px;
+  --ct-radius-md: 8px;
+  --ct-radius-sm: 4px;
+  --ct-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --ct-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --ct-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  
+  /* Transitions */
+  --ct-transition-fast: 0.1s ease;
+  --ct-transition-base: 0.2s ease;
+}
+
+[data-theme='dark'] {
+  --ct-bg-main: #020617;
+  --ct-bg-header: #0f172a;
+  --ct-bg-row-hover: #1e293b;
+  --ct-bg-row-striped: #0f172a;
+  --ct-bg-selected: #1e3a8a;
+  
+  --ct-border-color: #1e293b;
+  --ct-text-main: #f8fafc;
+  --ct-text-muted: #94a3b8;
+  --ct-text-header: #e2e8f0;
+}
+
+[data-theme='minimal'] {
+  --ct-bg-header: transparent;
+  --ct-bg-row-striped: transparent;
+  --ct-border-color: #f1f5f9;
+  --ct-shadow-sm: none;
+  --ct-shadow-md: none;
+}
+
+[data-density='compact'] {
+  --ct-cell-padding-y: 8px;
+  --ct-font-size: 13px;
+}
+
+[data-density='comfortable'] {
+  --ct-cell-padding-y: 18px;
+  --ct-font-size: 15px;
+}
