@@ -3,6 +3,14 @@ import React from "react";
 // ─── Aggregation ────────────────────────────────────────────────────────────
 export type AggregationFn = "sum" | "avg" | "min" | "max" | "count" | ((values: unknown[]) => unknown);
 
+// ─── Bulk Action ──────────────────────────────────────────────────────────────
+export interface BulkActionItem {
+  label: string;
+  value: string;
+  icon?: React.ReactNode;
+  className?: string; // For customized styling e.g text-red-600
+}
+
 // ─── Sorting ─────────────────────────────────────────────────────────────────
 export interface SortingState {
   id: string;
@@ -202,6 +210,14 @@ export interface TableProps<TData = Record<string, unknown>> {
   onSelectionChange?: (ids: string[]) => void;
   /** Show checkbox/radio column */
   showSelectionColumn?: boolean;
+  /** True if user has selected 'Select All' across all pages */
+  isAllPagesSelected?: boolean;
+  /** Event emitted when 'Select All' state changes */
+  onSelectAllStateChange?: (isAllSelected: boolean) => void;
+  /** Array of available bulk actions when rows are selected */
+  bulkActions?: BulkActionItem[];
+  /** Handler when a bulk action is triggered */
+  onBulkAction?: (actionValue: string, selectedIds: string[]) => void;
 
   // ── Expansion ────────────────────
   expandable?: boolean;
@@ -249,6 +265,26 @@ export interface TableProps<TData = Record<string, unknown>> {
   toolbarContent?: React.ReactNode;
   /** Placeholder text for the global search input */
   searchPlaceholder?: string;
+  /** Function to trigger refresh action */
+  onRefresh?: () => void;
+  /** Indicates if refresh action is loading/spinning */
+  isRefreshing?: boolean;
+  /** Enable 'Add New' button */
+  showAddButton?: boolean;
+  /** Label for 'Add New' button */
+  addButtonLabel?: string;
+  /** Custom ID for the Add Button */
+  addButtonId?: string;
+  /** Click handler for Add button */
+  onAddClick?: () => void;
+  /** Enable Bulk Import (UploadCloud dropdown menu) */
+  showBulkImport?: boolean;
+  /** Trigger to download a template for import */
+  onDownloadTemplate?: () => void;
+  /** Triggered when a file is selected for bulk import */
+  onBulkImport?: (file: File) => void;
+  /** Triggered for bulk export */
+  onBulkExport?: () => void;
   /** Show column visibility toggle */
   showColumnVisibility?: boolean;
   /** Show density toggle */

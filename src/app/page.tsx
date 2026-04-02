@@ -101,6 +101,18 @@ const NAV_ITEMS = [
   }
 ];
 
+const CodeBlock = ({ code }: { code: string }) => (
+  <div className="mt-10 border-t border-slate-100 pt-8">
+    <div className="flex items-center justify-between mb-4">
+      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">Installation & Usage</Label>
+      <Badge variant="outline" className="text-[10px] bg-slate-50 text-slate-500 font-mono tracking-widest border-slate-200">npm i onebi-ui</Badge>
+    </div>
+    <pre className="p-5 rounded-2xl bg-[#0F172A] text-slate-50 overflow-x-auto text-[13px] font-mono shadow-inner leading-relaxed border border-slate-800">
+      <code>{code}</code>
+    </pre>
+  </div>
+);
+
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState('button');
   
@@ -116,6 +128,14 @@ export default function DashboardPage() {
   const [density, setDensity] = useState<"standard" | "compact" | "comfortable">("standard");
   const [striped, setStriped] = useState(false);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [isAllPagesSelected, setIsAllPagesSelected] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchData();
+    setIsRefreshing(false);
+  };
 
   // Advanced Components State
   const [activeFilters, setActiveFilters] = useState<Record<string, any>>({})
@@ -206,6 +226,20 @@ export default function DashboardPage() {
                   <Button disabled>Disabled</Button>
                 </div>
               </div>
+              
+              <CodeBlock code={`import { Button } from "onebi-ui";
+
+export default function App() {
+  return (
+    <div className="space-x-4">
+      <Button variant="default">Primary Action</Button>
+      <Button variant="outline" size="sm">Secondary</Button>
+      <Button variant="destructive" size="icon">
+        <Icon />
+      </Button>
+    </div>
+  );
+}`} />
             </div>
           </div>
         )
@@ -237,6 +271,34 @@ export default function DashboardPage() {
                 </div>
                 <Switch id="airplane-demo" />
               </div>
+              
+              <CodeBlock code={`import { Input, Textarea, Checkbox, Switch, Label } from "onebi-ui";
+
+function FormExample() {
+  return (
+    <form className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input type="email" id="email" placeholder="hello@onebi.ui" />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="bio">Bio</Label>
+        <Textarea id="bio" placeholder="Tell us about yourself..." />
+      </div>
+
+      <div className="flex items-center space-x-2">
+        <Checkbox id="terms" />
+        <Label htmlFor="terms">Accept Terms</Label>
+      </div>
+
+      <div className="flex items-center space-x-2">
+        <Switch id="notifications" />
+        <Label htmlFor="notifications">Enable notifications</Label>
+      </div>
+    </form>
+  );
+}`} />
             </div>
           </div>
         )
@@ -283,6 +345,25 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </div>
+              
+              <CodeBlock code={`import { Badge, Avatar, AvatarImage, AvatarFallback } from "onebi-ui";
+
+export default function IdentityComponents() {
+  return (
+    <>
+      {/* Badges */}
+      <Badge variant="default">New</Badge>
+      <Badge variant="destructive">Error</Badge>
+      <Badge variant="outline">Draft</Badge>
+
+      {/* Avatars */}
+      <Avatar>
+        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
+    </>
+  );
+}`} />
             </div>
           </div>
         )
@@ -330,6 +411,27 @@ export default function DashboardPage() {
                   </TabsContent>
                 </div>
               </Tabs>
+              
+              <CodeBlock code={`import { Tabs, TabsList, TabsTrigger, TabsContent } from "onebi-ui";
+
+export default function Navigation() {
+  return (
+    <Tabs defaultValue="overview" className="w-[400px]">
+      <TabsList>
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="settings">Settings</TabsTrigger>
+      </TabsList>
+      
+      <TabsContent value="overview">
+        Dashboard overview content goes here.
+      </TabsContent>
+      
+      <TabsContent value="settings">
+        User settings configuration.
+      </TabsContent>
+    </Tabs>
+  );
+}`} />
             </div>
           </div>
         )
@@ -372,6 +474,38 @@ export default function DashboardPage() {
                 />
                 <p className="text-[10px] text-slate-400 font-medium">You can select up to 8 technologies for your project profile.</p>
               </div>
+
+              <CodeBlock code={`import { 
+  Select, SelectTrigger, SelectValue, SelectContent, SelectItem, 
+  MultiSelect 
+} from "onebi-ui";
+
+export default function SelectDemo() {
+  return (
+    <div className="space-y-4">
+      {/* Single Select */}
+      <Select onValueChange={console.log}>
+        <SelectTrigger>
+          <SelectValue placeholder="Theme" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="light">Light</SelectItem>
+          <SelectItem value="dark">Dark</SelectItem>
+        </SelectContent>
+      </Select>
+
+      {/* Multi Select */}
+      <MultiSelect
+        options={[
+          { label: "React", value: "react" },
+          { label: "Vue", value: "vue" }
+        ]}
+        selected={["react"]}
+        onChange={(values) => console.log(values)}
+      />
+    </div>
+  );
+}`} />
             </div>
           </div>
         )
@@ -389,6 +523,21 @@ export default function DashboardPage() {
                 <DatePicker date={new Date()} setDate={() => {}} />
                 <p className="text-[11px] text-slate-400 leading-tight">Selection will automatically lock the date for global distribution scheduling.</p>
               </div>
+
+              <CodeBlock code={`import { useState } from "react";
+import { DatePicker } from "onebi-ui";
+
+export default function DateDemo() {
+  const [date, setDate] = useState<Date>();
+
+  return (
+    <DatePicker 
+      date={date} 
+      setDate={setDate} 
+      placeholder="Pick a specific date..."
+    />
+  );
+}`} />
             </div>
           </div>
         )
@@ -470,6 +619,38 @@ export default function DashboardPage() {
                 </SheetContent>
               </Sheet>
             </div>
+            
+            <div className="p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50 mt-8">
+              <CodeBlock code={`import { 
+  Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle,
+  Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle
+} from "onebi-ui";
+import { Button } from "onebi-ui";
+
+export default function OverlaysDemo() {
+  return (
+    <div className="flex gap-4">
+      {/* Centered Modal Dialog */}
+      <Dialog>
+        <DialogTrigger asChild><Button>Open Dialog</Button></DialogTrigger>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Edit Profile</DialogTitle></DialogHeader>
+          <div className="py-4">Make changes to your profile here.</div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edge Sheet / Drawer */}
+      <Sheet>
+        <SheetTrigger asChild><Button variant="outline">Open Drawer</Button></SheetTrigger>
+        <SheetContent side="right">
+          <SheetHeader><SheetTitle>Settings Drawer</SheetTitle></SheetHeader>
+          <div className="py-4">Manage your preferences.</div>
+        </SheetContent>
+      </Sheet>
+    </div>
+  );
+}`} />
+            </div>
           </div>
         )
 
@@ -501,8 +682,72 @@ export default function DashboardPage() {
                   selectedRows={selectedRows}
                   onSelectionChange={setSelectedRows}
                   stickyHeader={true}
+                  // NEW PROPS
+                  searchPlaceholder="Search users..."
+                  isAllPagesSelected={isAllPagesSelected}
+                  onSelectAllStateChange={setIsAllPagesSelected}
+                  onRefresh={handleRefresh}
+                  isRefreshing={isRefreshing}
+                  showAddButton={true}
+                  addButtonLabel="Add User"
+                  onAddClick={() => alert("Add User Clicked")}
+                  showBulkImport={true}
+                  onDownloadTemplate={() => alert("Downloading Template...")}
+                  onBulkImport={(file) => alert(`Importing file: ${file.name}`)}
+                  onBulkExport={() => alert("Exporting Data...")}
+                  bulkActions={[
+                    { label: "Change Status", value: "status" },
+                    { label: "Delete Selected", value: "delete", className: "text-red-500" },
+                  ]}
+                  onBulkAction={(action, ids) => alert(`Bulk Action: ${action} on ${isAllPagesSelected ? "all" : ids.length} items.`)}
                 />
               </div>
+
+              <CodeBlock code={`import { CustomTable, ColumnDef } from "onebi-ui";
+import { useState } from "react";
+
+// 1. Define your interface and columns
+interface User { id: string; name: string; status: string; }
+
+const columns: ColumnDef<User>[] = [
+  { id: "id", header: "ID", accessorKey: "id", width: 80 },
+  { id: "name", header: "Name", accessorKey: "name", sortable: true },
+  { id: "status", header: "Status", accessorKey: "status", type: "badge" }
+];
+
+export default function DataTableDemo() {
+  const [data] = useState<User[]>([...]);
+  const [selection, setSelection] = useState<string[]>([]);
+
+  return (
+    // 2. Render highly configurable CustomTable wrapper
+    <CustomTable<User>
+      data={data}
+      columns={columns}
+      
+      // Pagination & Logic
+      page={1} pageSize={10}
+      serverSide={false}
+      
+      // Select All & Bulk Actions
+      selectionMode="multi"
+      selectedRows={selection}
+      onSelectionChange={setSelection}
+      isAllPagesSelected={false}
+      bulkActions={[
+        { label: "Delete Selected", value: "delete", className: "text-red-500" }
+      ]}
+      onBulkAction={(action, ids) => console.log(action, ids)}
+      
+      // Toolbar Operations
+      showToolbar={true}
+      onRefresh={() => console.log("Refreshing Data...")}
+      showAddButton={true}
+      addButtonLabel="New User"
+      showBulkImport={true}
+    />
+  );
+}`} />
             </div>
           </div>
         )

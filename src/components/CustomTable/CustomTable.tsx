@@ -3,6 +3,7 @@ import { TableProps, ColumnDef, SortingState, FilterCondition, TableFilter } fro
 import { FilterDropdown } from "./components/FilterDropdown";
 import { useColumnManager } from "./hooks/useColumnManager";
 import { useSelection } from "./hooks/useSelection";
+import { Layers, RefreshCw, UploadCloud, FileDown, FileUp, Download, Plus } from "lucide-react";
 import styles from "./styles/table.module.css";
 import "./styles/variables.css";
 
@@ -41,8 +42,24 @@ export const CustomTable = <TData extends Record<string, any>>({
   showToolbar = true,
   showColumnVisibility = true,
   showExportButton = false,
+  searchPlaceholder,
   className,
   style,
+  // NEW PROPS
+  isAllPagesSelected,
+  onSelectAllStateChange,
+  bulkActions = [],
+  onBulkAction,
+  onRefresh,
+  isRefreshing,
+  showAddButton,
+  addButtonLabel = "Add New",
+  addButtonId,
+  onAddClick,
+  showBulkImport,
+  onDownloadTemplate,
+  onBulkImport,
+  onBulkExport,
 }: TableProps<TData>) => {
   // ── Hooks ────────────────────────────────────────────────────────
   const { 
@@ -50,7 +67,9 @@ export const CustomTable = <TData extends Record<string, any>>({
     visibleColumns, 
     toggleVisibility, 
     setWidth, 
-    columnWidths 
+    columnWidths,
+    reorderColumn,
+    columnOrder
   } = useColumnManager(initialColumns);
 
   const {
@@ -69,11 +88,19 @@ export const CustomTable = <TData extends Record<string, any>>({
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [advancedFilter, setAdvancedFilter] = useState<TableFilter>({ conditions: [], logic: "AND" });
 
+  const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
+  const [isBulkActionsOpen, setIsBulkActionsOpen] = useState(false);
+  const [draggedCol, setDraggedCol] = useState<string | null>(null);
+  const [dragOverCol, setDragOverCol] = useState<string | null>(null);
+
   // ── Ref for Resizing ──────────────────────────────────────────────
   const resizingRef = useRef<{ id: string; startX: number; startWidth: number } | null>(null);
   const visibilityRef = useRef<HTMLDivElement>(null);
   const exportRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<HTMLDivElement>(null);
+  const bulkImportRef = useRef<HTMLDivElement>(null);
+  const bulkActionsRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // ── Click Outside Handlers ────────────────────────────────────────
   useEffect(() => {
@@ -86,6 +113,12 @@ export const CustomTable = <TData extends Record<string, any>>({
       }
       if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
         setIsFilterOpen(false);
+      }
+      if (bulkImportRef.current && !bulkImportRef.current.contains(event.target as Node)) {
+        setIsBulkImportOpen(false);
+      }
+      if (bulkActionsRef.current && !bulkActionsRef.current.contains(event.target as Node)) {
+        setIsBulkActionsOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -133,9 +166,42 @@ export const CustomTable = <TData extends Record<string, any>>({
     onPageChange?.(1);
   }, [onSearchChange, onPageChange]);
 
+  const handleFileClick = () => fileInputRef.current?.click();
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && onBulkImport) onBulkImport(file);
+    if (event.target.value) event.target.value = "";
+    setIsBulkImportOpen(false);
+  };
+
+  const handleDragStart = (e: React.DragEvent, id: string) => {
+    const colDef = initialColumns.find(c => c.id === id);
+    if(colDef?.disableReorder) {
+       e.preventDefault();
+       return;
+    }
+    setDraggedCol(id);
+    e.dataTransfer.effectAllowed = "move";
+  };
+  
+  const handleDragOver = (e: React.DragEvent, id: string) => {
+    e.preventDefault();
+    if (draggedCol === id) return;
+    setDragOverCol(id);
+  };
+  
+  const handleDrop = (e: React.DragEvent, targetId: string) => {
+    e.preventDefault();
+    setDragOverCol(null);
+    if (!draggedCol || draggedCol === targetId) return;
+    reorderColumn(draggedCol, targetId);
+    setDraggedCol(null);
+  };
+
   // ── Resizing Handlers ─────────────────────────────────────────────
   const onResizeStart = (e: React.MouseEvent, id: string, currentWidth: number) => {
-    e.preventDefault();
+    e.stopPropagation();
     resizingRef.current = { id, startX: e.clientX, startWidth: currentWidth || 150 };
     document.addEventListener("mousemove", onResizing);
     document.addEventListener("mouseup", onResizeEnd);
@@ -349,18 +415,51 @@ export const CustomTable = <TData extends Record<string, any>>({
     <div className={`${styles.container} ${className}`} style={style} data-theme={theme} data-density={density}>
       {showToolbar && (
         <div className={styles.toolbar}>
+          <input 
+            type="file" 
+            ref={fileInputRef} 
+            style={{ display: "none" }} 
+            accept=".xlsx, .xls, .csv" 
+            onChange={handleFileChange} 
+          />
           <div style={{ display: "flex", gap: "10px", position: "relative", alignItems: "center" }}>
             <span style={{ position: "absolute", left: "12px", color: "var(--ct-text-muted)" }}><IconSearch /></span>
             <input 
               type="text" 
               className={styles.searchInput} 
               style={{ paddingLeft: "36px" }}
-              placeholder="Search..." 
+              placeholder={searchPlaceholder || "Search..."} 
               value={searchQuery} 
               onChange={(e) => handleSearch(e.target.value)} 
             />
           </div>
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+            
+            {selectionMode === "multi" && (selectedRows.length > 0 || isAllPagesSelected) && bulkActions.length > 0 && (
+              <div className={styles.dropdown} ref={bulkActionsRef}>
+                <button 
+                  className={styles.toolbarBtn} 
+                  style={{ backgroundColor: "#1e293b", color: "#fff", borderColor: "#1e293b", padding: "0 12px", gap: "8px" }}
+                  onClick={() => setIsBulkActionsOpen(!isBulkActionsOpen)}
+                >
+                  <Layers size={14} />
+                  <span>{isAllPagesSelected ? (totalRows || data.length) : selectedRows.length} Selected</span>
+                </button>
+                {isBulkActionsOpen && (
+                  <div className={styles.dropdownPanel} style={{ minWidth: "180px" }}>
+                    <div className={styles.dropdownBody}>
+                      {bulkActions.map((action) => (
+                        <div key={action.value} className={`${styles.dropdownItem} ${action.className || ""}`} onClick={() => { onBulkAction?.(action.value, selectedRows); setIsBulkActionsOpen(false); }}>
+                          {action.icon && <span style={{ marginRight: "8px" }}>{action.icon}</span>}
+                          {action.label}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className={styles.dropdown} ref={filterRef}>
               <button 
                 className={`${styles.toolbarBtn} ${advancedFilter.conditions.length > 0 ? styles.toolbarBtnActive : ""}`} 
@@ -383,12 +482,20 @@ export const CustomTable = <TData extends Record<string, any>>({
               />
             </div>
 
+            {onRefresh && (
+              <button 
+                className={styles.toolbarBtn} 
+                onClick={onRefresh}
+                style={{ padding: "0 8px" }}
+              >
+                <RefreshCw size={14} className={isRefreshing ? styles.spin : ""} />
+              </button>
+            )}
+
             {showColumnVisibility && (
               <div className={styles.dropdown} ref={visibilityRef}>
-                <button className={styles.toolbarBtn} onClick={() => setIsVisibilityOpen(!isVisibilityOpen)}>
+                <button className={styles.toolbarBtn} onClick={() => setIsVisibilityOpen(!isVisibilityOpen)} style={{ padding: "0 8px" }}>
                   <IconColumns />
-                  Columns
-                  <span style={{ fontSize: "10px", marginLeft: "4px" }}>▼</span>
                 </button>
                 {isVisibilityOpen && (
                   <div className={styles.dropdownPanel}>
@@ -404,12 +511,11 @@ export const CustomTable = <TData extends Record<string, any>>({
                 )}
               </div>
             )}
+            
             {showExportButton && onExport && (
               <div className={styles.dropdown} ref={exportRef}>
-                <button className={styles.toolbarBtn} onClick={() => setIsExportOpen(!isExportOpen)}>
+                <button className={styles.toolbarBtn} onClick={() => setIsExportOpen(!isExportOpen)} style={{ padding: "0 8px" }}>
                   <IconDownload />
-                  Export
-                  <span style={{ fontSize: "10px", marginLeft: "4px" }}>▼</span>
                 </button>
                 {isExportOpen && (
                   <div className={styles.dropdownPanel} style={{ minWidth: "120px" }}>
@@ -422,6 +528,47 @@ export const CustomTable = <TData extends Record<string, any>>({
                 )}
               </div>
             )}
+
+            {showBulkImport && (
+              <div className={styles.dropdown} ref={bulkImportRef}>
+                <button className={styles.toolbarBtn} onClick={() => setIsBulkImportOpen(!isBulkImportOpen)} style={{ padding: "0 8px" }}>
+                  <UploadCloud size={14} />
+                </button>
+                {isBulkImportOpen && (
+                  <div className={styles.dropdownPanel} style={{ minWidth: "200px" }}>
+                    <div className={styles.dropdownBody}>
+                       {onDownloadTemplate && (
+                        <div className={styles.dropdownItem} onClick={() => { onDownloadTemplate(); setIsBulkImportOpen(false); }}>
+                          <FileDown size={14} style={{ marginRight: 8, color: "#3b82f6" }} /> Download Template
+                        </div>
+                       )}
+                       {onBulkImport && (
+                        <div className={styles.dropdownItem} onClick={handleFileClick}>
+                          <FileUp size={14} style={{ marginRight: 8, color: "#10b981" }} /> Bulk Import
+                        </div>
+                       )}
+                       {onBulkExport && (
+                        <div className={styles.dropdownItem} onClick={() => { onBulkExport(); setIsBulkImportOpen(false); }}>
+                          <Download size={14} style={{ marginRight: 8, color: "#f97316" }} /> Bulk Export
+                        </div>
+                       )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {showAddButton && (
+              <button 
+                id={addButtonId}
+                className={styles.primaryBtn}
+                onClick={onAddClick}
+                style={{ padding: "0 12px", height: "36px", gap: "8px", border: "none" }}
+              >
+                <Plus size={14} /> 
+                <span style={{ fontSize: "12px" }}>{addButtonLabel}</span>
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -432,32 +579,54 @@ export const CustomTable = <TData extends Record<string, any>>({
             <tr className={styles.tr}>
               {selectionMode === "multi" && (
                 <th className={`${styles.th} ${styles.stickyLeft}`} style={{ width: "40px" }}>
-                  <input type="checkbox" onChange={() => selectAll(rowIds)} checked={rowIds.length > 0 && rowIds.every(id => selectedRows.includes(id))} />
+                  <input 
+                    type="checkbox" 
+                    onChange={(e) => {
+                      const checked = e.target.checked;
+                      if (onSelectAllStateChange) onSelectAllStateChange(checked);
+                      if (checked) selectAll(rowIds); else selectAll([]);
+                    }} 
+                    checked={isAllPagesSelected || (rowIds.length > 0 && rowIds.every(id => selectedRows.includes(id)))} 
+                  />
                 </th>
               )}
-              {columns.map(col => (
-                <th 
-                  key={col.id} 
-                  className={`${styles.th} ${col.pin === "left" ? styles.stickyLeft : ""} ${col.pin === "right" ? styles.stickyRight : ""}`}
-                  style={{ width: columnWidths[col.id] || col.width, minWidth: col.minWidth, textAlign: col.align || "left" }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <div onClick={() => col.sortable !== false && handleSort(col.id)} style={{ cursor: col.sortable !== false ? "pointer" : "default", display: "flex", alignItems: "center", gap: "8px" }}>
-                      {col.header}
-                      {col.sortable !== false && (
-                        <IconSort active={!!sorting.find(s => s.id === col.id)} desc={sorting.find(s => s.id === col.id)?.desc} />
+              {columns.map(col => {
+                const isDraggable = !col.disableReorder;
+                return (
+                  <th 
+                    key={col.id} 
+                    draggable={isDraggable}
+                    onDragStart={isDraggable ? (e) => handleDragStart(e, col.id) : undefined}
+                    onDragOver={isDraggable ? (e) => handleDragOver(e, col.id) : undefined}
+                    onDrop={isDraggable ? (e) => handleDrop(e, col.id) : undefined}
+                    className={`${styles.th} ${col.pin === "left" ? styles.stickyLeft : ""} ${col.pin === "right" ? styles.stickyRight : ""} ${dragOverCol === col.id ? styles.thDragOver : ""} ${isDraggable ? styles.thDraggable : ""}`}
+                    style={{ 
+                      width: columnWidths[col.id] || col.width, 
+                      minWidth: col.minWidth, 
+                      textAlign: col.align || "left",
+                      opacity: draggedCol === col.id ? 0.5 : 1
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <div onClick={() => col.sortable !== false && handleSort(col.id)} style={{ cursor: col.sortable !== false ? "pointer" : "default", display: "flex", alignItems: "center", gap: "8px", userSelect: "none" }}>
+                        {col.header}
+                        {col.sortable !== false && (
+                          <IconSort active={!!sorting.find(s => s.id === col.id)} desc={sorting.find(s => s.id === col.id)?.desc} />
+                        )}
+                      </div>
+                      {col.disableResize !== true && (
+                        <div 
+                          className={styles.resizer} 
+                          onMouseDown={(e) => onResizeStart(e, col.id, Number(columnWidths[col.id] || col.width || 150))}
+                          onDoubleClick={() => onDoubleClickResize(col.id)}
+                          draggable={false}
+                          onDragStart={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                        />
                       )}
                     </div>
-                    {col.disableResize !== true && (
-                      <div 
-                        className={styles.resizer} 
-                        onMouseDown={(e) => onResizeStart(e, col.id, Number(columnWidths[col.id] || col.width || 150))}
-                        onDoubleClick={() => onDoubleClickResize(col.id)}
-                      />
-                    )}
-                  </div>
-                </th>
-              ))}
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody className={`${styles.tbody} ${striped ? styles.tbodyStriped : ""}`}>
@@ -473,12 +642,15 @@ export const CustomTable = <TData extends Record<string, any>>({
             ) : (
               pagedData.map((row, rowIndex) => {
                 const rowId = rowIds[rowIndex];
-                const isSelected = selectedRows.includes(rowId);
+                const isSelected = selectedRows.includes(rowId) || !!isAllPagesSelected;
                 return (
                   <tr key={rowId} className={`${styles.tr} ${isSelected ? styles.trSelected : ""}`}>
                     {selectionMode === "multi" && (
                       <td className={`${styles.td} ${styles.stickyLeft}`} style={{ width: "40px" }}>
-                        <input type="checkbox" checked={isSelected} onChange={() => toggleRow(rowId, true)} />
+                        <input type="checkbox" checked={isSelected} onChange={(e) => {
+                            if (isAllPagesSelected && onSelectAllStateChange && !e.target.checked) onSelectAllStateChange(false);
+                            toggleRow(rowId, e.target.checked);
+                        }} />
                       </td>
                     )}
                     {columns.map(col => {

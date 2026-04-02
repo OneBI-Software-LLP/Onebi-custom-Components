@@ -86,7 +86,7 @@ export function RolePermissionSelector({
                         <div className="flex justify-center">
                           <Checkbox
                             checked={role.permissions.includes(permission.id)}
-                            onCheckedChange={() =>
+                            onChange={() =>
                               onPermissionToggle(role.id, permission.id)
                             }
                             disabled={disabled}

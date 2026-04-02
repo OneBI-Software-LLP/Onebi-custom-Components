@@ -1,0 +1,220 @@
+﻿
+> custom-table@1.0.0 build
+> next build
+
+  Γû▓ Next.js 14.2.5
+
+   Creating an optimized production build ...
+node.exe : Error: Cannot apply unknown 
+utility class `border-border`. Are you 
+using CSS modules or similar and 
+missing `@reference`? https://tailwindcs
+s.com/docs/functions-and-directives#refe
+rence-directive
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : No    
+tSpecified: (Error: Cannot a    
+...rence-directive:String) [    ], 
+RemoteException
+    + FullyQualifiedErrorId : Na    
+tiveCommandError
+ 
+    at onInvalidCandidate (D:\Onebi-cust
+om-Components\node_modules\tailwindcss\d
+ist\lib.js:21:1314)
+    at Ee (D:\Onebi-custom-Components\no
+de_modules\tailwindcss\dist\lib.js:16:37
+066)
+    at D:\Onebi-custom-Components\node_m
+odules\tailwindcss\dist\lib.js:21:355
+    at _r (D:\Onebi-custom-Components\no
+de_modules\tailwindcss\dist\lib.js:3:173
+3)
+    at I (D:\Onebi-custom-Components\nod
+e_modules\tailwindcss\dist\lib.js:3:1377
+)
+    at Te (D:\Onebi-custom-Components\no
+de_modules\tailwindcss\dist\lib.js:21:17
+2)
+    at mn (D:\Onebi-custom-Components\no
+de_modules\tailwindcss\dist\lib.js:38:29
+4)
+    at async gn (D:\Onebi-custom-Compone
+nts\node_modules\tailwindcss\dist\lib.js
+:38:631)
+    at async Xr (D:\Onebi-custom-Compone
+nts\node_modules\@tailwindcss\node\dist\
+index.js:10:3416)
+    at async N (D:\Onebi-custom-Componen
+ts\node_modules\@tailwindcss\postcss\dis
+t\index.js:10:3979)
+<w> 
+[webpack.cache.PackFileCacheStrategy] 
+Skipped not serializable cache item 'Com
+pilation/modules|D:\Onebi-custom-Compone
+nts\node_modules\next\dist\build\webpack
+\loaders\css-loader\src\index.js??ruleSe
+t[1].rules[13].oneOf[12].use[2]!D:\Onebi
+-custom-Components\node_modules\next\dis
+t\build\webpack\loaders\postcss-loader\s
+rc\index.js??ruleSet[1].rules[13].oneOf[
+12].use[3]!D:\Onebi-custom-Components\sr
+c\app\globals.css': No serializer 
+registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/
+PackFileCacheStrategy.PackContentItems 
+-> webpack/lib/NormalModule -> 
+webpack/lib/ModuleBuildError -> 
+PostCSSSyntaxError
+Failed to compile.
+
+./src/app/globals.css:1:1
+Syntax error: tailwindcss: D:\Onebi-cust
+om-Components\src\app\globals.css 
+Cannot apply unknown utility class 
+`border-border`. Are you using CSS 
+modules or similar and missing 
+`@reference`? https://tailwindcss.com/do
+cs/functions-and-directives#reference-di
+rective
+
+[1m[31m>[39m[22m[90m 1 | 
+[39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m 
+components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m 
+utilities[33m;[39m
+
+./src/app/globals.css
+Syntax error: tailwindcss: D:\Onebi-cust
+om-Components\src\app\globals.css 
+Cannot apply unknown utility class 
+`border-border`. Are you using CSS 
+modules or similar and missing 
+`@reference`? https://tailwindcss.com/do
+cs/functions-and-directives#reference-di
+rective (1:1)
+
+[1m[31m>[39m[22m[90m 1 | 
+[39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m 
+components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m 
+utilities[33m;[39m
+
+    at tryRunOrWebpackError (D:\Onebi-cu
+stom-Components\node_modules\next\dist\c
+ompiled\webpack\bundle5.js:28:312989)
+    at __webpack_require_module__ (D:\On
+ebi-custom-Components\node_modules\next\
+dist\compiled\webpack\bundle5.js:28:1311
+65)
+    at 
+__nested_webpack_require_153728__ (D:\On
+ebi-custom-Components\node_modules\next\
+dist\compiled\webpack\bundle5.js:28:1306
+07)
+    at D:\Onebi-custom-Components\node_m
+odules\next\dist\compiled\webpack\bundle
+5.js:28:131454
+    at symbolIterator (D:\Onebi-custom-C
+omponents\node_modules\next\dist\compile
+d\neo-async\async.js:1:14444)
+    at done (D:\Onebi-custom-Components\
+node_modules\next\dist\compiled\neo-asyn
+c\async.js:1:14824)
+    at Hook.eval [as callAsync] (eval 
+at create (D:\Onebi-custom-Components\no
+de_modules\next\dist\compiled\webpack\bu
+ndle5.js:13:28858), <anonymous>:15:1)
+    at Hook.CALL_ASYNC_DELEGATE [as 
+_callAsync] (D:\Onebi-custom-Components\
+node_modules\next\dist\compiled\webpack\
+bundle5.js:13:26012)
+    at D:\Onebi-custom-Components\node_m
+odules\next\dist\compiled\webpack\bundle
+5.js:28:130328
+    at symbolIterator (D:\Onebi-custom-C
+omponents\node_modules\next\dist\compile
+d\neo-async\async.js:1:14402)
+-- inner error --
+Syntax error: tailwindcss: D:\Onebi-cust
+om-Components\src\app\globals.css 
+Cannot apply unknown utility class 
+`border-border`. Are you using CSS 
+modules or similar and missing 
+`@reference`? https://tailwindcss.com/do
+cs/functions-and-directives#reference-di
+rective (1:1)
+
+[1m[31m>[39m[22m[90m 1 | 
+[39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m 
+components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m 
+utilities[33m;[39m
+
+    at Object.<anonymous> (D:\Onebi-cust
+om-Components\node_modules\next\dist\bui
+ld\webpack\loaders\css-loader\src\index.
+js??ruleSet[1].rules[13].oneOf[12].use[2
+]!D:\Onebi-custom-Components\node_module
+s\next\dist\build\webpack\loaders\postcs
+s-loader\src\index.js??ruleSet[1].rules[
+13].oneOf[12].use[3]!D:\Onebi-custom-Com
+ponents\src\app\globals.css:1:7)
+    at D:\Onebi-custom-Components\node_m
+odules\next\dist\compiled\webpack\bundle
+5.js:28:922493
+    at Hook.eval [as call] (eval at 
+create (D:\Onebi-custom-Components\node_
+modules\next\dist\compiled\webpack\bundl
+e5.js:13:28636), <anonymous>:7:1)
+    at Hook.CALL_DELEGATE [as _call] (D:
+\Onebi-custom-Components\node_modules\ne
+xt\dist\compiled\webpack\bundle5.js:13:2
+5906)
+    at D:\Onebi-custom-Components\node_m
+odules\next\dist\compiled\webpack\bundle
+5.js:28:131198
+    at tryRunOrWebpackError (D:\Onebi-cu
+stom-Components\node_modules\next\dist\c
+ompiled\webpack\bundle5.js:28:312943)
+    at __webpack_require_module__ (D:\On
+ebi-custom-Components\node_modules\next\
+dist\compiled\webpack\bundle5.js:28:1311
+65)
+    at 
+__nested_webpack_require_153728__ (D:\On
+ebi-custom-Components\node_modules\next\
+dist\compiled\webpack\bundle5.js:28:1306
+07)
+    at D:\Onebi-custom-Components\node_m
+odules\next\dist\compiled\webpack\bundle
+5.js:28:131454
+    at symbolIterator (D:\Onebi-custom-C
+omponents\node_modules\next\dist\compile
+d\neo-async\async.js:1:14444)
+
+Generated code for D:\Onebi-custom-Compo
+nents\node_modules\next\dist\build\webpa
+ck\loaders\css-loader\src\index.js??rule
+Set[1].rules[13].oneOf[12].use[2]!D:\One
+bi-custom-Components\node_modules\next\d
+ist\build\webpack\loaders\postcss-loader
+\src\index.js??ruleSet[1].rules[13].oneO
+f[12].use[3]!D:\Onebi-custom-Components\
+src\app\globals.css
+
+Import trace for requested module:
+./src/app/globals.css
+
+
+> Build failed because of webpack errors

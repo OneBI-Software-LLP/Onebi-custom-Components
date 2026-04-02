@@ -1,0 +1,2 @@
+src/components/ui/role-permission-selector.tsx(89,29): error TS2322: Type '{ checked: boolean; onCheckedChange: () => void; disabled: boolean; }' is not assignable to type 'IntrinsicAttributes & CheckboxProps & RefAttributes<HTMLInputElement>'.
+  Property 'onCheckedChange' does not exist on type 'IntrinsicAttributes & CheckboxProps & RefAttributes<HTMLInputElement>'.

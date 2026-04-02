@@ -20,7 +20,7 @@ export const exportToPdf = <TData extends Record<string, any>>(
     head,
     body,
     theme: "striped",
-    headStyles: { fillStyle: "DF", fillColor: [37, 99, 235] }
+    headStyles: { fillColor: "#2563eb" }
   });
 
   doc.save(filename);

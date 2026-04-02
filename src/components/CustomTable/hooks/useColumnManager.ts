@@ -7,12 +7,13 @@ export interface ColumnManagerState {
 }
 
 export const useColumnManager = <TData,>(initialColumns: ColumnDef<TData>[]) => {
+  const [columnOrder, setColumnOrder] = useState<string[]>(initialColumns.map(c => c.id));
   const [visibleColumns, setVisibleColumns] = useState<string[]>(
     initialColumns.filter(c => c.visible !== false).map(c => c.id)
   );
 
-  const [columnWidths, setColumnWidths] = useState<Record<string, number>>(() => {
-    const widths: Record<string, number> = {};
+  const [columnWidths, setColumnWidths] = useState<Record<string, number | string>>(() => {
+    const widths: Record<string, number | string> = {};
     initialColumns.forEach(c => {
       if (c.width) widths[c.id] = c.width;
     });
@@ -27,21 +28,36 @@ export const useColumnManager = <TData,>(initialColumns: ColumnDef<TData>[]) => 
     );
   }, []);
 
-  const setWidth = useCallback((columnId: string, width: number) => {
+  const setWidth = useCallback((columnId: string, width: number | string) => {
     setColumnWidths(prev => ({
       ...prev,
       [columnId]: width
     }));
   }, []);
 
+  const reorderColumn = useCallback((draggedId: string, targetId: string) => {
+    setColumnOrder(prev => {
+      const newOrder = [...prev];
+      const draggedIdx = newOrder.indexOf(draggedId);
+      const targetIdx = newOrder.indexOf(targetId);
+      if (draggedIdx > -1 && targetIdx > -1) {
+        newOrder.splice(draggedIdx, 1);
+        newOrder.splice(targetIdx, 0, draggedId);
+      }
+      return newOrder;
+    });
+  }, []);
+
   const columns = useMemo(() => 
-    initialColumns
+    columnOrder
+      .map(id => initialColumns.find(col => col.id === id)!)
+      .filter(Boolean)
       .filter(col => visibleColumns.includes(col.id))
       .map(col => ({
         ...col,
         width: columnWidths[col.id] || col.width
       })),
-    [initialColumns, visibleColumns, columnWidths]
+    [initialColumns, columnOrder, visibleColumns, columnWidths]
   );
 
   return {
@@ -49,6 +65,8 @@ export const useColumnManager = <TData,>(initialColumns: ColumnDef<TData>[]) => 
     visibleColumns,
     toggleVisibility,
     setWidth,
-    columnWidths
+    columnWidths,
+    reorderColumn,
+    columnOrder
   };
 };
