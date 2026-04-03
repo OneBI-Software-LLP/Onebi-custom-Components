@@ -84,13 +84,98 @@ export function AppSidebar() {
 
   if (!isOpen) {
     return (
-      <aside className="w-16 bg-white border-r border-slate-200 flex flex-col sticky top-0 h-screen z-40 shadow-sm">
+      <aside className="w-20 bg-white border-r border-slate-200 flex flex-col sticky top-0 h-screen z-40 shadow-sm">
         <button
           onClick={toggle}
-          className="p-4 hover:bg-slate-50 transition-colors border-b border-slate-200"
+          className="p-4 hover:bg-slate-50 transition-colors border-b border-slate-200 flex justify-center"
         >
-          <PanelLeftOpen className="h-6 w-6 text-slate-600" />
+          <PanelLeftOpen className="h-5 w-5 text-slate-600" />
         </button>
+
+        {/* Collapsed Navigation - Icons with Text Underneath */}
+        <nav className="flex-1 overflow-y-auto py-4 space-y-1">
+          {/* Left Side Icons */}
+          {leftComponents.slice(0, 8).map((item) => (
+            <Link
+              key={item.id}
+              href={`/components/${item.id}`}
+              className={cn(
+                "flex flex-col items-center justify-center p-2 rounded-lg transition-colors relative group",
+                isActive(item.id)
+                  ? "bg-indigo-50 text-indigo-600"
+                  : "text-slate-400 hover:bg-slate-50 hover:text-slate-900"
+              )}
+            >
+              <item.icon className="h-5 w-5" />
+              <span className="text-[10px] mt-1 truncate w-full text-center leading-tight">
+                {item.name.split(" ")[0]}
+              </span>
+            </Link>
+          ))}
+
+          <div className="border-t border-slate-200 my-2 mx-2" />
+
+          {/* More Left Components */}
+          {leftComponents.slice(8).map((item) => (
+            <Link
+              key={item.id}
+              href={`/components/${item.id}`}
+              className={cn(
+                "flex flex-col items-center justify-center p-2 rounded-lg transition-colors relative group",
+                isActive(item.id)
+                  ? "bg-indigo-50 text-indigo-600"
+                  : "text-slate-400 hover:bg-slate-50 hover:text-slate-900"
+              )}
+            >
+              <item.icon className="h-5 w-5" />
+              <span className="text-[10px] mt-1 truncate w-full text-center leading-tight">
+                {item.name.split(" ")[0]}
+              </span>
+            </Link>
+          ))}
+
+          <div className="border-t border-slate-200 my-2 mx-2" />
+
+          {/* Right Side - Form Inputs */}
+          {rightComponents.slice(0, 7).map((item) => (
+            <Link
+              key={item.id}
+              href={`/components/${item.id}`}
+              className={cn(
+                "flex flex-col items-center justify-center p-2 rounded-lg transition-colors relative group",
+                isActive(item.id)
+                  ? "bg-indigo-50 text-indigo-600"
+                  : "text-slate-400 hover:bg-slate-50 hover:text-slate-900"
+              )}
+            >
+              <item.icon className="h-5 w-5" />
+              <span className="text-[10px] mt-1 truncate w-full text-center leading-tight">
+                {item.name.split(" ")[0]}
+              </span>
+            </Link>
+          ))}
+
+          <div className="border-t border-slate-200 my-2 mx-2" />
+
+          {/* Right Side - UI Elements */}
+          {rightComponents.slice(7).map((item) => (
+            <Link
+              key={item.id}
+              href={`/components/${item.id}`}
+              className={cn(
+                "flex flex-col items-center justify-center p-2 rounded-lg transition-colors relative group",
+                isActive(item.id)
+                  ? "bg-indigo-50 text-indigo-600"
+                  : "text-slate-400 hover:bg-slate-50 hover:text-slate-900"
+              )}
+            >
+              <item.icon className="h-5 w-5" />
+              <span className="text-[10px] mt-1 truncate w-full text-center leading-tight">
+                {item.name.split(" ")[0]}
+              </span>
+            </Link>
+          ))}
+        </nav>
       </aside>
     );
   }
@@ -236,14 +321,14 @@ export function AppSidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-slate-200">
+      {/* <div className="p-4 border-t border-slate-200">
         <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-4">
           <p className="text-xs font-semibold text-indigo-900 mb-1">Pro Tip</p>
           <p className="text-xs text-indigo-700">
             Click any component to view its implementation and usage examples.
           </p>
         </div>
-      </div>
+      </div> */}
     </aside>
   );
 }
