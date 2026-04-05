@@ -1,17 +1,48 @@
 "use client";
 
 import React, { useState } from "react";
+import { 
+  Popover, 
+  PopoverMenu, 
+  PopoverProfile, 
+  PopoverNotifications, 
+  PopoverConfirm, 
+  PopoverRich, 
+  PopoverHeader, 
+  PopoverBody, 
+  PopoverFooter, 
+  type MenuItem, 
+  type NotificationItem 
+} from "@/components/ui/popover";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { Input } from "@/components/ui/input";
-import { Bell, Settings, User, Mail, Info, Share2, MoreHorizontal, Copy, ExternalLink } from "lucide-react";
+
+// ── Icons ─────────────────────────────────────────────────
+const EditIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>;
+const TrashIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>;
+const CopyIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>;
+const SettingsIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>;
+const ProfileIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+const LogoutIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>;
+const DownloadIcon = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>;
+const BellIcon = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>;
+const FileIcon = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>;
+const CheckIcon = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.2"><polyline points="20 6 9 17 4 12"/></svg>;
+const WarnIcon = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>;
+const AlertIcon = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>;
+
+// ── Shared trigger component for demo consistency ──
+const Trigger = ({ children, variant = "outline", className = "" }: { children: React.ReactNode; variant?: any; className?: string }) => (
+  <Button variant={variant} className={`h-11 rounded-xl px-5 font-medium ${className}`}>
+    {children}
+  </Button>
+);
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
-    <div className="flex items-center justify-between mb-4">
+  <div className="mt-16 border-t border-slate-100 pt-12">
+    <div className="flex items-center justify-between mb-6">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
       </Label>
@@ -22,201 +53,240 @@ const CodeBlock = ({ code }: { code: string }) => (
         npm i onebi-ui
       </Badge>
     </div>
-    <pre className="p-5 rounded-2xl bg-[#0F172A] text-slate-50 overflow-x-auto text-[13px] font-mono shadow-inner leading-relaxed border border-slate-800">
+    <pre className="p-6 rounded-2xl bg-[#0F172A] text-slate-50 overflow-x-auto text-[13px] font-mono shadow-inner leading-relaxed border border-slate-800">
       <code>{code}</code>
     </pre>
   </div>
 );
 
+function Section({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-6">
+      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+        {label}
+      </Label>
+      <div className="flex flex-wrap gap-6 items-start">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// ── Data ─────────────────────────────────────────────────
+const MENU_ITEMS: MenuItem[] = [
+  { id: 'edit',  label: 'Edit',      icon: <EditIcon />,     shortcut: '⌘E' },
+  { id: 'copy',  label: 'Duplicate', icon: <CopyIcon /> },
+  { id: 'dl',    label: 'Export',    icon: <DownloadIcon /> },
+  { id: 'sep',   label: 'Delete',    icon: <TrashIcon />,    danger: true, separator: true },
+];
+
+const NOTIFICATIONS: NotificationItem[] = [
+  {
+    id: 'n1', read: false,
+    text: <><strong>Ankit Joshi</strong> commented on <strong>Q4 Report</strong></>,
+    time: '2 min ago',
+    icon: <div className="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center text-[10px] font-bold text-indigo-600">AJ</div>,
+  },
+  {
+    id: 'n2', read: false,
+    text: <>Your export <strong>users_june.csv</strong> is ready</>,
+    time: '14 min ago',
+    icon: <div className="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center"><CheckIcon /></div>,
+  },
+  {
+    id: 'n3', read: true,
+    text: <>API rate limit at <strong>85%</strong> daily quota</>,
+    time: '1 hr ago',
+    icon: <div className="w-7 h-7 rounded-full bg-amber-100 flex items-center justify-center"><WarnIcon /></div>,
+  },
+];
+
 export default function PopoverPage() {
-  const [open, setOpen] = useState(false);
+  const [deleted, setDeleted] = useState(false);
+  const [controlledOpen, setControlledOpen] = useState(false);
 
   return (
-    <div className="p-12 lg:p-24">
-      <div className="max-w-5xl mx-auto pb-24">
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="p-8 lg:p-20">
+      <div className="max-w-6xl mx-auto pb-24">
+        <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="space-y-2">
-            <h2 className="text-4xl font-black tracking-tight text-slate-900">
+            <h2 className="text-5xl font-black tracking-tight text-slate-900">
               Popover
             </h2>
             <p className="text-lg text-slate-500">
-              Floating panels that display rich content in context with trigger elements.
+              Advanced floating panels with intelligent positioning, triggers, and rich templates.
             </p>
           </div>
-          <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
-            <div className="space-y-6">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Basic Popover
-              </Label>
-              <div className="flex flex-wrap gap-4">
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline">
-                      <Info className="mr-2 h-4 w-4" />
-                      Click for info
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-80">
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-slate-900">About this feature</h4>
-                      <p className="text-sm text-slate-600">
-                        This popover provides additional context about the feature. It can contain any type of content including text, links, and interactive elements.
-                      </p>
-                      <div className="flex items-center gap-2 pt-1">
-                        <Button size="sm" className="h-7 text-xs">Learn more</Button>
-                        <Button size="sm" variant="ghost" className="h-7 text-xs">Dismiss</Button>
-                      </div>
-                    </div>
-                  </PopoverContent>
-                </Popover>
 
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="gap-2">
-                      <Share2 className="h-4 w-4" />
-                      Share
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-72">
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-slate-900">Share this page</h4>
-                      <div className="flex gap-2">
-                        <Input defaultValue="https://app.onebi.io/share/abc123" readOnly className="h-8 text-xs" />
-                        <Button size="sm" variant="outline" className="h-8 px-3 text-xs">
-                          <Copy className="h-3.5 w-3.5" />
-                        </Button>
-                      </div>
-                      <div className="flex gap-2 pt-1">
-                        <Button size="sm" variant="ghost" className="h-7 text-xs flex items-center gap-1.5">
-                          <Mail className="h-3.5 w-3.5" /> Email
-                        </Button>
-                        <Button size="sm" variant="ghost" className="h-7 text-xs flex items-center gap-1.5">
-                          <ExternalLink className="h-3.5 w-3.5" /> Link
-                        </Button>
-                      </div>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </div>
+          <div className="grid gap-12 p-8 lg:p-12 border border-slate-200 rounded-[2.5rem] bg-white shadow-2xl shadow-slate-200/50">
+            {/* ── PLACEMENTS ── */}
+            <Section label="Foundations: Placements">
+              <Popover placement="bottom-start" content={<PopoverBody>Bottom-start placement (default)</PopoverBody>}>
+                <Trigger>Bottom Start</Trigger>
+              </Popover>
+              <Popover placement="top-center" content={<PopoverBody>Top-center placement</PopoverBody>}>
+                <Trigger>Top Center</Trigger>
+              </Popover>
+              <Popover placement="right-start" content={<PopoverBody>Right-start placement</PopoverBody>}>
+                <Trigger>Right Side</Trigger>
+              </Popover>
+              <Popover placement="left-end" content={<PopoverBody>Left-end placement</PopoverBody>}>
+                <Trigger>Left Side</Trigger>
+              </Popover>
+            </Section>
 
             <Separator className="bg-slate-100" />
 
-            <div className="space-y-6">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Notification Popover
-              </Label>
-              <div className="flex gap-4">
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="ghost" size="icon" className="relative">
-                      <Bell className="h-5 w-5" />
-                      <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                        3
-                      </span>
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-80 p-0" align="end">
-                    <div className="p-4 border-b border-slate-100">
-                      <h4 className="font-semibold text-slate-900">Notifications</h4>
-                      <p className="text-xs text-slate-500 mt-0.5">You have 3 unread messages</p>
+            {/* ── TRIGGERS ── */}
+            <Section label="Interaction Patterns">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                <div className="space-y-3">
+                  <Label className="text-[10px] text-slate-400">CLICK (DEFAULT)</Label>
+                  <Popover content={<PopoverBody>Opened on tap/click.</PopoverBody>}>
+                    <Trigger className="w-full">Default Click</Trigger>
+                  </Popover>
+                </div>
+                <div className="space-y-3">
+                  <Label className="text-[10px] text-slate-400">HOVER / TOOLTIP</Label>
+                  <Popover trigger="hover" placement="top-center" content={<div className="p-2 text-xs font-medium">Quick tooltip on hover</div>}>
+                    <Trigger className="w-full">Hover Trigger</Trigger>
+                  </Popover>
+                </div>
+                <div className="space-y-3">
+                  <Label className="text-[10px] text-slate-400">CONTEXT MENU</Label>
+                  <Popover trigger="context-menu" content={<PopoverMenu items={MENU_ITEMS} />}>
+                    <div className="h-11 rounded-xl border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-xs text-slate-500 cursor-context-menu px-4">
+                      Right-click this area
                     </div>
-                    <div className="max-h-64 overflow-y-auto">
-                      {[
-                        { title: "New comment on PR #42", time: "2 min ago", unread: true },
-                        { title: "Deployment successful", time: "1 hour ago", unread: true },
-                        { title: "Weekly report ready", time: "3 hours ago", unread: true },
-                        { title: "Sprint review scheduled", time: "Yesterday", unread: false },
-                      ].map((notif, i) => (
-                        <div
-                          key={i}
-                          className={`px-4 py-3 hover:bg-slate-50 cursor-pointer transition-colors ${
-                            notif.unread ? "border-l-2 border-indigo-500 bg-indigo-50/50" : ""
-                          }`}
-                        >
-                          <p className="text-sm text-slate-800 font-medium">{notif.title}</p>
-                          <p className="text-xs text-slate-400 mt-0.5">{notif.time}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="p-3 border-t border-slate-100">
-                      <Button variant="ghost" size="sm" className="w-full h-8 text-xs">
-                        View all notifications
-                      </Button>
-                    </div>
-                  </PopoverContent>
-                </Popover>
+                  </Popover>
+                </div>
               </div>
-            </div>
+            </Section>
 
             <Separator className="bg-slate-100" />
 
-            <div className="space-y-6">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                User Profile Popover
-              </Label>
-              <div className="flex gap-4">
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="gap-2">
-                      <div className="h-6 w-6 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
-                        JD
-                      </div>
-                      <span>John Doe</span>
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-64 p-0" align="end">
-                    <div className="p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center text-white font-bold">
-                          JD
-                        </div>
-                        <div>
-                          <p className="font-semibold text-sm">John Doe</p>
-                          <p className="text-xs text-white/80">john@onebi.io</p>
-                        </div>
-                      </div>
+            {/* ── PRESETS ── */}
+            <Section label="Specialized Presets">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+                {/* MENU */}
+                <div className="space-y-4">
+                  <Label className="text-[10px] text-slate-400">MENU DROPDOWN</Label>
+                  <Popover placement="bottom-start" content={<PopoverMenu items={MENU_ITEMS} />}>
+                    <Trigger className="w-full justify-between">
+                      Options <SettingsIcon />
+                    </Trigger>
+                  </Popover>
+                </div>
+
+                {/* NOTIFICATIONS */}
+                <div className="space-y-4">
+                  <Label className="text-[10px] text-slate-400">NOTIFICATIONS</Label>
+                  <Popover placement="bottom-end" closeOnSelect={false} content={<PopoverNotifications items={NOTIFICATIONS} />}>
+                    <div className="relative">
+                      <Trigger className="w-full"><BellIcon /> Inbox</Trigger>
+                      <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white" />
                     </div>
-                    <div className="py-2">
-                      <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
-                        <User className="h-4 w-4 text-slate-400" /> Profile
-                      </button>
-                      <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
-                        <Settings className="h-4 w-4 text-slate-400" /> Settings
-                      </button>
-                      <div className="border-t border-slate-100 my-1" />
-                      <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
-                        <MoreHorizontal className="h-4 w-4" /> Sign out
-                      </button>
+                  </Popover>
+                </div>
+
+                {/* PROFILE */}
+                <div className="space-y-4">
+                  <Label className="text-[10px] text-slate-400">USER PROFILE</Label>
+                  <Popover placement="bottom-end" content={
+                    <PopoverProfile 
+                      name="Rahul Kumar" 
+                      email="rahul@onebi.io" 
+                      initials="RK" 
+                      planLabel="Enterprise Plan"
+                      menuItems={[{ id: 'p1', label: 'Billing Settings', icon: <SettingsIcon /> }, { id: 'p2', label: 'Sign out', icon: <LogoutIcon />, danger: true, separator: true }]}
+                    />
+                  }>
+                    <div className="h-11 w-11 rounded-full bg-slate-100 flex items-center justify-center cursor-pointer border border-slate-200">
+                      <ProfileIcon />
                     </div>
-                  </PopoverContent>
-                </Popover>
+                  </Popover>
+                </div>
               </div>
-            </div>
+            </Section>
+
+            <Separator className="bg-slate-100" />
+
+            {/* ── CONFIRM & RICH ── */}
+            <Section label="Dialogs & Cards">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                <div className="space-y-4">
+                  <Label className="text-[10px] text-slate-400">CONFIRMATION</Label>
+                  <Popover content={
+                    <PopoverConfirm 
+                      title="Destructive Action" 
+                      description="Are you sure? This will permanently delete the shared workspace. This cannot be undone."
+                      confirmLabel="Yes, Delete"
+                      onConfirm={() => setDeleted(true)}
+                    />
+                  }>
+                    <Trigger variant="ghost" className="w-full text-red-600 hover:bg-red-50 hover:text-red-700 border-red-100">
+                      Delete Workspace {deleted && "✓"}
+                    </Trigger>
+                  </Popover>
+                </div>
+                <div className="space-y-4">
+                  <Label className="text-[10px] text-slate-400">RICH CONTENT CARD</Label>
+                  <Popover content={
+                    <PopoverRich 
+                      title="Productivity.pdf" 
+                      description="Modified 2 hours ago by Sarah. Size: 2.4 MB"
+                      image={<FileIcon />}
+                      stats={[{ label: 'Users', value: '12' }, { label: 'Status', value: <span className="text-green-600">Syncing</span> }]}
+                      primaryAction={{ label: 'Open File', onClick: () => {} }}
+                    />
+                  }>
+                    <Trigger className="w-full gap-2"><FileIcon /> productivity.pdf</Trigger>
+                  </Popover>
+                </div>
+              </div>
+            </Section>
+
+            <Separator className="bg-slate-100" />
+
+            {/* ── CONTROLLED ── */}
+            <Section label="Programmatic Control">
+              <div className="flex gap-4 items-center">
+                <Popover 
+                  open={controlledOpen} 
+                  onOpenChange={setControlledOpen} 
+                  trigger="manual"
+                  content={<PopoverBody>Managed via external state.</PopoverBody>}
+                >
+                  <Trigger variant="ghost" className="border-indigo-100 text-indigo-600">Manual Toggle</Trigger>
+                </Popover>
+                <Button onClick={() => setControlledOpen(!controlledOpen)} className="h-11 rounded-xl">
+                  {controlledOpen ? "Close" : "Open"} Outside
+                </Button>
+              </div>
+            </Section>
 
             <CodeBlock
-              code={`import { Popover, PopoverTrigger, PopoverContent } from "onebi-ui";
-import { Button, Info } from "onebi-ui";
+              code={`import { Popover, PopoverMenu, PopoverBody } from "onebi-ui";
 
-export default function PopoverDemo() {
+export default function Demo() {
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline">
-          <Info className="mr-2 h-4 w-4" />
-          Show Details
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="space-y-3">
-          <h4 className="font-semibold">Popover Title</h4>
-          <p className="text-sm text-slate-600">
-            Rich content goes here with actions and more.
-          </p>
-          <Button size="sm">Action</Button>
-        </div>
-      </PopoverContent>
-    </Popover>
+    <div className="flex gap-4">
+      {/* Basic */}
+      <Popover content={<PopoverBody>Simple message</PopoverBody>}>
+        <button>Click me</button>
+      </Popover>
+
+      {/* Profile Pattern */}
+      <Popover placement="bottom-end" content={
+        <PopoverProfile 
+          name="John Doe" 
+          initials="JD" 
+          menuItems={[{ id: '1', label: 'Settings' }]} 
+        />
+      }>
+        <Avatar />
+      </Popover>
+    </div>
   );
 }`}
             />
