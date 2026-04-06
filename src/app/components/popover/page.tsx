@@ -34,11 +34,11 @@ const WarnIcon = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="non
 const AlertIcon = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>;
 
 // ── Shared trigger component for demo consistency ──
-const Trigger = ({ children, variant = "outline", className = "" }: { children: React.ReactNode; variant?: any; className?: string }) => (
-  <Button variant={variant} className={`h-11 rounded-xl px-5 font-medium ${className}`}>
+const Trigger = React.forwardRef<HTMLButtonElement, any>(({ children, variant = "outline", className = "", ...props }, ref) => (
+  <Button ref={ref} variant={variant} className={`h-11 rounded-xl px-5 font-medium text-black ${className}`} {...props}>
     {children}
   </Button>
-);
+));
 
 const CodeBlock = ({ code }: { code: string }) => (
   <div className="mt-16 border-t border-slate-100 pt-12">
@@ -135,6 +135,29 @@ export default function PopoverPage() {
               </Popover>
             </Section>
 
+            <CodeBlock
+              code={`import { Popover, PopoverBody } from "@/components/ui/popover";
+
+export default function Demo() {
+  return (
+    <>
+      <Popover placement="bottom-start" content={<PopoverBody>Bottom-start placement (default)</PopoverBody>}>
+        <button className="text-black px-4 py-2 border rounded">Bottom Start</button>
+      </Popover>
+      <Popover placement="top-center" content={<PopoverBody>Top-center placement</PopoverBody>}>
+        <button className="text-black px-4 py-2 border rounded">Top Center</button>
+      </Popover>
+      <Popover placement="right-start" content={<PopoverBody>Right-start placement</PopoverBody>}>
+        <button className="text-black px-4 py-2 border rounded">Right Side</button>
+      </Popover>
+      <Popover placement="left-end" content={<PopoverBody>Left-end placement</PopoverBody>}>
+        <button className="text-black px-4 py-2 border rounded">Left Side</button>
+      </Popover>
+    </>
+  );
+}`}
+            />
+
             <Separator className="bg-slate-100" />
 
             {/* ── TRIGGERS ── */}
@@ -162,6 +185,33 @@ export default function PopoverPage() {
                 </div>
               </div>
             </Section>
+
+            <CodeBlock
+              code={`import { Popover, PopoverBody, PopoverMenu, type MenuItem } from "@/components/ui/popover";
+
+const MENU_ITEMS: MenuItem[] = [
+  { id: 'edit', label: 'Edit' },
+  { id: 'dl', label: 'Export' },
+];
+
+export default function Demo() {
+  return (
+    <>
+      <Popover content={<PopoverBody>Opened on tap/click.</PopoverBody>}>
+        <button className="text-black">Default Click</button>
+      </Popover>
+
+      <Popover trigger="hover" placement="top-center" content={<div className="p-2 text-xs font-medium">Quick tooltip on hover</div>}>
+        <button className="text-black">Hover Trigger</button>
+      </Popover>
+
+      <Popover trigger="context-menu" content={<PopoverMenu items={MENU_ITEMS} />}>
+        <div className="p-4 border border-dashed">Right-click this area</div>
+      </Popover>
+    </>
+  );
+}`}
+            />
 
             <Separator className="bg-slate-100" />
 
@@ -209,6 +259,39 @@ export default function PopoverPage() {
               </div>
             </Section>
 
+            <CodeBlock
+              code={`import { Popover, PopoverMenu, PopoverNotifications, PopoverProfile } from "@/components/ui/popover";
+
+export default function Demo() {
+  return (
+    <>
+      <Popover placement="bottom-start" content={<PopoverMenu items={MENU_ITEMS} />}>
+        <button className="text-black">Options</button>
+      </Popover>
+
+      <Popover placement="bottom-end" closeOnSelect={false} content={<PopoverNotifications items={NOTIFICATIONS} />}>
+        <button className="text-black">Inbox</button>
+      </Popover>
+
+      <Popover placement="bottom-end" content={
+        <PopoverProfile 
+          name="Rahul Kumar" 
+          email="rahul@onebi.io" 
+          initials="RK" 
+          planLabel="Enterprise Plan"
+          menuItems={[
+            { id: 'p1', label: 'Billing Settings' }, 
+            { id: 'p2', label: 'Sign out', danger: true, separator: true }
+          ]}
+        />
+      }>
+        <div className="cursor-pointer">Profile Icon</div>
+      </Popover>
+    </>
+  );
+}`}
+            />
+
             <Separator className="bg-slate-100" />
 
             {/* ── CONFIRM & RICH ── */}
@@ -246,6 +329,40 @@ export default function PopoverPage() {
               </div>
             </Section>
 
+            <CodeBlock
+              code={`import { Popover, PopoverConfirm, PopoverRich } from "@/components/ui/popover";
+
+export default function Demo() {
+  return (
+    <>
+      {/* Confirmation Dialog */}
+      <Popover content={
+        <PopoverConfirm 
+          title="Destructive Action" 
+          description="Are you sure? This action cannot be undone."
+          confirmLabel="Yes, Delete"
+          onConfirm={() => console.log('Deleted!')}
+        />
+      }>
+        <button className="text-red-600">Delete Workspace</button>
+      </Popover>
+
+      {/* Rich Content Card */}
+      <Popover content={
+        <PopoverRich 
+          title="Productivity.pdf" 
+          description="Modified 2 hours ago by Sarah."
+          stats={[{ label: 'Users', value: '12' }]}
+          primaryAction={{ label: 'Open File', onClick: () => {} }}
+        />
+      }>
+        <button className="text-black">productivity.pdf</button>
+      </Popover>
+    </>
+  );
+}`}
+            />
+
             <Separator className="bg-slate-100" />
 
             {/* ── CONTROLLED ── */}
@@ -259,33 +376,32 @@ export default function PopoverPage() {
                 >
                   <Trigger variant="ghost" className="border-indigo-100 text-indigo-600">Manual Toggle</Trigger>
                 </Popover>
-                <Button onClick={() => setControlledOpen(!controlledOpen)} className="h-11 rounded-xl">
+                <Button onClick={() => setControlledOpen(!controlledOpen)} className="h-11 rounded-xl text-black">
                   {controlledOpen ? "Close" : "Open"} Outside
                 </Button>
               </div>
             </Section>
 
             <CodeBlock
-              code={`import { Popover, PopoverMenu, PopoverBody } from "onebi-ui";
+              code={`import { Popover, PopoverBody } from "@/components/ui/popover";
+import { useState } from "react";
 
 export default function Demo() {
-  return (
-    <div className="flex gap-4">
-      {/* Basic */}
-      <Popover content={<PopoverBody>Simple message</PopoverBody>}>
-        <button>Click me</button>
-      </Popover>
+  const [open, setOpen] = useState(false);
 
-      {/* Profile Pattern */}
-      <Popover placement="bottom-end" content={
-        <PopoverProfile 
-          name="John Doe" 
-          initials="JD" 
-          menuItems={[{ id: '1', label: 'Settings' }]} 
-        />
-      }>
-        <Avatar />
+  return (
+    <div className="flex gap-4 items-center">
+      <Popover 
+        open={open} 
+        onOpenChange={setOpen} 
+        trigger="manual"
+        content={<PopoverBody>Managed via external state.</PopoverBody>}
+      >
+        <button className="text-black">Manual Toggle</button>
       </Popover>
+      <button onClick={() => setOpen(!open)} className="text-black">
+        {open ? "Close" : "Open"} Outside
+      </button>
     </div>
   );
 }`}
