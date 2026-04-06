@@ -1,0 +1,306 @@
+[
+  {
+    "name": "app-sidebar",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "app-sidebar.tsx"
+    ]
+  },
+  {
+    "name": "avatar",
+    "dependencies": [],
+    "files": [
+      "avatar.tsx"
+    ]
+  },
+  {
+    "name": "badge",
+    "dependencies": [
+      "class-variance-authority"
+    ],
+    "files": [
+      "badge.tsx"
+    ]
+  },
+  {
+    "name": "button",
+    "dependencies": [],
+    "files": [
+      "button.tsx",
+      "button.css"
+    ]
+  },
+  {
+    "name": "calendar",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "calendar.tsx"
+    ]
+  },
+  {
+    "name": "checkbox",
+    "dependencies": [],
+    "files": [
+      "checkbox.tsx"
+    ]
+  },
+  {
+    "name": "command-palette",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "command-palette.tsx"
+    ]
+  },
+  {
+    "name": "command",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "command.tsx"
+    ]
+  },
+  {
+    "name": "date-picker",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "date-picker.tsx"
+    ]
+  },
+  {
+    "name": "dialog",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "dialog.tsx"
+    ]
+  },
+  {
+    "name": "dropdown-menu",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "dropdown-menu.tsx"
+    ]
+  },
+  {
+    "name": "empty-state",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "empty-state.tsx"
+    ]
+  },
+  {
+    "name": "filter-bar",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "filter-bar.tsx"
+    ]
+  },
+  {
+    "name": "form",
+    "dependencies": [
+      "react-hook-form"
+    ],
+    "files": [
+      "form.tsx"
+    ]
+  },
+  {
+    "name": "input",
+    "dependencies": [],
+    "files": [
+      "input.tsx"
+    ]
+  },
+  {
+    "name": "label",
+    "dependencies": [
+      "class-variance-authority"
+    ],
+    "files": [
+      "label.tsx"
+    ]
+  },
+  {
+    "name": "multi-select",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "multi-select.tsx"
+    ]
+  },
+  {
+    "name": "password-input",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "password-input.tsx"
+    ]
+  },
+  {
+    "name": "popover",
+    "dependencies": [],
+    "files": [
+      "popover.tsx",
+      "popover.css"
+    ]
+  },
+  {
+    "name": "radio-group",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "radio-group.tsx"
+    ]
+  },
+  {
+    "name": "role-permission-selector",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "role-permission-selector.tsx"
+    ]
+  },
+  {
+    "name": "search-input",
+    "dependencies": [],
+    "files": [
+      "search-input.tsx",
+      "search-input.css"
+    ]
+  },
+  {
+    "name": "select",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "select.tsx"
+    ]
+  },
+  {
+    "name": "separator",
+    "dependencies": [],
+    "files": [
+      "separator.tsx"
+    ]
+  },
+  {
+    "name": "sheet",
+    "dependencies": [
+      "lucide-react",
+      "class-variance-authority"
+    ],
+    "files": [
+      "sheet.tsx"
+    ]
+  },
+  {
+    "name": "sidebar-context",
+    "dependencies": [],
+    "files": [
+      "sidebar-context.tsx"
+    ]
+  },
+  {
+    "name": "skeleton",
+    "dependencies": [],
+    "files": [
+      "skeleton.tsx"
+    ]
+  },
+  {
+    "name": "slot",
+    "dependencies": [],
+    "files": [
+      "slot.tsx"
+    ]
+  },
+  {
+    "name": "spinner",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "spinner.tsx"
+    ]
+  },
+  {
+    "name": "switch",
+    "dependencies": [],
+    "files": [
+      "switch.tsx"
+    ]
+  },
+  {
+    "name": "table",
+    "dependencies": [],
+    "files": [
+      "table.tsx"
+    ]
+  },
+  {
+    "name": "tabs",
+    "dependencies": [],
+    "files": [
+      "tabs.tsx"
+    ]
+  },
+  {
+    "name": "textarea",
+    "dependencies": [],
+    "files": [
+      "textarea.tsx"
+    ]
+  },
+  {
+    "name": "toast",
+    "dependencies": [
+      "lucide-react",
+      "class-variance-authority"
+    ],
+    "files": [
+      "toast.tsx"
+    ]
+  },
+  {
+    "name": "toaster",
+    "dependencies": [],
+    "files": [
+      "toaster.tsx"
+    ]
+  },
+  {
+    "name": "tooltip",
+    "dependencies": [],
+    "files": [
+      "tooltip.tsx"
+    ]
+  },
+  {
+    "name": "use-toast",
+    "dependencies": [],
+    "files": [
+      "use-toast.tsx"
+    ]
+  }
+]

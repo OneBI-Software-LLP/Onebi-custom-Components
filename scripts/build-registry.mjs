@@ -27,29 +27,49 @@ async function buildRegistry() {
   // 2. Loop through UI components and generate JSON definitions
   if (fs.existsSync(UI_SRC)) {
     const files = fs.readdirSync(UI_SRC).filter(f => f.endsWith(".tsx"));
+    const STYLES_DIR = path.join(ROOT_DIR, "src", "styles", "ui");
     
-    let index = [];
+    let indexData = [];
 
     for (const file of files) {
       const componentName = file.replace(".tsx", "");
       const content = fs.readFileSync(path.join(UI_SRC, file), "utf8");
       
-      // Basic dependency inference (simple MVP)
+      // Basic dependency inference
       const dependencies = [];
+      const registryDependencies = [];
+
       if (content.includes("lucide-react")) dependencies.push("lucide-react");
       if (content.includes("framer-motion")) dependencies.push("framer-motion");
       if (content.includes("class-variance-authority")) dependencies.push("class-variance-authority");
       if (content.includes("react-hook-form")) dependencies.push("react-hook-form");
+      if (content.includes("clsx")) dependencies.push("clsx");
+      if (content.includes("tailwind-merge")) dependencies.push("tailwind-merge");
+
+      // Files to include in the component manifest
+      const componentFiles = [
+        {
+          name: `${componentName}.tsx`,
+          content
+        }
+      ];
+
+      // Check for matching CSS file in styles directory
+      const cssFileName = `${componentName}.css`;
+      const cssPath = path.join(STYLES_DIR, cssFileName);
+      if (fs.existsSync(cssPath)) {
+        componentFiles.push({
+          name: cssFileName,
+          content: fs.readFileSync(cssPath, "utf8")
+        });
+        console.log(`  📎 Attached ${cssFileName} to ${componentName}`);
+      }
 
       const componentDef = {
         name: componentName,
         dependencies,
-        files: [
-          {
-            name: `${componentName}.tsx`,
-            content
-          }
-        ]
+        registryDependencies,
+        files: componentFiles
       };
 
       // Write individual component JSON
@@ -58,9 +78,10 @@ async function buildRegistry() {
         JSON.stringify(componentDef, null, 2)
       );
       
-      index.push({
+      indexData.push({
         name: componentName,
-        dependencies
+        dependencies,
+        files: componentFiles.map(f => f.name)
       });
       console.log(`✅ Built metadata for ${componentName}`);
     }
@@ -68,7 +89,7 @@ async function buildRegistry() {
     // Generate main index
     fs.writeFileSync(
       path.join(REGISTRY_DIR, "index.json"),
-      JSON.stringify(index, null, 2)
+      JSON.stringify(indexData, null, 2)
     );
     console.log("✅ Registry index built successfully!");
   } else {

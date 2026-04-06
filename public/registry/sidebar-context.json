@@ -1,0 +1,11 @@
+{
+  "name": "sidebar-context",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "sidebar-context.tsx",
+      "content": "\"use client\";\r\n\r\nimport React, { createContext, useContext, useState, ReactNode } from \"react\";\r\n\r\ninterface SidebarContextType {\r\n  isOpen: boolean;\r\n  toggle: () => void;\r\n  close: () => void;\r\n  open: () => void;\r\n}\r\n\r\nconst SidebarContext = createContext<SidebarContextType | undefined>(undefined);\r\n\r\nexport function SidebarProvider({ children }: { children: ReactNode }) {\r\n  const [isOpen, setIsOpen] = useState(true);\r\n\r\n  const toggle = () => setIsOpen(prev => !prev);\r\n  const close = () => setIsOpen(false);\r\n  const open = () => setIsOpen(true);\r\n\r\n  return (\r\n    <SidebarContext.Provider value={{ isOpen, toggle, close, open }}>\r\n      {children}\r\n    </SidebarContext.Provider>\r\n  );\r\n}\r\n\r\nexport function useSidebar() {\r\n  const context = useContext(SidebarContext);\r\n  if (!context) {\r\n    throw new Error(\"useSidebar must be used within SidebarProvider\");\r\n  }\r\n  return context;\r\n}\r\n"
+    }
+  ]
+}

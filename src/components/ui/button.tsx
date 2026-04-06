@@ -1,6 +1,6 @@
 import React from 'react';
 /* Import the local button styles */
-import './button.css';
+import '@/styles/ui/button.css';
 
 // ─────────────────────────────────────────────────────────────
 //  TYPES

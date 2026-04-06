@@ -1,0 +1,11 @@
+{
+  "name": "switch",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "switch.tsx",
+      "content": "\"use client\"\r\n\r\nimport * as React from \"react\"\r\nimport { cn } from \"@/lib/utils\"\r\n\r\nexport interface SwitchProps\r\n  extends React.InputHTMLAttributes<HTMLInputElement> {}\r\n\r\nconst Switch = React.forwardRef<HTMLInputElement, SwitchProps>(\r\n  ({ className, ...props }, ref) => {\r\n    return (\r\n      <div className=\"relative inline-flex items-center cursor-pointer\">\r\n        <input\r\n          type=\"checkbox\"\r\n          className={cn(\"sr-only peer\", className)}\r\n          ref={ref}\r\n          {...props}\r\n        />\r\n        <div className=\"w-9 h-5 bg-input peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-ring rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary\"></div>\r\n      </div>\r\n    )\r\n  }\r\n)\r\nSwitch.displayName = \"Switch\"\r\n\r\nexport { Switch }\r\n"
+    }
+  ]
+}

@@ -11,7 +11,7 @@ export interface RegistryComponent {
 // Temporary internal mock for the add command demonstration.
 // Next step is to implement a robust fetch mechanism.
 export async function fetchComponentFromRegistry(component: string): Promise<RegistryComponent | null> {
-  const REGISTRY_URL = process.env.REGISTRY_URL || "https://raw.githubusercontent.com/username/onebi-ui/main/registry";
+  const REGISTRY_URL = process.env.REGISTRY_URL || "https://raw.githubusercontent.com/OneBI-Software-LLP/Onebi-custom-Components/main/public/registry";
   
   try {
     // Attempt network fetch
