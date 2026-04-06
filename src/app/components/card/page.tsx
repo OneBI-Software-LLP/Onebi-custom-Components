@@ -7,23 +7,37 @@ import { Separator } from "@/components/ui/separator";
 import { CustomCard } from "@/components/CustomCard";
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
+  <div className="mt-8 border-t border-slate-100 pt-6 w-full">
     <div className="flex items-center justify-between mb-4">
-      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+      <Label className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
       </Label>
       <Badge
         variant="outline"
         className="text-[10px] bg-slate-50 text-slate-500 font-mono tracking-widest border-slate-200"
       >
-        npm i onebi-ui
+        import CustomCard
       </Badge>
     </div>
-    <pre className="p-5 rounded-2xl bg-[#0F172A] text-slate-50 overflow-x-auto text-[13px] font-mono shadow-inner leading-relaxed border border-slate-800">
+    <pre className="p-4 rounded-xl bg-[#0F172A] text-slate-50 overflow-x-auto text-[12px] font-mono shadow-inner leading-relaxed border border-slate-800 break-words whitespace-pre-wrap sm:whitespace-pre">
       <code>{code}</code>
     </pre>
   </div>
 );
+
+function Section({ label, code, children }: { label: string; code?: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-4 flex flex-col mb-2">
+      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold block">
+        {label}
+      </Label>
+      <div className="flex flex-col gap-4 items-start w-full mt-4">
+        {children}
+      </div>
+      {code && <CodeBlock code={code} />}
+    </div>
+  );
+}
 
 export default function CardPage() {
   const [selected, setSelected] = useState<string | null>(null);
@@ -51,10 +65,10 @@ export default function CardPage() {
           <div className="grid gap-12 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50 text-slate-900">
             
             {/* Legacy Fallback */}
-            <div className="space-y-6">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold block mb-4">
-                Legacy / Shorthand Props
-              </Label>
+            <Section 
+              label="Legacy / Shorthand Props" 
+              code={`import { CustomCard } from "@/components/CustomCard";\n\n<CustomCard\n  title="Shorthand Card"\n  subtitle="Uses the title, subtitle, and footer props"\n  footer={<CustomCard.Button variant="primary">Submit</CustomCard.Button>}\n>\n  <p className="text-slate-600 text-[14px]">\n    This maintains backward compatibility with older components...\n  </p>\n</CustomCard>`}
+            >
               <CustomCard
                 title="Shorthand Card"
                 subtitle="Uses the title, subtitle, and footer props"
@@ -64,14 +78,15 @@ export default function CardPage() {
                   This maintains backward compatibility with older components using the shorthand approach.
                 </p>
               </CustomCard>
-            </div>
+            </Section>
+
             <Separator className="bg-slate-100" />
 
             {/* Profile Card */}
-            <div className="space-y-6">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold block mb-4">
-                Profile Card (Compound)
-              </Label>
+            <Section 
+              label="Profile Card (Compound)" 
+              code={`import { CustomCard } from "@/components/CustomCard";\n\n<CustomCard variant="outlined" radius="lg" hover="lift" maxWidth="380px">\n  <CustomCard.Header\n    avatar="AR"\n    avatarColor="blue"\n    avatarSize="md"\n    badge="Pro member"\n    badgeVariant="info"\n    title="Arjun Rao"\n    subtitle="Senior Product Designer"\n    divider\n  />\n  <CustomCard.Body>\n    <p>Designing systems and shipping components since 2017...</p>\n    <CustomCard.Divider />\n    <div>arjun@example.com · +91 98765 43210</div>\n  </CustomCard.Body>\n  <CustomCard.Footer align="end">\n    <CustomCard.Button variant="ghost">Message</CustomCard.Button>\n    <CustomCard.Button variant="primary">View profile</CustomCard.Button>\n  </CustomCard.Footer>\n</CustomCard>`}
+            >
               <CustomCard variant="outlined" radius="lg" hover="lift" maxWidth="380px">
                 <CustomCard.Header
                   avatar="AR"
@@ -98,14 +113,15 @@ export default function CardPage() {
                   <CustomCard.Button variant="primary">View profile</CustomCard.Button>
                 </CustomCard.Footer>
               </CustomCard>
-            </div>
+            </Section>
+
             <Separator className="bg-slate-100" />
 
             {/* Media Card */}
-            <div className="space-y-6">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold block mb-4">
-                Media Card
-              </Label>
+            <Section 
+              label="Media Card" 
+              code={`import { CustomCard } from "@/components/CustomCard";\n\n<CustomCard variant="elevated" radius="lg" shadow="sm" maxWidth="360px">\n  <CustomCard.Media\n    src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=720"\n    alt="Scenic landscape"\n    height={200}\n    objectFit="cover"\n  />\n  <CustomCard.Header\n    badge="Travel"\n    badgeVariant="success"\n    title="Waterfalls of Odisha"\n    subtitle="Published · June 2025"\n    divider={false}\n  />\n  <CustomCard.Body>\n    <p>A curated trail guide through the hidden waterfalls...</p>\n  </CustomCard.Body>\n  <CustomCard.Footer align="between">\n    <CustomCard.Button variant="ghost">Save</CustomCard.Button>\n    <CustomCard.Button variant="primary">Read article</CustomCard.Button>\n  </CustomCard.Footer>\n</CustomCard>`}
+            >
               <CustomCard variant="elevated" radius="lg" shadow="sm" maxWidth="360px">
                 <CustomCard.Media
                   src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=720"
@@ -130,14 +146,15 @@ export default function CardPage() {
                   <CustomCard.Button variant="primary">Read article</CustomCard.Button>
                 </CustomCard.Footer>
               </CustomCard>
-            </div>
+            </Section>
+
             <Separator className="bg-slate-100" />
 
             {/* Stats Card */}
-            <div className="space-y-6">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold block mb-4">
-                Stats Card
-              </Label>
+            <Section 
+              label="Stats Card" 
+              code={`import { CustomCard } from "@/components/CustomCard";\n\n<CustomCard variant="outlined" radius="lg" maxWidth="400px">\n  <CustomCard.Header title="Dashboard overview" subtitle="Last 30 days" divider />\n  <CustomCard.Body\n    stats={[\n      { label: 'Users', value: '12.4k' },\n      { label: 'Revenue', value: '₹2.1L' },\n      { label: 'Uptime', value: '99.9%' },\n    ]}\n  >\n    <p>All systems are operating normally. No incidents reported.</p>\n  </CustomCard.Body>\n</CustomCard>`}
+            >
               <CustomCard variant="outlined" radius="lg" maxWidth="400px">
                 <CustomCard.Header
                   title="Dashboard overview"
@@ -156,14 +173,15 @@ export default function CardPage() {
                   </p>
                 </CustomCard.Body>
               </CustomCard>
-            </div>
+            </Section>
+
             <Separator className="bg-slate-100" />
             
             {/* Selectable Cards */}
-            <div className="space-y-6">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold block mb-4">
-                Selectable Cards (Hover & Select State)
-              </Label>
+            <Section 
+              label="Selectable Cards (Hover & Select State)" 
+              code={`import { CustomCard } from "@/components/CustomCard";\n\n{plans.map(p => (\n  <CustomCard\n    key={p.id}\n    clickable\n    onClick={() => setSelected(p.id)}\n    selected={selected === p.id}\n    variant="outlined"\n    radius="lg"\n    hover="border"\n  >\n    <CustomCard.Body padding="16px">\n      <div>{p.label}</div>\n      <div>{p.price}</div>\n      <div>{p.desc}</div>\n    </CustomCard.Body>\n  </CustomCard>\n))}`}
+            >
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                 {plans.map(p => (
                   <CustomCard
@@ -184,14 +202,15 @@ export default function CardPage() {
                   </CustomCard>
                 ))}
               </div>
-            </div>
+            </Section>
+
             <Separator className="bg-slate-100" />
 
             {/* Skeleton Loading Card */}
-            <div className="space-y-6">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold block mb-4">
-                Loading State (Skeleton)
-              </Label>
+            <Section 
+              label="Loading State (Skeleton)" 
+              code={`import { CustomCard } from "@/components/CustomCard";\n\n<CustomCard loading={loading} variant="outlined" radius="lg">\n  {!loading && (\n    <>\n      <CustomCard.Header avatar="JD" title="Jane Doe" subtitle="Loaded successfully" divider />\n      <CustomCard.Body>\n        <p>Content has finished loading.</p>\n      </CustomCard.Body>\n    </>\n  )}\n</CustomCard>`}
+            >
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 380 }}>
                 <CustomCard loading={loading} variant="outlined" radius="lg">
                   {!loading && (
@@ -211,30 +230,8 @@ export default function CardPage() {
                   </CustomCard.Button>
                 </div>
               </div>
-            </div>
+            </Section>
 
-            <CodeBlock
-              code={`import { CustomCard } from "onebi-ui";
-
-export default function CardDemo() {
-  return (
-    <CustomCard variant="outlined" hover="lift">
-      <CustomCard.Header 
-        avatar="JD" 
-        title="John Doe" 
-        subtitle="Software Engineer" 
-        badge="New" 
-      />
-      <CustomCard.Body>
-        <p>Main content goes here</p>
-      </CustomCard.Body>
-      <CustomCard.Footer align="end">
-        <CustomCard.Button variant="primary">Accept</CustomCard.Button>
-      </CustomCard.Footer>
-    </CustomCard>
-  );
-}`}
-            />
           </div>
         </div>
       </div>
