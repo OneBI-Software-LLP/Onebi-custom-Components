@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import './popover.css';
+import '@/styles/ui/popover.css';
 
 // ─────────────────────────────────────────────────────────────
 //  TYPES
@@ -306,7 +306,7 @@ export function Popover({
           'aria-controls' : uid,
           ...(children.props as object),
           onClick: trigger === 'click'
-            ? (e: React.MouseEvent) => {
+            ? (e: React.MouseEvent<any>) => {
                 toggle();
                 (children.props as React.HTMLAttributes<HTMLElement>).onClick?.(e);
               }

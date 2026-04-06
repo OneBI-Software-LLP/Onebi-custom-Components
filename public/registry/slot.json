@@ -1,0 +1,11 @@
+{
+  "name": "slot",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "slot.tsx",
+      "content": "import * as React from \"react\";\r\nimport { cn } from \"@/lib/utils\";\r\n\r\nexport const Slot = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement> & { children?: React.ReactNode }>(\r\n  ({ children, ...props }, ref) => {\r\n    if (React.isValidElement(children)) {\r\n      return React.cloneElement(children, {\r\n        ...props,\r\n        ...children.props,\r\n        style: {\r\n          ...props.style,\r\n          ...(children.props as any).style,\r\n        },\r\n        className: cn(props.className, (children.props as any).className),\r\n        ref: (node: HTMLElement) => {\r\n          if (typeof ref === \"function\") ref(node);\r\n          else if (ref) (ref as any).current = node;\r\n          \r\n          const childRef = (children as any).ref;\r\n          if (typeof childRef === \"function\") childRef(node);\r\n          else if (childRef) childRef.current = node;\r\n        }\r\n      } as any);\r\n    }\r\n    if (React.Children.count(children) > 1) {\r\n       React.Children.only(null);       \r\n    }\r\n    return null;\r\n  }\r\n);\r\nSlot.displayName = \"Slot\";\r\n"
+    }
+  ]
+}

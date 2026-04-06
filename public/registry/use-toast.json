@@ -1,0 +1,11 @@
+{
+  "name": "use-toast",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "use-toast.tsx",
+      "content": "\"use client\";\r\n\r\nimport * as React from \"react\";\r\n\r\ntype ToastVariant = \"default\" | \"destructive\";\r\n\r\ninterface Toast {\r\n  id: string;\r\n  title?: string;\r\n  description?: string;\r\n  action?: React.ReactNode;\r\n  variant?: ToastVariant;\r\n}\r\n\r\ninterface ToastContextType {\r\n  toasts: Toast[];\r\n  toast: (toast: Omit<Toast, \"id\">) => void;\r\n  dismiss: (id: string) => void;\r\n}\r\n\r\nconst ToastContext = React.createContext<ToastContextType | undefined>(undefined);\r\n\r\nlet toastCount = 0;\r\n\r\nexport function ToastProvider({ children }: { children: React.ReactNode }) {\r\n  const [toasts, setToasts] = React.useState<Toast[]>([]);\r\n\r\n  const toast = React.useCallback(\r\n    ({ title, description, action, variant = \"default\" }: Omit<Toast, \"id\">) => {\r\n      const id = `toast-${++toastCount}`;\r\n      setToasts((prev) => [...prev, { id, title, description, action, variant }]);\r\n\r\n      // Auto dismiss after 5 seconds\r\n      setTimeout(() => {\r\n        setToasts((prev) => prev.filter((t) => t.id !== id));\r\n      }, 5000);\r\n    },\r\n    []\r\n  );\r\n\r\n  const dismiss = React.useCallback((id: string) => {\r\n    setToasts((prev) => prev.filter((t) => t.id !== id));\r\n  }, []);\r\n\r\n  return (\r\n    <ToastContext.Provider value={{ toasts, toast, dismiss }}>\r\n      {children}\r\n    </ToastContext.Provider>\r\n  );\r\n}\r\n\r\nexport function useToast() {\r\n  const context = React.useContext(ToastContext);\r\n  if (!context) {\r\n    throw new Error(\"useToast must be used within ToastProvider\");\r\n  }\r\n  return context;\r\n}\r\n"
+    }
+  ]
+}

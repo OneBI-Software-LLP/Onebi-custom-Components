@@ -1,0 +1,11 @@
+{
+  "name": "checkbox",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "checkbox.tsx",
+      "content": "\"use client\"\r\n\r\nimport * as React from \"react\"\r\nimport { cn } from \"@/lib/utils\"\r\n\r\nexport interface CheckboxProps\r\n  extends React.InputHTMLAttributes<HTMLInputElement> {}\r\n\r\nconst Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(\r\n  ({ className, ...props }, ref) => {\r\n    return (\r\n      <input\r\n        type=\"checkbox\"\r\n        className={cn(\r\n          \"peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 accent-primary\",\r\n          className\r\n        )}\r\n        ref={ref}\r\n        {...props}\r\n      />\r\n    )\r\n  }\r\n)\r\nCheckbox.displayName = \"Checkbox\"\r\n\r\nexport { Checkbox }\r\n"
+    }
+  ]
+}

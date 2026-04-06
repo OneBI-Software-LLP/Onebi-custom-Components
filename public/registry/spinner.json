@@ -1,0 +1,13 @@
+{
+  "name": "spinner",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "spinner.tsx",
+      "content": "import * as React from \"react\"\nimport { Loader2 } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\ninterface SpinnerProps extends React.SVGProps<SVGSVGElement> {\n  size?: number\n}\n\nconst Spinner = ({ size = 24, className, ...props }: SpinnerProps) => {\n  return (\n    <Loader2\n      size={size}\n      className={cn(\"animate-spin text-muted-foreground\", className)}\n      {...props}\n    />\n  )\n}\n\nexport { Spinner }\n"
+    }
+  ]
+}

@@ -431,6 +431,22 @@ export default function ModalPage() {
                 <LegacyModalDemo />
               </div>
             </div>
+            <CodeBlock
+              code={`import { CustomModal } from "@/components/CustomModal";
+import { useState } from "react";
+
+export default function Demo() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <CustomModal.Button variant="secondary" onClick={() => setOpen(true)}>Open Legacy Modal</CustomModal.Button>
+      <CustomModal isOpen={open} onClose={() => setOpen(false)} title="Legacy Wrapper">
+        <p>Legacy props approach for backward compatibility.</p>
+      </CustomModal>
+    </>
+  );
+}`}
+            />
 
             <Separator className="bg-slate-100" />
 
@@ -445,6 +461,29 @@ export default function ModalPage() {
                 <FormModalDemo />
               </div>
             </div>
+            <CodeBlock
+              code={`import { CustomModal } from "@/components/CustomModal";
+import { useState } from "react";
+
+export default function Demo() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <CustomModal.Button variant="primary" onClick={() => setOpen(true)}>Open Modal</CustomModal.Button>
+      <CustomModal open={open} onClose={() => setOpen(false)} size="sm">
+        <CustomModal.Header title="Confirm action" subtitle="Are you sure?" />
+        <CustomModal.Body>
+          <p>This action will save your current progress.</p>
+        </CustomModal.Body>
+        <CustomModal.Footer>
+          <CustomModal.Button variant="ghost" onClick={() => setOpen(false)}>Cancel</CustomModal.Button>
+          <CustomModal.Button variant="primary" onClick={() => setOpen(false)}>Confirm</CustomModal.Button>
+        </CustomModal.Footer>
+      </CustomModal>
+    </>
+  );
+}`}
+            />
 
             <Separator className="bg-slate-100" />
 
@@ -459,6 +498,33 @@ export default function ModalPage() {
                 <LightboxModalDemo />
               </div>
             </div>
+            <CodeBlock
+              code={`import { CustomModal } from "@/components/CustomModal";
+import { useState } from "react";
+
+export default function Demo() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <CustomModal.Button variant="secondary" onClick={() => setOpen(true)}>Right Drawer</CustomModal.Button>
+      <CustomModal 
+        open={open} 
+        onClose={() => setOpen(false)} 
+        position="right" /* 'center' | 'top' | 'bottom' | 'left' | 'right' */
+        size="sm" 
+        animation="slide-right"
+        closeOnOverlay
+      >
+        <CustomModal.Header title="Drawer Title" divider />
+        <CustomModal.Body scrollable>Content here</CustomModal.Body>
+        <CustomModal.Footer>
+          <CustomModal.Button variant="primary" onClick={() => setOpen(false)}>Apply</CustomModal.Button>
+        </CustomModal.Footer>
+      </CustomModal>
+    </>
+  );
+}`}
+            />
             
             <Separator className="bg-slate-100" />
 
@@ -472,32 +538,27 @@ export default function ModalPage() {
                 <ListScrollableModalDemo />
               </div>
             </div>
-
             <CodeBlock
               code={`import { CustomModal } from "@/components/CustomModal";
+import { useState } from "react";
 
-export default function ModalDemo() {
+export default function Demo() {
   const [open, setOpen] = useState(false);
+  const [step, setStep] = useState(0);
+  const steps = ['Details', 'Configure', 'Review'];
   
   return (
     <>
-      <CustomModal.Button variant="primary" onClick={() => setOpen(true)}>
-        Open Modal
-      </CustomModal.Button>
-      
-      <CustomModal open={open} onClose={() => setOpen(false)} size="md" animation="scale">
-        <CustomModal.Header 
-          title="Modal Title" 
-          subtitle="Description of what this modal does." 
-          icon="👋" 
-          iconVariant="purple" 
-        />
-        <CustomModal.Body>
-          {/* Your form or content */}
-        </CustomModal.Body>
-        <CustomModal.Footer>
-          <CustomModal.Button variant="ghost" onClick={() => setOpen(false)}>Cancel</CustomModal.Button>
-          <CustomModal.Button variant="primary">Save Changes</CustomModal.Button>
+      <CustomModal.Button variant="secondary" onClick={() => setOpen(true)}>Multi-Step Wizard</CustomModal.Button>
+      <CustomModal open={open} onClose={() => setOpen(false)} size="md">
+        <div style={{ padding: '4px 24px 0' }}>
+          <CustomModal.Stepper steps={steps} current={step} />
+        </div>
+        <hr style={{ border: 'none', borderTop: '0.5px solid rgba(0,0,0,0.10)', margin: 0 }} />
+        <CustomModal.Body>Step {step + 1} Content</CustomModal.Body>
+        <CustomModal.Footer align="between">
+          <CustomModal.Button variant="ghost" onClick={() => setStep(s => Math.max(0, s - 1))}>Back</CustomModal.Button>
+          <CustomModal.Button variant="primary" onClick={() => setStep(s => Math.min(steps.length - 1, s + 1))}>Next</CustomModal.Button>
         </CustomModal.Footer>
       </CustomModal>
     </>

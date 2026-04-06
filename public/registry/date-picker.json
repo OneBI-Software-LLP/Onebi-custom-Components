@@ -1,0 +1,13 @@
+{
+  "name": "date-picker",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "date-picker.tsx",
+      "content": "\"use client\"\r\n\r\nimport * as React from \"react\"\r\nimport { Calendar as CalendarIcon } from \"lucide-react\"\r\n\r\nimport { cn } from \"@/lib/utils\"\r\nimport { Button } from \"@/components/ui/button\"\r\nimport { Calendar } from \"@/components/ui/calendar\"\r\n\r\nexport interface DatePickerProps {\r\n  date?: Date\r\n  setDate: (date?: Date) => void\r\n  placeholder?: string\r\n}\r\n\r\nexport function DatePicker({ date, setDate, placeholder = \"Pick a date\" }: DatePickerProps) {\r\n  const [open, setOpen] = React.useState(false)\r\n  const containerRef = React.useRef<HTMLDivElement>(null)\r\n\r\n  React.useEffect(() => {\r\n    const handleClickOutside = (event: MouseEvent) => {\r\n      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {\r\n        setOpen(false)\r\n      }\r\n    }\r\n    document.addEventListener(\"mousedown\", handleClickOutside)\r\n    return () => document.removeEventListener(\"mousedown\", handleClickOutside)\r\n  }, [])\r\n\r\n  return (\r\n    <div ref={containerRef} className=\"relative inline-block w-full text-left\">\r\n      <Button\r\n        type=\"button\"\r\n        variant={\"outline\"}\r\n        onClick={() => setOpen(!open)}\r\n        className={cn(\r\n          \"w-full justify-start text-left font-normal\",\r\n          !date && \"text-muted-foreground\"\r\n        )}\r\n      >\r\n        <CalendarIcon className=\"mr-2 h-4 w-4\" />\r\n        {date ? date.toLocaleDateString() : <span>{placeholder}</span>}\r\n      </Button>\r\n      {open && (\r\n        <div className=\"absolute top-full left-0 z-50 mt-1 w-auto rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-80\">\r\n          <Calendar\r\n            selected={date}\r\n            onSelect={(d) => { setDate(d); setOpen(false); }}\r\n          />\r\n        </div>\r\n      )}\r\n    </div>\r\n  )\r\n}\r\n"
+    }
+  ]
+}

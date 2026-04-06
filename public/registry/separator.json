@@ -1,0 +1,11 @@
+{
+  "name": "separator",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "name": "separator.tsx",
+      "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {\n  orientation?: \"horizontal\" | \"vertical\"\n  decorative?: boolean\n}\n\nconst Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(\n  (\n    { className, orientation = \"horizontal\", decorative = true, ...props },\n    ref\n  ) => (\n    <div\n      ref={ref}\n      role={decorative ? undefined : \"separator\"}\n      aria-orientation={decorative ? undefined : orientation}\n      className={cn(\n        \"shrink-0 bg-border\",\n        orientation === \"horizontal\" ? \"h-[1px] w-full\" : \"h-full w-[1px]\",\n        className\n      )}\n      {...props}\n    />\n  )\n)\nSeparator.displayName = \"Separator\"\n\nexport { Separator }\n"
+    }
+  ]
+}
