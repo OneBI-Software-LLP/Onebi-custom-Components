@@ -1,0 +1,329 @@
+/* ─────────────────────────────────────────────────────────────
+   TABS — CSS
+   Token / class-naming mirrors button.css & modal.css
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── List (container for tab triggers) ── */
+  --tab-list-bg           : #f1f5f9;
+  --tab-list-radius       : 0.75rem;
+  --tab-list-padding      : 0.25rem;
+  --tab-list-gap          : 0.125rem;
+
+  /* ── Trigger (individual tab button) ── */
+  --tab-trigger-radius    : 0.5rem;
+  --tab-trigger-color     : #64748b;
+  --tab-trigger-font      : 0.875rem;
+  --tab-trigger-weight    : 500;
+  --tab-trigger-hover-bg  : rgba(255,255,255,0.6);
+  --tab-trigger-hover-color: #1e293b;
+
+  /* ── Active indicator ── */
+  --tab-active-bg         : #ffffff;
+  --tab-active-color      : #0f172a;
+  --tab-active-weight     : 600;
+  --tab-active-shadow     : 0 1px 4px rgba(15,23,42,0.10), 0 0 0 1px rgba(15,23,42,0.06);
+
+  /* ── Content panel ── */
+  --tab-content-radius    : 0.75rem;
+  --tab-content-pad       : 1.5rem;
+
+  /* ── Colors (active indicator accent) ── */
+  --tab-color-primary  : #6366f1;
+  --tab-color-secondary: #64748b;
+  --tab-color-danger   : #ef4444;
+  --tab-color-success  : #22c55e;
+  --tab-color-warning  : #f59e0b;
+  --tab-color-info     : #0ea5e9;
+
+  /* ── Size tokens ── */
+  --tab-h-xs : 1.75rem;
+  --tab-h-sm : 2rem;
+  --tab-h-md : 2.25rem;
+  --tab-h-lg : 2.625rem;
+  --tab-h-xl : 3rem;
+
+  --tab-px-xs: 0.625rem;
+  --tab-px-sm: 0.875rem;
+  --tab-px-md: 1rem;
+  --tab-px-lg: 1.25rem;
+  --tab-px-xl: 1.5rem;
+
+  --tab-fz-xs: 0.75rem;
+  --tab-fz-sm: 0.8125rem;
+  --tab-fz-md: 0.875rem;
+  --tab-fz-lg: 0.9375rem;
+  --tab-fz-xl: 1rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   VARIANT: pills (default)
+   ══════════════════════════════════════════════════════════════ */
+
+.tabs-root { display: flex; flex-direction: column; gap: 0; }
+
+/* List */
+.tabs-list {
+  display         : inline-flex;
+  align-items     : center;
+  background      : var(--tab-list-bg);
+  border-radius   : var(--tab-list-radius);
+  padding         : var(--tab-list-padding);
+  gap             : var(--tab-list-gap);
+  width           : fit-content;
+}
+
+.tabs-list-full { width: 100%; }
+.tabs-list-full .tabs-trigger { flex: 1; justify-content: center; }
+
+/* Trigger */
+.tabs-trigger {
+  display         : inline-flex;
+  align-items     : center;
+  justify-content : center;
+  gap             : 0.4rem;
+  height          : var(--tab-h-md);
+  padding         : 0 var(--tab-px-md);
+  border          : none;
+  border-radius   : var(--tab-trigger-radius);
+  background      : transparent;
+  color           : var(--tab-trigger-color);
+  font-size       : var(--tab-fz-md);
+  font-weight     : var(--tab-trigger-weight);
+  white-space     : nowrap;
+  cursor          : pointer;
+  transition      : background 140ms, color 140ms, box-shadow 140ms;
+  outline         : none;
+  position        : relative;
+  user-select     : none;
+}
+.tabs-trigger:hover {
+  background : var(--tab-trigger-hover-bg);
+  color      : var(--tab-trigger-hover-color);
+}
+.tabs-trigger:focus-visible {
+  outline       : 2px solid var(--tab-color-primary);
+  outline-offset: 2px;
+}
+.tabs-trigger[data-state="active"] {
+  background : var(--tab-active-bg);
+  color      : var(--tab-active-color);
+  font-weight: var(--tab-active-weight);
+  box-shadow : var(--tab-active-shadow);
+}
+.tabs-trigger[disabled],
+.tabs-trigger[data-disabled] {
+  opacity       : 0.45;
+  cursor        : not-allowed;
+  pointer-events: none;
+}
+
+/* Badge inside trigger */
+.tabs-trigger-badge {
+  display        : inline-flex;
+  align-items    : center;
+  justify-content: center;
+  min-width      : 1.125rem;
+  height         : 1.125rem;
+  padding        : 0 0.3rem;
+  border-radius  : 99px;
+  font-size      : 0.6875rem;
+  font-weight    : 600;
+  background     : #e2e8f0;
+  color          : #475569;
+  line-height    : 1;
+}
+.tabs-trigger[data-state="active"] .tabs-trigger-badge {
+  background: var(--tab-active-accent, var(--tab-color-primary));
+  color     : #fff;
+}
+
+/* Icon wrap */
+.tabs-trigger-icon { display: flex; align-items: center; flex-shrink: 0; }
+
+/* Content panel */
+.tabs-content {
+  outline: none;
+}
+.tabs-content[data-state="inactive"] { display: none; }
+.tabs-content[data-state="active"]   {
+  animation: tabs-content-in 180ms ease;
+}
+@keyframes tabs-content-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+/* ── Size modifiers ── */
+.tabs-xs .tabs-trigger { height: var(--tab-h-xs); padding: 0 var(--tab-px-xs); font-size: var(--tab-fz-xs); }
+.tabs-sm .tabs-trigger { height: var(--tab-h-sm); padding: 0 var(--tab-px-sm); font-size: var(--tab-fz-sm); }
+.tabs-md .tabs-trigger { height: var(--tab-h-md); padding: 0 var(--tab-px-md); font-size: var(--tab-fz-md); }
+.tabs-lg .tabs-trigger { height: var(--tab-h-lg); padding: 0 var(--tab-px-lg); font-size: var(--tab-fz-lg); }
+.tabs-xl .tabs-trigger { height: var(--tab-h-xl); padding: 0 var(--tab-px-xl); font-size: var(--tab-fz-xl); }
+
+/* ── Color modifiers (accent on active) ── */
+.tabs-color-primary   .tabs-trigger[data-state="active"] { color: var(--tab-color-primary);   --tab-active-accent: var(--tab-color-primary); }
+.tabs-color-secondary .tabs-trigger[data-state="active"] { color: var(--tab-color-secondary); --tab-active-accent: var(--tab-color-secondary); }
+.tabs-color-danger    .tabs-trigger[data-state="active"] { color: var(--tab-color-danger);    --tab-active-accent: var(--tab-color-danger); }
+.tabs-color-success   .tabs-trigger[data-state="active"] { color: var(--tab-color-success);   --tab-active-accent: var(--tab-color-success); }
+.tabs-color-warning   .tabs-trigger[data-state="active"] { color: var(--tab-color-warning);   --tab-active-accent: var(--tab-color-warning); }
+.tabs-color-info      .tabs-trigger[data-state="active"] { color: var(--tab-color-info);      --tab-active-accent: var(--tab-color-info); }
+
+
+/* ══════════════════════════════════════════════════════════════
+   VARIANT: line (underline style)
+   ══════════════════════════════════════════════════════════════ */
+
+.tabs-variant-line .tabs-list {
+  background    : transparent;
+  border-radius : 0;
+  padding       : 0;
+  border-bottom : 2px solid #e2e8f0;
+  gap           : 0;
+  width         : fit-content;
+}
+.tabs-variant-line.tabs-list-full .tabs-list { width: 100%; }
+
+.tabs-variant-line .tabs-trigger {
+  border-radius : 0;
+  background    : transparent !important;
+  box-shadow    : none !important;
+  padding-bottom: 0;
+  position      : relative;
+  margin-bottom : -2px;
+}
+.tabs-variant-line .tabs-trigger::after {
+  content   : '';
+  position  : absolute;
+  bottom    : 0;
+  left      : 50%;
+  right     : 50%;
+  height    : 2px;
+  background: var(--tab-color-primary);
+  border-radius: 99px 99px 0 0;
+  transition: left 180ms ease, right 180ms ease;
+}
+.tabs-variant-line .tabs-trigger[data-state="active"]::after {
+  left : 0;
+  right: 0;
+}
+.tabs-variant-line.tabs-color-secondary .tabs-trigger::after { background: var(--tab-color-secondary); }
+.tabs-variant-line.tabs-color-danger    .tabs-trigger::after { background: var(--tab-color-danger);    }
+.tabs-variant-line.tabs-color-success   .tabs-trigger::after { background: var(--tab-color-success);   }
+.tabs-variant-line.tabs-color-warning   .tabs-trigger::after { background: var(--tab-color-warning);   }
+.tabs-variant-line.tabs-color-info      .tabs-trigger::after { background: var(--tab-color-info);      }
+
+
+/* ══════════════════════════════════════════════════════════════
+   VARIANT: enclosed (bordered card style)
+   ══════════════════════════════════════════════════════════════ */
+
+.tabs-variant-enclosed .tabs-list {
+  background    : transparent;
+  padding       : 0;
+  border-radius : 0;
+  border-bottom : 1px solid #e2e8f0;
+  gap           : 0;
+  width         : fit-content;
+}
+.tabs-variant-enclosed.tabs-list-full .tabs-list { width: 100%; }
+
+.tabs-variant-enclosed .tabs-trigger {
+  border-radius : 0.5rem 0.5rem 0 0;
+  border        : 1px solid transparent;
+  border-bottom : none;
+  margin-bottom : -1px;
+  background    : transparent !important;
+  box-shadow    : none !important;
+}
+.tabs-variant-enclosed .tabs-trigger[data-state="active"] {
+  background    : #fff !important;
+  border-color  : #e2e8f0;
+  border-bottom : 1px solid #fff !important;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   VARIANT: solid (button-group style)
+   ══════════════════════════════════════════════════════════════ */
+
+.tabs-variant-solid .tabs-list {
+  background    : transparent;
+  padding       : 0;
+  border        : 1px solid #e2e8f0;
+  border-radius : 0.625rem;
+  overflow      : hidden;
+  gap           : 0;
+}
+.tabs-variant-solid .tabs-trigger {
+  border-radius : 0;
+  border-right  : 1px solid #e2e8f0;
+  background    : #fff !important;
+  box-shadow    : none !important;
+}
+.tabs-variant-solid .tabs-trigger:last-child { border-right: none; }
+.tabs-variant-solid .tabs-trigger[data-state="active"] {
+  background : var(--tab-color-primary) !important;
+  color      : #fff !important;
+}
+.tabs-variant-solid.tabs-color-secondary .tabs-trigger[data-state="active"] { background: var(--tab-color-secondary) !important; }
+.tabs-variant-solid.tabs-color-danger    .tabs-trigger[data-state="active"] { background: var(--tab-color-danger)    !important; }
+.tabs-variant-solid.tabs-color-success   .tabs-trigger[data-state="active"] { background: var(--tab-color-success)   !important; }
+.tabs-variant-solid.tabs-color-warning   .tabs-trigger[data-state="active"] { background: var(--tab-color-warning)   !important; }
+.tabs-variant-solid.tabs-color-info      .tabs-trigger[data-state="active"] { background: var(--tab-color-info)      !important; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   VARIANT: soft (tinted active pill)
+   ══════════════════════════════════════════════════════════════ */
+
+.tabs-variant-soft .tabs-list {
+  background: transparent;
+  padding   : 0;
+  gap       : 0.25rem;
+}
+.tabs-variant-soft .tabs-trigger {
+  box-shadow: none !important;
+}
+.tabs-variant-soft .tabs-trigger[data-state="active"] {
+  background: #eef2ff !important;
+  color     : var(--tab-color-primary) !important;
+}
+.tabs-variant-soft.tabs-color-secondary .tabs-trigger[data-state="active"] { background: #f8fafc !important; color: var(--tab-color-secondary) !important; }
+.tabs-variant-soft.tabs-color-danger    .tabs-trigger[data-state="active"] { background: #fef2f2 !important; color: var(--tab-color-danger)    !important; }
+.tabs-variant-soft.tabs-color-success   .tabs-trigger[data-state="active"] { background: #f0fdf4 !important; color: var(--tab-color-success)   !important; }
+.tabs-variant-soft.tabs-color-warning   .tabs-trigger[data-state="active"] { background: #fffbeb !important; color: var(--tab-color-warning)   !important; }
+.tabs-variant-soft.tabs-color-info      .tabs-trigger[data-state="active"] { background: #f0f9ff !important; color: var(--tab-color-info)      !important; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   Vertical orientation
+   ══════════════════════════════════════════════════════════════ */
+
+.tabs-vertical {
+  flex-direction: row;
+  align-items   : flex-start;
+  gap           : 1.25rem;
+}
+.tabs-vertical .tabs-list {
+  flex-direction : column;
+  height         : fit-content;
+  width          : auto;
+  min-width      : 10rem;
+}
+.tabs-vertical .tabs-list-full { height: 100%; }
+.tabs-vertical .tabs-trigger   { justify-content: flex-start; width: 100%; }
+
+.tabs-vertical.tabs-variant-line .tabs-list {
+  border-bottom : none;
+  border-right  : 2px solid #e2e8f0;
+}
+.tabs-vertical.tabs-variant-line .tabs-trigger::after {
+  bottom: 0; top: 0;
+  left  : auto; right: 0;
+  width : 2px; height: auto;
+  border-radius: 99px 0 0 99px;
+  transition: top 180ms ease, bottom 180ms ease;
+}
+.tabs-vertical.tabs-variant-line .tabs-trigger[data-state="active"]::after {
+  top: 0; bottom: 0; left: auto; right: 0;
+}
