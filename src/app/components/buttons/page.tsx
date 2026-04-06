@@ -42,33 +42,34 @@ const GearIcon = () => (
 );
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-16 border-t border-slate-100 pt-12">
-    <div className="flex items-center justify-between mb-6">
-      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+  <div className="mt-8 border-t border-slate-100 pt-6 w-full">
+    <div className="flex items-center justify-between mb-4">
+      <Label className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
       </Label>
       <Badge
         variant="outline"
         className="text-[10px] bg-slate-50 text-slate-500 font-mono tracking-widest border-slate-200"
       >
-        npm i onebi-ui
+        import Button
       </Badge>
     </div>
-    <pre className="p-6 rounded-2xl bg-[#0F172A] text-slate-50 overflow-x-auto text-[13px] font-mono shadow-inner leading-relaxed border border-slate-800">
+    <pre className="p-4 rounded-xl bg-[#0F172A] text-slate-50 overflow-x-auto text-[12px] font-mono shadow-inner leading-relaxed border border-slate-800">
       <code>{code}</code>
     </pre>
   </div>
 );
 
-function Section({ label, children }: { label: string; children: React.ReactNode }) {
+function Section({ label, code, children }: { label: string; code?: string; children: React.ReactNode }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 flex flex-col">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         {label}
       </Label>
       <div className="flex flex-wrap gap-4 items-center">
         {children}
       </div>
+      {code && <CodeBlock code={code} />}
     </div>
   );
 }
@@ -96,7 +97,11 @@ export default function ButtonsPage() {
 
           <div className="grid gap-12 p-8 lg:p-12 border border-slate-200 rounded-[2.5rem] bg-white shadow-2xl shadow-slate-200/50">
             {/* ── SOLID ── */}
-            <Section label="Solid (default variant)">
+            <Section label="Solid (default variant)" code={`import { Button } from "@/components/ui/button";
+
+<Button color="primary">Primary</Button>
+<Button color="secondary">Secondary</Button>
+<Button color="danger">Danger</Button>`}>
               <Button color="primary">Primary</Button>
               <Button color="secondary">Secondary</Button>
               <Button color="danger">Danger</Button>
@@ -108,7 +113,10 @@ export default function ButtonsPage() {
             <Separator className="bg-slate-100" />
 
             {/* ── OUTLINE ── */}
-            <Section label="Outline">
+            <Section label="Outline" code={`import { Button } from "@/components/ui/button";
+
+<Button variant="outline" color="primary">Primary</Button>
+<Button variant="outline" color="secondary">Secondary</Button>`}>
               <Button variant="outline" color="primary">Primary</Button>
               <Button variant="outline" color="secondary">Secondary</Button>
               <Button variant="outline" color="danger">Danger</Button>
@@ -120,7 +128,10 @@ export default function ButtonsPage() {
             <Separator className="bg-slate-100" />
 
             {/* ── SOFT ── */}
-            <Section label="Soft">
+            <Section label="Soft" code={`import { Button } from "@/components/ui/button";
+
+<Button variant="soft" color="primary">Primary</Button>
+<Button variant="soft" color="secondary">Secondary</Button>`}>
               <Button variant="soft" color="primary">Primary</Button>
               <Button variant="soft" color="secondary">Secondary</Button>
               <Button variant="soft" color="info">Info</Button>
@@ -133,12 +144,17 @@ export default function ButtonsPage() {
 
             {/* ── GHOST & LINK ── */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <Section label="Ghost">
+              <Section label="Ghost" code={`import { Button } from "@/components/ui/button";
+
+<Button variant="ghost">Default</Button>
+<Button variant="ghost" color="primary">Primary</Button>`}>
                 <Button variant="ghost">Default</Button>
                 <Button variant="ghost" color="primary">Primary</Button>
                 <Button variant="ghost" color="danger">Danger</Button>
               </Section>
-              <Section label="Link">
+              <Section label="Link" code={`import { Button } from "@/components/ui/button";
+
+<Button variant="link">Learn more</Button>`}>
                 <Button variant="link">Learn more</Button>
                 <Button variant="link" color="info">Documentation →</Button>
               </Section>
@@ -147,7 +163,11 @@ export default function ButtonsPage() {
             <Separator className="bg-slate-100" />
 
             {/* ── SIZES ── */}
-            <Section label="Sizes">
+            <Section label="Sizes" code={`import { Button } from "@/components/ui/button";
+
+<Button size="xs">XSmall</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>`}>
               <Button size="xs">XSmall</Button>
               <Button size="sm">Small</Button>
               <Button size="md">Medium</Button>
@@ -158,7 +178,11 @@ export default function ButtonsPage() {
             <Separator className="bg-slate-100" />
 
             {/* ── SHAPES ── */}
-            <Section label="Shapes">
+            <Section label="Shapes" code={`import { Button } from "@/components/ui/button";
+
+<Button shape="rounded">Pill</Button>
+<Button shape="square">Square (4px)</Button>
+<Button variant="outline" color="info" shape="rounded">Outline Pill</Button>`}>
               <Button shape="default">Default (8px)</Button>
               <Button shape="rounded">Pill</Button>
               <Button shape="square">Square (4px)</Button>
@@ -169,11 +193,19 @@ export default function ButtonsPage() {
 
             {/* ── ICONS ── */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <Section label="With icons">
+              <Section label="With icons" code={`import { Button } from "@/components/ui/button";
+import { PlusIcon, ArrowIcon } from "lucide-react";
+
+<Button iconLeft={<PlusIcon />}>Add item</Button>
+<Button color="secondary" iconRight={<ArrowIcon />}>Continue</Button>`}>
                 <Button iconLeft={<PlusIcon />}>Add item</Button>
                 <Button color="secondary" iconRight={<ArrowIcon />}>Continue</Button>
               </Section>
-              <Section label="Icon only">
+              <Section label="Icon only" code={`import { Button } from "@/components/ui/button";
+import { GearIcon, TrashIcon } from "lucide-react";
+
+<Button size="sm" color="secondary" iconOnly iconLeft={<GearIcon />} />
+<Button size="md" variant="outline" color="danger" iconOnly iconLeft={<TrashIcon />} />`}>
                 <Button size="sm" color="secondary" iconOnly iconLeft={<GearIcon />} />
                 <Button size="md" variant="outline" color="danger" iconOnly iconLeft={<TrashIcon />} />
                 <Button variant="ghost" shape="rounded" iconOnly iconLeft={<BellIcon />} />
@@ -184,14 +216,20 @@ export default function ButtonsPage() {
 
             {/* ── LOADING & DISABLED ── */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <Section label="Loading state">
+              <Section label="Loading state" code={`import { Button } from "@/components/ui/button";
+
+<Button loading loadingText="Saving…">Save</Button>
+<Button variant="outline" color="info" loading />`}>
                 <Button loading loadingText="Saving…">Save</Button>
                 <Button variant="outline" color="info" loading />
                 <Button onClick={handleSave} loading={loading}>
                   {loading ? 'Saving…' : 'Dynamic load'}
                 </Button>
               </Section>
-              <Section label="Disabled state">
+              <Section label="Disabled state" code={`import { Button } from "@/components/ui/button";
+
+<Button disabled>Primary</Button>
+<Button variant="soft" color="info" disabled>Info</Button>`}>
                 <Button disabled>Primary</Button>
                 <Button variant="soft" color="info" disabled>Info</Button>
               </Section>
@@ -201,20 +239,30 @@ export default function ButtonsPage() {
 
             {/* ── BADGE & FULL WIDTH ── */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <Section label="With badge">
+              <Section label="With badge" code={`import { Button } from "@/components/ui/button";
+
+<Button badge={3} color="secondary" iconLeft={<BellIcon />}>Notifications</Button>
+<Button badge="9+" variant="ghost" shape="rounded" iconOnly iconLeft={<BellIcon />} />`}>
                 <Button badge={3} color="secondary" iconLeft={<BellIcon />}>Notifications</Button>
                 <Button badge="9+" variant="ghost" shape="rounded" iconOnly iconLeft={<BellIcon />} />
               </Section>
-              <div className="space-y-4">
-                <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">Full width</Label>
+              <Section label="Full width" code={`import { Button } from "@/components/ui/button";
+
+<Button fullWidth>Stretch to container</Button>`}>
                 <Button fullWidth>Stretch to container</Button>
-              </div>
+              </Section>
             </div>
 
             <Separator className="bg-slate-100" />
 
             {/* ── BUTTON GROUPS ── */}
-            <Section label="Button groups / Segmented Control">
+            <Section label="Button groups / Segmented Control" code={`import { ButtonGroup, ButtonGroupItem } from "@/components/ui/button";
+
+<ButtonGroup>
+  <ButtonGroupItem>Day</ButtonGroupItem>
+  <ButtonGroupItem active>Week</ButtonGroupItem>
+  <ButtonGroupItem>Month</ButtonGroupItem>
+</ButtonGroup>`}>
               <ButtonGroup>
                 <ButtonGroupItem>Day</ButtonGroupItem>
                 <ButtonGroupItem active>Week</ButtonGroupItem>
@@ -225,30 +273,6 @@ export default function ButtonsPage() {
                 <ButtonGroupItem size="sm" active>Grid</ButtonGroupItem>
               </ButtonGroup>
             </Section>
-
-            <CodeBlock
-              code={`import { Button, ButtonGroup, ButtonGroupItem } from "onebi-ui";
-
-export default function App() {
-  return (
-    <div className="flex gap-4">
-      {/* Variants & Colors */}
-      <Button variant="solid" color="primary">Primary Action</Button>
-      <Button variant="outline" color="info" iconLeft={<PlusIcon />}>Outline</Button>
-      
-      {/* Loading & Badges */}
-      <Button loading loadingText="Syncing...">Sync</Button>
-      <Button badge={5} iconOnly iconLeft={<BellIcon />} />
-
-      {/* Button Groups */}
-      <ButtonGroup>
-        <ButtonGroupItem active>Left</ButtonGroupItem>
-        <ButtonGroupItem>Right</ButtonGroupItem>
-      </ButtonGroup>
-    </div>
-  );
-}`}
-            />
           </div>
         </div>
       </div>
