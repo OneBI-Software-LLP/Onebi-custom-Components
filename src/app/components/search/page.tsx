@@ -67,33 +67,34 @@ const SUGGESTIONS = [
 ];
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-16 border-t border-slate-100 pt-12">
-    <div className="flex items-center justify-between mb-6">
-      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+  <div className="mt-8 border-t border-slate-100 pt-6 w-full">
+    <div className="flex items-center justify-between mb-4">
+      <Label className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
       </Label>
       <Badge
         variant="outline"
         className="text-[10px] bg-slate-50 text-slate-500 font-mono tracking-widest border-slate-200"
       >
-        npm i onebi-ui
+        import SearchInput
       </Badge>
     </div>
-    <pre className="p-6 rounded-2xl bg-[#0F172A] text-slate-50 overflow-x-auto text-[13px] font-mono shadow-inner leading-relaxed border border-slate-800">
+    <pre className="p-4 rounded-xl bg-[#0F172A] text-slate-50 overflow-x-auto text-[12px] font-mono shadow-inner leading-relaxed border border-slate-800 break-words whitespace-pre-wrap sm:whitespace-pre">
       <code>{code}</code>
     </pre>
   </div>
 );
 
-function Section({ label, children }: { label: string; children: React.ReactNode }) {
+function Section({ label, code, children }: { label: string; code?: string; children: React.ReactNode }) {
   return (
-    <div className="space-y-4">
-      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+    <div className="space-y-4 flex flex-col mb-2">
+      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold block">
         {label}
       </Label>
-      <div className="grid gap-6">
+      <div className="grid gap-6 w-full mt-4">
         {children}
       </div>
+      {code && <CodeBlock code={code} />}
     </div>
   );
 }
@@ -136,7 +137,10 @@ export default function SearchPage() {
 
           <div className="grid gap-12 p-8 lg:p-12 border border-slate-200 rounded-[2.5rem] bg-white shadow-2xl shadow-slate-200/50">
             {/* ── BASIC ── */}
-            <Section label="Foundations">
+            <Section 
+              label="Foundations" 
+              code={`import { SearchInput, useCommandPalette } from "@/components/ui/search-input";\n\n// Default Outlined\n<SearchInput placeholder="Search anything..." clearable />\n\n// Shortcut Hint (opens command palette)\nconst { setOpen } = useCommandPalette();\n<SearchInput placeholder="Press ⌘K to search..." shortcutHint="⌘K" onClick={() => setOpen(true)} />`}
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-4">
                   <Label className="text-[11px] text-slate-400">Default Outlined</Label>
@@ -152,7 +156,10 @@ export default function SearchPage() {
             <Separator className="bg-slate-100" />
 
             {/* ── VARIANTS ── */}
-            <Section label="Visual Variants">
+            <Section 
+              label="Visual Variants" 
+              code={`import { SearchInput } from "@/components/ui/search-input";\n\n<SearchInput variant="filled" placeholder="Filled search..." />\n<SearchInput variant="underline" placeholder="Underline style..." />\n<SearchInput variant="ghost" placeholder="Ghost input..." />\n<SearchInput shape="pill" placeholder="Pill shape..." />`}
+            >
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="space-y-2">
                   <Label className="text-[10px] text-slate-400">FILLED</Label>
@@ -176,7 +183,10 @@ export default function SearchPage() {
             <Separator className="bg-slate-100" />
 
             {/* ── SIZES ── */}
-            <Section label="Size Scale">
+            <Section 
+              label="Size Scale" 
+              code={`import { SearchInput } from "@/components/ui/search-input";\n\n<SearchInput size="xs" placeholder="XSmall (26px)..." />\n<SearchInput size="sm" placeholder="Small (32px)..." />\n<SearchInput size="md" placeholder="Medium (38px)..." />\n<SearchInput size="lg" placeholder="Large (44px)..." />\n<SearchInput size="xl" placeholder="XLarge (52px)..." />`}
+            >
               <div className="space-y-6 max-w-xl">
                 <SearchInput size="xs" placeholder="XSmall (26px)..." />
                 <SearchInput size="sm" placeholder="Small (32px)..." />
@@ -189,7 +199,10 @@ export default function SearchPage() {
             <Separator className="bg-slate-100" />
 
             {/* ── INTELLIGENCE ── */}
-            <Section label="Intelligence & States">
+            <Section 
+              label="Intelligence & States" 
+              code={`import { SearchInput } from "@/components/ui/search-input";\nimport { useState } from "react";\n\n// Autocomplete Suggestion\nconst [query, setQuery] = useState("");\n<SearchInput \n  value={query} \n  onChange={setQuery} \n  suggestion="dashboard"\n  placeholder="Search..." \n/>\n\n// Loading State\n<SearchInput \n  loading={true} \n  placeholder="Search results..." \n  clearable\n/>`}
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div className="space-y-4">
                   <Label className="text-[11px] text-slate-400 font-bold uppercase">Autocomplete Suggestion</Label>
@@ -217,7 +230,10 @@ export default function SearchPage() {
             <Separator className="bg-slate-100" />
 
             {/* ── STATUS ── */}
-            <Section label="Validation Status">
+            <Section 
+              label="Validation Status" 
+              code={`import { SearchInput } from "@/components/ui/search-input";\n\n<SearchInput status="error" placeholder="Error state..." defaultValue="invalid query" />\n<SearchInput status="success" placeholder="Success state..." defaultValue="results found" />\n<SearchInput status="warning" placeholder="Warning state..." defaultValue="limited access" />`}
+            >
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <SearchInput status="error" placeholder="Error state..." defaultValue="invalid query" />
                 <SearchInput status="success" placeholder="Success state..." defaultValue="results found" />
@@ -225,35 +241,17 @@ export default function SearchPage() {
               </div>
             </Section>
 
-            <CodeBlock
-              code={`import { SearchInput, CommandPalette, useCommandPalette } from "onebi-ui";
+            <Separator className="bg-slate-100" />
 
-export default function App() {
-  const { open, setOpen } = useCommandPalette(); // Handles ⌘K / Ctrl+K
-
-  return (
-    <>
-      <SearchInput 
-        placeholder="Search commands..." 
-        shortcutHint="⌘K" 
-        onClick={() => setOpen(true)} 
-        clearable
-      />
-
-      <CommandPalette 
-        open={open}
-        onClose={() => setOpen(false)}
-        groups={[
-          {
-            label: "Actions",
-            items: [{ id: "1", name: "Create New User", icon: <UserIcon /> }]
-          }
-        ]}
-      />
-    </>
-  );
-}`}
-            />
+            {/* ── COMMAND PALETTE ── */}
+            <Section 
+              label="Command Palette Implementation" 
+              code={`import { CommandPalette, useCommandPalette } from "@/components/ui/search-input";\n\nexport default function App() {\n  const { open, setOpen } = useCommandPalette(); // Listens for ⌘K\n\n  return (\n    <CommandPalette \n      open={open}\n      onClose={() => setOpen(false)}\n      groups={[\n        {\n          label: "Actions",\n          items: [\n            { id: "1", name: "Create New User", icon: <UserIcon /> }\n          ]\n        }\n      ]}\n    />\n  );\n}`}
+            >
+              <div className="text-sm text-slate-500">
+                 Press <kbd className="font-mono text-[10px] px-1.5 py-0.5 mx-1 border border-slate-200 bg-slate-100 rounded text-slate-500 shadow-sm">⌘K</kbd> anywhere on this page to trigger the Command Palette overlay.
+              </div>
+            </Section>
           </div>
         </div>
       </div>
