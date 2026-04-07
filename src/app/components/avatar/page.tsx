@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import CustomAvatar from "@/components/CustomAvatar";
 
 const CodeBlock = ({ code }: { code: string }) => (
   <div className="mt-10 border-t border-slate-100 pt-8">
@@ -25,7 +25,20 @@ const CodeBlock = ({ code }: { code: string }) => (
   </div>
 );
 
+function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) {
+  return (
+    <div className="mb-4 mt-8 first:mt-0">
+      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+        {title}
+      </Label>
+      <p className="text-sm text-slate-500 mt-1">{subtitle}</p>
+    </div>
+  );
+}
+
 export default function AvatarPage() {
+  const [clickCount, setClickCount] = useState(0);
+
   return (
     <div className="p-12 lg:p-24">
       <div className="max-w-5xl mx-auto pb-24">
@@ -35,131 +48,96 @@ export default function AvatarPage() {
               Avatar
             </h2>
             <p className="text-lg text-slate-500">
-              User profile images with fallback initials.
+              A comprehensive profile image component with fallback initials, availability statuses, and multiple geometric shapes.
             </p>
           </div>
+          
           <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Basic Avatar
-              </Label>
+            
+            {/* 1. Standard Images with Status */}
+            <div>
+              <SectionTitle title="1. Standard Images with Status" subtitle="Different sizes with availability indicators." />
+              <div className="flex gap-6 items-end">
+                <CustomAvatar src="https://i.pravatar.cc/150?img=32" size="sm" status="online" />
+                <CustomAvatar src="https://i.pravatar.cc/150?img=47" size="md" status="busy" />
+                <CustomAvatar src="https://i.pravatar.cc/150?img=68" size="lg" status="away" />
+                <CustomAvatar src="https://i.pravatar.cc/150?img=12" size="xl" status="offline" />
+              </div>
+            </div>
+
+            <Separator className="bg-slate-100" />
+
+            {/* 2. Initials Fallback */}
+            <div>
+              <SectionTitle title="2. Fallback Mechanism" subtitle="Automatically shows initials if the image fails to load." />
+              <div className="flex gap-6 items-end">
+                {/* Broken link trigger */}
+                <CustomAvatar src="https://broken-link.com/img.jpg" initials="JD" size="md" />
+                <CustomAvatar initials="AW" size="lg" status="online" />
+                <CustomAvatar initials="MS" size="xl" shape="rounded" statusPosition="top-right" status="busy"/>
+              </div>
+            </div>
+
+            <Separator className="bg-slate-100" />
+
+            {/* 3. Shapes */}
+            <div>
+              <SectionTitle title="3. Geometric Shapes" subtitle="Visual styles: Circle, Rounded (2XL), and Square." />
+              <div className="flex gap-6 items-center">
+                <div className="flex flex-col items-center gap-2">
+                  <CustomAvatar initials="C" shape="circle" size="lg" />
+                  <span className="text-[10px] text-slate-400 font-mono">circle</span>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <CustomAvatar initials="R" shape="rounded" size="lg" />
+                  <span className="text-[10px] text-slate-400 font-mono">rounded</span>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <CustomAvatar initials="S" shape="square" size="lg" />
+                  <span className="text-[10px] text-slate-400 font-mono">square</span>
+                </div>
+              </div>
+            </div>
+
+            <Separator className="bg-slate-100" />
+
+            {/* 4. Interactive */}
+            <div>
+              <SectionTitle title="4. Interactive Buttons" subtitle="Avatars can act as triggers with hover effects." />
               <div className="flex items-center gap-4">
-                <Avatar className="h-16 w-16 border-[3px] border-white ring-4 ring-indigo-50 shadow-lg">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
+                <CustomAvatar 
+                  src="https://i.pravatar.cc/150?img=3" 
+                  size="lg" 
+                  onClick={() => setClickCount(c => c + 1)} 
+                  status="online"
+                />
                 <div className="flex flex-col">
-                  <span className="font-bold text-slate-900">Shadcn</span>
-                  <span className="text-xs text-slate-400 italic leading-none">@shadcnui</span>
-                </div>
-              </div>
-            </div>
-            <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Sizes
-              </Label>
-              <div className="flex items-end gap-4">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src="https://i.pravatar.cc/150?u=1" />
-                  <AvatarFallback className="text-xs">SM</AvatarFallback>
-                </Avatar>
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src="https://i.pravatar.cc/150?u=2" />
-                  <AvatarFallback>MD</AvatarFallback>
-                </Avatar>
-                <Avatar className="h-16 w-16">
-                  <AvatarImage src="https://i.pravatar.cc/150?u=3" />
-                  <AvatarFallback className="text-lg">LG</AvatarFallback>
-                </Avatar>
-                <Avatar className="h-20 w-20">
-                  <AvatarImage src="https://i.pravatar.cc/150?u=4" />
-                  <AvatarFallback className="text-xl">XL</AvatarFallback>
-                </Avatar>
-              </div>
-            </div>
-            <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Avatar Group
-              </Label>
-              <div className="flex -space-x-4">
-                {[1, 2, 3, 4].map((i) => (
-                  <Avatar key={i} className="h-12 w-12 border-2 border-white shadow-sm hover:-translate-y-1 transition-transform cursor-pointer">
-                    <AvatarImage src={`https://i.pravatar.cc/150?u=${i + 10}`} />
-                    <AvatarFallback className="bg-slate-200">U{i}</AvatarFallback>
-                  </Avatar>
-                ))}
-                <div className="h-12 w-12 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-xs font-bold text-slate-500 z-10 shadow-sm">
-                  +12
-                </div>
-              </div>
-            </div>
-            <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                With Status Indicator
-              </Label>
-              <div className="flex items-center gap-6">
-                <div className="relative">
-                  <Avatar className="h-16 w-16">
-                    <AvatarImage src="https://i.pravatar.cc/150?u=20" />
-                    <AvatarFallback>OL</AvatarFallback>
-                  </Avatar>
-                  <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></span>
-                </div>
-                <div className="relative">
-                  <Avatar className="h-16 w-16">
-                    <AvatarImage src="https://i.pravatar.cc/150?u=21" />
-                    <AvatarFallback>Away</AvatarFallback>
-                  </Avatar>
-                  <span className="absolute bottom-0 right-0 w-4 h-4 bg-yellow-500 border-2 border-white rounded-full"></span>
-                </div>
-                <div className="relative">
-                  <Avatar className="h-16 w-16">
-                    <AvatarImage src="https://i.pravatar.cc/150?u=22" />
-                    <AvatarFallback>Busy</AvatarFallback>
-                  </Avatar>
-                  <span className="absolute bottom-0 right-0 w-4 h-4 bg-red-500 border-2 border-white rounded-full"></span>
+                  <span className="font-bold text-slate-900">Click the Avatar</span>
+                  <span className="text-sm text-slate-500">Clicked {clickCount} times</span>
                 </div>
               </div>
             </div>
 
             <CodeBlock
-              code={`import { Avatar, AvatarFallback, AvatarImage } from "onebi-ui";
+              code={`import CustomAvatar from "@/components/CustomAvatar";
 
-export default function AvatarDemo() {
+export default function App() {
   return (
-    <div className="space-y-4">
-      {/* Basic avatar */}
-      <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" />
-        <AvatarFallback>CN</AvatarFallback>
-      </Avatar>
+    <div className="flex gap-4">
+      {/* Standard Image */}
+      <CustomAvatar 
+        src="https://pravatar.cc/150" 
+        size="md" 
+        status="online" 
+      />
 
-      {/* Sizes */}
-      <Avatar className="h-8 w-8">
-        <AvatarFallback>SM</AvatarFallback>
-      </Avatar>
-      <Avatar className="h-16 w-16">
-        <AvatarFallback>LG</AvatarFallback>
-      </Avatar>
-
-      {/* Avatar group */}
-      <div className="flex -space-x-4">
-        <Avatar><AvatarImage src="..." /></Avatar>
-        <Avatar><AvatarImage src="..." /></Avatar>
-        <div className="h-10 w-10 rounded-full bg-slate-100">+5</div>
-      </div>
-
-      {/* With status */}
-      <div className="relative">
-        <Avatar>
-          <AvatarImage src="..." />
-          <AvatarFallback>US</AvatarFallback>
-        </Avatar>
-        <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
-      </div>
+      {/* Fallback to Initials */}
+      <CustomAvatar 
+        initials="JD" 
+        size="lg" 
+        shape="rounded" 
+        status="busy" 
+      />
     </div>
   );
 }`}
