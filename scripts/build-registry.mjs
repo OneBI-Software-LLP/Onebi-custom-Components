@@ -32,7 +32,7 @@ async function buildRegistry() {
     let indexData = [];
 
     for (const file of files) {
-      const componentName = file.replace(".tsx", "");
+      const componentName = file.replace(".tsx", "").toLowerCase();
       const content = fs.readFileSync(path.join(UI_SRC, file), "utf8");
       
       // Basic dependency inference
@@ -46,23 +46,35 @@ async function buildRegistry() {
       if (content.includes("clsx")) dependencies.push("clsx");
       if (content.includes("tailwind-merge")) dependencies.push("tailwind-merge");
 
+      // Manual registry dependencies
+      if (componentName === "toaster") {
+        registryDependencies.push("toast", "use-toast");
+      }
+
       // Files to include in the component manifest
       const componentFiles = [
         {
-          name: `${componentName}.tsx`,
+          name: file, // Keep original filename for the code
           content
         }
       ];
 
       // Check for matching CSS file in styles directory
-      const cssFileName = `${componentName}.css`;
-      const cssPath = path.join(STYLES_DIR, cssFileName);
-      if (fs.existsSync(cssPath)) {
-        componentFiles.push({
-          name: cssFileName,
-          content: fs.readFileSync(cssPath, "utf8")
-        });
-        console.log(`  📎 Attached ${cssFileName} to ${componentName}`);
+      // We look for both lowercase and original case CSS
+      const cssPaths = [
+        path.join(STYLES_DIR, `${componentName}.css`),
+        path.join(STYLES_DIR, `${file.replace(".tsx", "")}.css`)
+      ];
+
+      for (const cssPath of cssPaths) {
+        if (fs.existsSync(cssPath) && !componentFiles.some(f => f.name.endsWith(".css"))) {
+          const cssName = path.basename(cssPath);
+          componentFiles.push({
+            name: cssName,
+            content: fs.readFileSync(cssPath, "utf8")
+          });
+          console.log(`  📎 Attached ${cssName} to ${componentName}`);
+        }
       }
 
       const componentDef = {

@@ -1,130 +1,117 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { X } from "lucide-react"
+import * as React from "react";
+import "@/styles/ui/toast.css";
 
-import { cn } from "@/lib/utils"
+// ─────────────────────────────────────────────────────────────
+//  TYPES
+// ─────────────────────────────────────────────────────────────
 
-const ToastProvider = ({ children }: any) => {
-  return <>{children}</>
+export type ToastVariant = "default" | "success" | "danger" | "warning";
+export type ToastPosition = 
+  | "top-right" 
+  | "top-left" 
+  | "bottom-right" 
+  | "bottom-left" 
+  | "top-center" 
+  | "bottom-center";
+
+export interface ToastProps {
+  id?: string;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  variant?: ToastVariant;
+  position?: ToastPosition;
+  onClose?: () => void;
+  className?: string;
+  children?: React.ReactNode;
 }
 
-const ToastViewport = React.forwardRef<HTMLOListElement, React.HTMLAttributes<HTMLOListElement>>(
-  ({ className, ...props }, ref) => (
-    <ol
-      ref={ref}
-      className={cn(
-        "fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
-        className
-      )}
-      {...props}
-    />
-  )
-)
-ToastViewport.displayName = "ToastViewport"
+// ─────────────────────────────────────────────────────────────
+//  COMPONENTS
+// ─────────────────────────────────────────────────────────────
 
-const toastVariants = cva(
-  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all animate-in fade-in-80 slide-in-from-top-full sm:slide-in-from-bottom-full",
-  {
-    variants: {
-      variant: {
-        default: "border bg-background text-foreground",
-        destructive: "destructive group border-destructive bg-destructive text-destructive-foreground",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-)
+/**
+ * Toast - Individual toast message component.
+ */
+export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
+  ({ id, title, description, variant = "default", onClose, className = "", children, ...props }, ref) => {
+    const [isClosing, setIsClosing] = React.useState(false);
 
-const ToastContext = React.createContext<{onClose?: () => void}>({});
+    const handleClose = React.useCallback(() => {
+      setIsClosing(true);
+      setTimeout(() => {
+        onClose?.();
+      }, 200); // Match CSS transition/animation time
+    }, [onClose]);
 
-const Toast = React.forwardRef<
-  HTMLLIElement,
-  React.HTMLAttributes<HTMLLIElement> & VariantProps<typeof toastVariants> & { open?: boolean; onOpenChange?: (open: boolean) => void }
->(({ className, variant, open = true, onOpenChange, ...props }, ref) => {
-  if (!open) return null;
-
-  return (
-    <ToastContext.Provider value={{ onClose: () => onOpenChange?.(false) }}>
-      <li
+    return (
+      <div
         ref={ref}
+        className={`toast toast--${variant} ${isClosing ? "toast--closing" : ""} ${className}`.trim()}
         role="status"
         aria-live="polite"
-        className={cn(toastVariants({ variant }), className)}
-        {...props}
-      />
-    </ToastContext.Provider>
-  )
-})
-Toast.displayName = "Toast"
-
-const ToastAction = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
-  ({ className, ...props }, ref) => (
-    <button
-      ref={ref}
-      type="button"
-      className={cn(
-        "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
-        className
-      )}
-      {...props}
-    />
-  )
-)
-ToastAction.displayName = "ToastAction"
-
-const ToastClose = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
-  ({ className, onClick, ...props }, ref) => {
-    const { onClose } = React.useContext(ToastContext);
-    return (
-      <button
-        ref={ref}
-        type="button"
-        onClick={(e) => {
-           if (onClose) onClose();
-           if (onClick) onClick(e);
-        }}
-        className={cn(
-          "absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600",
-          className
-        )}
         {...props}
       >
-        <X className="h-4 w-4" />
-      </button>
-    )
+        <div className="toast-content">
+          {title && <h3 className="toast-title">{title}</h3>}
+          {description && <div className="toast-description">{description}</div>}
+          {children}
+        </div>
+        <button
+          type="button"
+          className="toast-close"
+          onClick={handleClose}
+          aria-label="Close"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+    );
   }
-)
-ToastClose.displayName = "ToastClose"
+);
 
-const ToastTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("text-sm font-semibold", className)} {...props} />
-  )
-)
-ToastTitle.displayName = "ToastTitle"
+Toast.displayName = "Toast";
 
-const ToastDescription = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("text-sm opacity-90", className)} {...props} />
-  )
-)
-ToastDescription.displayName = "ToastDescription"
+/**
+ * ToastViewport - Container for multiple toasts.
+ */
+export const ToastViewport = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { position?: ToastPosition }>(
+  ({ className = "", position = "bottom-right", style, ...props }, ref) => {
+    // Positioning map for inline styles
+    const positionStyles: Record<ToastPosition, React.CSSProperties> = {
+      "top-left": { top: 0, left: 0 },
+      "top-right": { top: 0, right: 0 },
+      "bottom-left": { bottom: 0, left: 0 },
+      "bottom-right": { bottom: 0, right: 0 },
+      "top-center": { top: 0, left: "50%", transform: "translateX(-50%)" },
+      "bottom-center": { bottom: 0, left: "50%", transform: "translateX(-50%)" },
+    };
 
-type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
-type ToastActionElement = React.ReactElement<typeof ToastAction>
+    return (
+      <div
+        ref={ref}
+        className={`onebi-toast-viewport onebi-toast-viewport--${position} ${className}`.trim()}
+        style={{ 
+          ...positionStyles[position], 
+          ...style 
+        }}
+        {...props}
+      />
+    );
+  }
+);
 
-export {
-  type ToastProps,
-  type ToastActionElement,
-  ToastProvider,
-  ToastViewport,
-  Toast,
-  ToastTitle,
-  ToastDescription,
-  ToastClose,
-  ToastAction,
-}
+ToastViewport.displayName = "ToastViewport";

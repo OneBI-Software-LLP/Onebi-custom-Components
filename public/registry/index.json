@@ -45,7 +45,8 @@
     "name": "checkbox",
     "dependencies": [],
     "files": [
-      "checkbox.tsx"
+      "checkbox.tsx",
+      "checkbox.css"
     ]
   },
   {
@@ -146,6 +147,14 @@
     ]
   },
   {
+    "name": "navbar",
+    "dependencies": [],
+    "files": [
+      "Navbar.tsx",
+      "navbar.css"
+    ]
+  },
+  {
     "name": "password-input",
     "dependencies": [
       "lucide-react"
@@ -164,11 +173,10 @@
   },
   {
     "name": "radio-group",
-    "dependencies": [
-      "lucide-react"
-    ],
+    "dependencies": [],
     "files": [
-      "radio-group.tsx"
+      "radio-group.tsx",
+      "radio-group.css"
     ]
   },
   {
@@ -225,7 +233,8 @@
     "name": "skeleton",
     "dependencies": [],
     "files": [
-      "skeleton.tsx"
+      "skeleton.tsx",
+      "skeleton.css"
     ]
   },
   {
@@ -262,24 +271,24 @@
     "name": "tabs",
     "dependencies": [],
     "files": [
-      "tabs.tsx"
+      "tabs.tsx",
+      "tabs.css"
     ]
   },
   {
     "name": "textarea",
     "dependencies": [],
     "files": [
-      "textarea.tsx"
+      "textarea.tsx",
+      "textarea.css"
     ]
   },
   {
     "name": "toast",
-    "dependencies": [
-      "lucide-react",
-      "class-variance-authority"
-    ],
+    "dependencies": [],
     "files": [
-      "toast.tsx"
+      "toast.tsx",
+      "toast.css"
     ]
   },
   {

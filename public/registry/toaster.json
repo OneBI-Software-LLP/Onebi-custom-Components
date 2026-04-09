@@ -1,11 +1,14 @@
 {
   "name": "toaster",
   "dependencies": [],
-  "registryDependencies": [],
+  "registryDependencies": [
+    "toast",
+    "use-toast"
+  ],
   "files": [
     {
       "name": "toaster.tsx",
-      "content": "\"use client\"\n\nimport {\n  Toast,\n  ToastClose,\n  ToastDescription,\n  ToastProvider,\n  ToastTitle,\n  ToastViewport,\n} from \"@/components/ui/toast\"\nimport { useToast } from \"@/hooks/use-toast\"\n\nexport function Toaster() {\n  const { toasts } = useToast()\n\n  return (\n    <ToastProvider>\n      {toasts.map(function ({ id, title, description, action, ...props }) {\n        return (\n          <Toast key={id} {...props}>\n            <div className=\"grid gap-1\">\n              {title && <ToastTitle>{title}</ToastTitle>}\n              {description && (\n                <ToastDescription>{description}</ToastDescription>\n              )}\n            </div>\n            {action}\n            <ToastClose />\n          </Toast>\n        )\n      })}\n      <ToastViewport />\n    </ToastProvider>\n  )\n}\n"
+      "content": "\"use client\";\r\n\r\nimport * as React from \"react\";\r\nimport { createPortal } from \"react-dom\";\r\nimport { Toast, ToastViewport, type ToastPosition } from \"@/components/ui/toast\";\r\nimport { useToast } from \"@/hooks/use-toast\";\r\n\r\n/**\r\n * Toaster - Global component to render all active toasts grouped by position.\r\n */\r\nexport function Toaster() {\r\n  const { toasts, dismissToast } = useToast();\r\n  const [mounted, setMounted] = React.useState(false);\r\n\r\n  React.useEffect(() => {\r\n    setMounted(true);\r\n  }, []);\r\n\r\n  if (!mounted || typeof document === \"undefined\") return null;\r\n\r\n  const positions: ToastPosition[] = [\r\n    \"top-right\",\r\n    \"top-left\",\r\n    \"bottom-right\",\r\n    \"bottom-left\",\r\n    \"top-center\",\r\n    \"bottom-center\",\r\n  ];\r\n\r\n  const content = (\r\n    <>\r\n      {positions.map((position) => {\r\n        const toastsInPosition = toasts.filter((t) => (t.position || \"bottom-right\") === position);\r\n        if (toastsInPosition.length === 0) return null;\r\n\r\n        return (\r\n          <ToastViewport key={position} position={position}>\r\n            {toastsInPosition.map(({ id, ...props }) => (\r\n              <Toast \r\n                key={id} \r\n                id={id}\r\n                onClose={() => dismissToast(id)}\r\n                {...props} \r\n              />\r\n            ))}\r\n          </ToastViewport>\r\n        );\r\n      })}\r\n    </>\r\n  );\r\n\r\n  return createPortal(content, document.body);\r\n}\r\n"
     }
   ]
 }
