@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Spinner, OverlaySpinner } from "@/components/CustomSpinner";
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
+  <div className="mt-6 border-t border-slate-100 pt-6">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
@@ -45,13 +45,14 @@ const DEMO_TYPES = [
 
 const DEMO_SIZES = ["xs", "sm", "md", "lg", "xl"];
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, code, children }: { title: string; code?: string; children: React.ReactNode }) {
   return (
     <div className="space-y-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         {title}
       </Label>
       {children}
+      {code && <CodeBlock code={code} />}
     </div>
   );
 }
@@ -101,7 +102,9 @@ export default function SpinnerPage() {
 
           <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
             
-            <Section title="All spinner types">
+            <Section title="All spinner types" code={`import { Spinner } from "@/components/CustomSpinner";
+
+<Spinner type="dots" size="md" color="blue" />`}>
               <GridRow>
                 {DEMO_TYPES.map((t: any) => (
                   <GridCell key={t} label={t}>
@@ -113,7 +116,7 @@ export default function SpinnerPage() {
 
             <Separator className="bg-slate-100" />
             
-            <Section title="Sizes — xs · sm · md · lg · xl">
+            <Section title="Sizes — xs · sm · md · lg · xl" code={`<Spinner type="arc" size="xl" color="teal" />`}>
               <div className="space-y-8">
                 <GridRow>
                   {DEMO_SIZES.map((s: any) => (
@@ -134,7 +137,7 @@ export default function SpinnerPage() {
 
             <Separator className="bg-slate-100" />
             
-            <Section title="Color variants — ring type">
+            <Section title="Color variants" code={`<Spinner type="ring" size="md" color="#534AB7" />`}>
               <GridRow>
                 {DEMO_COLORS.map(([name, hex]) => (
                   <GridCell key={name} label={name}>
@@ -144,21 +147,15 @@ export default function SpinnerPage() {
               </GridRow>
             </Section>
             
-            <div className="pt-2">
-              <Section title="Color variants — arc type">
-                <GridRow>
-                  {DEMO_COLORS.map(([name, hex]) => (
-                    <GridCell key={name} label={name}>
-                      <Spinner type="arc" size="md" color={hex} />
-                    </GridCell>
-                  ))}
-                </GridRow>
-              </Section>
-            </div>
-
             <Separator className="bg-slate-100" />
             
-            <Section title="Label positions">
+            <Section title="Label positions" code={`<Spinner 
+  type="ring" 
+  size="md" 
+  color="coral" 
+  label="Loading…" 
+  labelPosition="right" 
+/>`}>
               <GridRow>
                 {(["bottom", "right", "top", "left"] as const).map((pos) => (
                   <GridCell key={pos} label={`label ${pos}`}>
@@ -170,7 +167,8 @@ export default function SpinnerPage() {
 
             <Separator className="bg-slate-100" />
             
-            <Section title="Animation speeds">
+            <Section title="Animation speeds & Paused" code={`<Spinner type="arc" size="md" color="amber" speed={1200} />
+<Spinner type="arc" paused />`}>
               <GridRow>
                 {(Object.entries({ fast: 400, normal: 700, slow: 1200 })).map(([name, ms]) => (
                   <GridCell key={name} label={`${name} (${ms}ms)`}>
@@ -185,7 +183,12 @@ export default function SpinnerPage() {
 
             <Separator className="bg-slate-100" />
             
-            <Section title="Button loading states">
+            <Section title="Button loading states" code={`import { InlineSpinner } from "@/components/CustomSpinner";
+
+<button disabled className="flex items-center gap-2 px-4 py-2">
+   <InlineSpinner color="currentColor" />
+   Saving changes...
+</button>`}>
               <div className="flex flex-wrap gap-3">
                 <LoadingButton type="ring" color="#185FA5">Saving changes</LoadingButton>
                 <LoadingButton type="dots" color="#1D9E75">Uploading</LoadingButton>
@@ -197,24 +200,12 @@ export default function SpinnerPage() {
 
             <Separator className="bg-slate-100" />
             
-            <Section title="Inline in text / UI">
-              <div className="flex flex-col gap-3 max-w-[300px]">
-                {[
-                  { text: "Fetching your data…", type: "ring",  color: "blue"   },
-                  { text: "Syncing to cloud…",   type: "dots",  color: "#1D9E75" },
-                  { text: "AI is thinking…",     type: "pulse", color: "#534AB7" },
-                ].map(({ text, type, color }) => (
-                  <div key={text} className="flex items-center gap-3 text-[13px] text-slate-500 px-4 py-3 bg-slate-50 rounded-lg">
-                    <Spinner type={type as any} size="xs" color={color} />
-                    <span>{text}</span>
-                  </div>
-                ))}
-              </div>
-            </Section>
+            <Section title="Overlay loading state" code={`import { OverlaySpinner } from "@/components/CustomSpinner";
 
-            <Separator className="bg-slate-100" />
-            
-            <Section title="Overlay loading state">
+<div className="relative w-full h-48">
+   {/* Internal mocked content */}
+   <OverlaySpinner type="arc" size="lg" color="blue" label="Loading data…" overlayBlur />
+</div>`}>
               <div className="relative rounded-xl overflow-hidden border border-slate-200">
                 <div className="p-6 bg-slate-50 flex flex-col gap-3 blur-[1px]">
                   {[80, 60, 72].map((w, i) => (
@@ -227,7 +218,7 @@ export default function SpinnerPage() {
 
             <Separator className="bg-slate-100" />
             
-            <Section title="Track opacity variations">
+            <Section title="Track opacity variations" code={`<Spinner type="ring" size="md" color="#534AB7" trackOpacity={0.05} />`}>
               <GridRow>
                 {[0.05, 0.12, 0.2, 0.35].map((op) => (
                   <GridCell key={op} label={`${Math.round(op * 100)}%`}>
@@ -239,7 +230,7 @@ export default function SpinnerPage() {
 
             <Separator className="bg-slate-100" />
             
-            <Section title="Stroke thickness">
+            <Section title="Stroke thickness" code={`<Spinner type="ring" size="md" color="#D85A30" thickness={5} />`}>
               <GridRow>
                 {[1, 2, 3, 5, 7].map((t) => (
                   <GridCell key={t} label={`${t}px`}>
@@ -249,30 +240,6 @@ export default function SpinnerPage() {
               </GridRow>
             </Section>
 
-            <CodeBlock
-              code={`import { Spinner, OverlaySpinner, InlineSpinner, PageSpinner } from "@/components/CustomSpinner";
-
-export default function SpinnerDemo() {
-  return (
-    <div className="space-y-4">
-      {/* Standard Spinner */}
-      <Spinner type="dots" size="lg" color="teal" />
-
-      {/* Button using inline spinner */}
-      <button disabled className="flex items-center gap-2">
-         <InlineSpinner color="currentColor" />
-         Saving changes...
-      </button>
-      
-      {/* Container Overlay */}
-      <div className="relative w-full h-48 border">
-         <p>Some content being hidden...</p>
-         <OverlaySpinner type="arc" size="lg" color="blue" label="Loading data…" overlayBlur />
-      </div>
-    </div>
-  );
-}`}
-            />
           </div>
         </div>
       </div>

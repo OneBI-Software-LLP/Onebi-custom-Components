@@ -8,7 +8,7 @@ import CustomFileUpload from "@/components/CustomFileUpload";
 import { Users } from "lucide-react";
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
+  <div className="mt-6 border-t border-slate-100 pt-6">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
@@ -26,13 +26,17 @@ const CodeBlock = ({ code }: { code: string }) => (
   </div>
 );
 
-function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) {
+function Section({ title, description, code, children }: { title: string; description?: string; code?: string; children: React.ReactNode }) {
   return (
-    <div className="mb-4 mt-8 first:mt-0">
-      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-        {title}
-      </Label>
-      <p className="text-sm text-slate-500 mt-1">{subtitle}</p>
+    <div className="space-y-4">
+      <div>
+        <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+          {title}
+        </Label>
+        {description && <p className="text-sm text-slate-500 mt-1">{description}</p>}
+      </div>
+      <div>{children}</div>
+      {code && <CodeBlock code={code} />}
     </div>
   );
 }
@@ -57,8 +61,18 @@ export default function FileUploadPage() {
           <div className="grid gap-10 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
             
             {/* 1. Dropzone Variant */}
-            <div>
-              <SectionTitle title="1. Standard Dropzone" subtitle="Support for multiple files with drag & drop functionality." />
+            <Section 
+              title="1. Standard Dropzone" 
+              description="Support for multiple files with drag & drop functionality."
+              code={`<CustomFileUpload
+  variant="dropzone"
+  multiple={true}
+  accept=".pdf,.doc,.docx,.xls,.xlsx"
+  maxSize={10 * 1024 * 1024} // 10MB
+  hint="PDF, Excel, Word (Max 10MB)"
+  onFilesChange={(files) => setDocuments(files)}
+/>`}
+            >
               <div className="mt-6">
                 <CustomFileUpload
                   variant="dropzone"
@@ -78,13 +92,22 @@ export default function FileUploadPage() {
                   </button>
                 )}
               </div>
-            </div>
+            </Section>
 
             <Separator className="bg-slate-100" />
 
             {/* 2. Button Variant with Avatar Preview */}
-            <div>
-              <SectionTitle title="2. Single File Button" subtitle="Common profile picture update pattern with preview logic." />
+            <Section 
+              title="2. Single File Button" 
+              description="Common profile picture update pattern with preview logic."
+              code={`<CustomFileUpload
+  variant="button"
+  multiple={false}
+  accept="image/jpeg, image/png"
+  maxSize={2 * 1024 * 1024} // 2MB
+  onFilesChange={(files) => setProfilePic(files)}
+/>`}
+            >
               <div className="flex flex-col md:flex-row items-center gap-10 p-8 border border-slate-100 bg-slate-50/50 rounded-[2rem] mt-6">
                 <div className="w-24 h-24 bg-white border-4 border-white rounded-[2rem] shadow-2xl flex items-center justify-center overflow-hidden shrink-0 ring-1 ring-slate-100">
                   {profilePic.length > 0 ? (
@@ -114,35 +137,8 @@ export default function FileUploadPage() {
                   />
                 </div>
               </div>
-            </div>
+            </Section>
 
-            <CodeBlock
-              code={`import { useState } from "react";
-import CustomFileUpload from "@/components/CustomFileUpload";
-
-export default function FileUploadDemo() {
-  const [files, setFiles] = useState([]);
-
-  return (
-    <div className="space-y-8">
-      {/* Drag & drop variant */}
-      <CustomFileUpload
-        variant="dropzone"
-        multiple={true}
-        accept=".pdf,.png,.jpg"
-        maxSize={5 * 1024 * 1024}
-        onFilesChange={setFiles}
-      />
-
-      {/* Button variant */}
-      <CustomFileUpload
-        variant="button"
-        onFilesChange={(files) => console.log(files)}
-      />
-    </div>
-  );
-}`}
-            />
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
-import { FilterPanel, FilterDefinition, FilterState } from '@/components/FilterPanel';
+import { FilterPanel, FilterDefinition, FilterState } from '@/components/ui/filter-panel';
 
 const CodeBlock = ({ code }: { code: string }) => (
   <div className="mt-10 border-t border-slate-100 pt-8">

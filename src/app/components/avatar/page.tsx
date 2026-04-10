@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import CustomAvatar from "@/components/CustomAvatar";
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
+  <div className="mt-6 border-t border-slate-100 pt-6">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
@@ -25,13 +25,17 @@ const CodeBlock = ({ code }: { code: string }) => (
   </div>
 );
 
-function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) {
+function Section({ title, description, code, children }: { title: string; description?: string; code?: string; children: React.ReactNode }) {
   return (
-    <div className="mb-4 mt-8 first:mt-0">
-      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-        {title}
-      </Label>
-      <p className="text-sm text-slate-500 mt-1">{subtitle}</p>
+    <div className="space-y-4">
+      <div>
+        <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+          {title}
+        </Label>
+        {description && <p className="text-sm text-slate-500 mt-1">{description}</p>}
+      </div>
+      <div>{children}</div>
+      {code && <CodeBlock code={code} />}
     </div>
   );
 }
@@ -55,35 +59,51 @@ export default function AvatarPage() {
           <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
             
             {/* 1. Standard Images with Status */}
-            <div>
-              <SectionTitle title="1. Standard Images with Status" subtitle="Different sizes with availability indicators." />
-              <div className="flex gap-6 items-end">
+            <Section 
+              title="1. Standard Images with Status" 
+              description="Different sizes with availability indicators."
+              code={`<CustomAvatar src="https://i.pravatar.cc/150?img=32" size="sm" status="online" />
+<CustomAvatar src="https://i.pravatar.cc/150?img=47" size="md" status="busy" />
+<CustomAvatar src="https://i.pravatar.cc/150?img=68" size="lg" status="away" />
+<CustomAvatar src="https://i.pravatar.cc/150?img=12" size="xl" status="offline" />`}
+            >
+              <div className="flex gap-6 items-end mt-4">
                 <CustomAvatar src="https://i.pravatar.cc/150?img=32" size="sm" status="online" />
                 <CustomAvatar src="https://i.pravatar.cc/150?img=47" size="md" status="busy" />
                 <CustomAvatar src="https://i.pravatar.cc/150?img=68" size="lg" status="away" />
                 <CustomAvatar src="https://i.pravatar.cc/150?img=12" size="xl" status="offline" />
               </div>
-            </div>
+            </Section>
 
             <Separator className="bg-slate-100" />
 
             {/* 2. Initials Fallback */}
-            <div>
-              <SectionTitle title="2. Fallback Mechanism" subtitle="Automatically shows initials if the image fails to load." />
-              <div className="flex gap-6 items-end">
+            <Section 
+              title="2. Fallback Mechanism" 
+              description="Automatically shows initials if the image fails to load."
+              code={`<CustomAvatar src="https://broken-link.com/img.jpg" initials="JD" size="md" />
+<CustomAvatar initials="AW" size="lg" status="online" />
+<CustomAvatar initials="MS" size="xl" shape="rounded" statusPosition="top-right" status="busy" />`}
+            >
+              <div className="flex gap-6 items-end mt-4">
                 {/* Broken link trigger */}
                 <CustomAvatar src="https://broken-link.com/img.jpg" initials="JD" size="md" />
                 <CustomAvatar initials="AW" size="lg" status="online" />
                 <CustomAvatar initials="MS" size="xl" shape="rounded" statusPosition="top-right" status="busy"/>
               </div>
-            </div>
+            </Section>
 
             <Separator className="bg-slate-100" />
 
             {/* 3. Shapes */}
-            <div>
-              <SectionTitle title="3. Geometric Shapes" subtitle="Visual styles: Circle, Rounded (2XL), and Square." />
-              <div className="flex gap-6 items-center">
+            <Section 
+              title="3. Geometric Shapes" 
+              description="Visual styles: Circle, Rounded (2XL), and Square."
+              code={`<CustomAvatar initials="C" shape="circle" size="lg" />
+<CustomAvatar initials="R" shape="rounded" size="lg" />
+<CustomAvatar initials="S" shape="square" size="lg" />`}
+            >
+              <div className="flex gap-6 items-center mt-4">
                 <div className="flex flex-col items-center gap-2">
                   <CustomAvatar initials="C" shape="circle" size="lg" />
                   <span className="text-[10px] text-slate-400 font-mono">circle</span>
@@ -97,14 +117,22 @@ export default function AvatarPage() {
                   <span className="text-[10px] text-slate-400 font-mono">square</span>
                 </div>
               </div>
-            </div>
+            </Section>
 
             <Separator className="bg-slate-100" />
 
             {/* 4. Interactive */}
-            <div>
-              <SectionTitle title="4. Interactive Buttons" subtitle="Avatars can act as triggers with hover effects." />
-              <div className="flex items-center gap-4">
+            <Section 
+              title="4. Interactive Buttons" 
+              description="Avatars can act as triggers with hover effects."
+              code={`<CustomAvatar 
+  src="https://i.pravatar.cc/150?img=3" 
+  size="lg" 
+  onClick={() => console.log('Avatar clicked!')} 
+  status="online"
+/>`}
+            >
+              <div className="flex items-center gap-4 mt-4">
                 <CustomAvatar 
                   src="https://i.pravatar.cc/150?img=3" 
                   size="lg" 
@@ -116,32 +144,8 @@ export default function AvatarPage() {
                   <span className="text-sm text-slate-500">Clicked {clickCount} times</span>
                 </div>
               </div>
-            </div>
+            </Section>
 
-            <CodeBlock
-              code={`import CustomAvatar from "@/components/CustomAvatar";
-
-export default function App() {
-  return (
-    <div className="flex gap-4">
-      {/* Standard Image */}
-      <CustomAvatar 
-        src="https://pravatar.cc/150" 
-        size="md" 
-        status="online" 
-      />
-
-      {/* Fallback to Initials */}
-      <CustomAvatar 
-        initials="JD" 
-        size="lg" 
-        shape="rounded" 
-        status="busy" 
-      />
-    </div>
-  );
-}`}
-            />
           </div>
         </div>
       </div>

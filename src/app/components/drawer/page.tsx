@@ -15,19 +15,8 @@ const btn = (primary?: boolean): React.CSSProperties => ({
   transition: "opacity 0.15s, background 0.15s",
 });
 
-function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) {
-  return (
-    <div className="mb-4 mt-8 first:mt-0">
-      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-        {title}
-      </Label>
-      <p className="text-sm text-slate-500 mt-1">{subtitle}</p>
-    </div>
-  );
-}
-
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
+  <div className="mt-6 border-t border-slate-100 pt-6">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
@@ -45,6 +34,21 @@ const CodeBlock = ({ code }: { code: string }) => (
   </div>
 );
 
+function Section({ title, description, code, children }: { title: string; description?: string; code?: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+          {title}
+        </Label>
+        {description && <p className="text-sm text-slate-500 mt-1">{description}</p>}
+      </div>
+      <div>{children}</div>
+      {code && <CodeBlock code={code} />}
+    </div>
+  );
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // EXAMPLES (Ported from Drawer.usage.jsx)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -52,14 +56,14 @@ const CodeBlock = ({ code }: { code: string }) => (
 function BasicExample() {
   const drawer = useDrawer();
   return (
-    <>
+    <div className="mt-4">
       <button style={btn(true)} onClick={drawer.open}>Open Custom Drawer</button>
       <CustomDrawer open={drawer.isOpen} onClose={drawer.close} title="Basic drawer" description="Slides in from the right">
         <p style={{ fontSize: 14, lineHeight: 1.7, color: "#64748b" }}>
           This is the default drawer. It overlays the page content, dims the backdrop, and closes on Esc or backdrop click.
         </p>
       </CustomDrawer>
-    </>
+    </div>
   );
 }
 
@@ -68,7 +72,7 @@ function PlacementsExample() {
   const placements: DrawerPlacement[] = ["left", "right", "top", "bottom"];
 
   return (
-    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+    <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: "16px" }}>
       {placements.map((p) => (
         <button key={p} style={btn()} onClick={() => setActive(p)}>From {p}</button>
       ))}
@@ -96,7 +100,7 @@ function VariantsExample() {
   const floating = useDrawer();
 
   return (
-    <div ref={containerRef} style={{ display: "flex", gap: 8, flexWrap: "wrap", overflow: "hidden", padding: "10px", border: "1px dashed #cbd5e1", borderRadius: 8 }}>
+    <div ref={containerRef} style={{ display: "flex", gap: 8, flexWrap: "wrap", overflow: "hidden", padding: "10px", border: "1px dashed #cbd5e1", borderRadius: 8, marginTop: "16px" }}>
       <button style={btn()} onClick={overlay.open}>Overlay Variant</button>
       <button style={btn()} onClick={push.open}>Push Variant</button>
       <button style={btn()} onClick={floating.open}>Floating Variant</button>
@@ -128,7 +132,7 @@ function SizesExample() {
   ];
 
   return (
-    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+    <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: "16px" }}>
       {sizes.map(({ label, size }) => (
         <button key={size.toString()} style={btn()} onClick={() => setActive(size)}>{label}</button>
       ))}
@@ -147,7 +151,7 @@ function BackdropExample() {
   const variants: DrawerBackdrop[] = ["dim", "blur", "none"];
 
   return (
-    <div style={{ display: "flex", gap: 8 }}>
+    <div style={{ display: "flex", gap: 8, marginTop: "16px" }}>
       {variants.map((v) => (
         <button key={v} style={btn()} onClick={() => setActive(v)}>Backdrop: {v}</button>
       ))}
@@ -164,7 +168,7 @@ function BackdropExample() {
 function CustomHeaderFooterExample() {
   const drawer = useDrawer();
   return (
-    <>
+    <div className="mt-4">
       <button style={btn()} onClick={drawer.open}>Custom Header & Footer</button>
       <CustomDrawer
         open={drawer.isOpen}
@@ -188,7 +192,7 @@ function CustomHeaderFooterExample() {
           Pass any JSX to the <code>header</code> and <code>footer</code> props to fully control those slots.
         </p>
       </CustomDrawer>
-    </>
+    </div>
   );
 }
 
@@ -204,7 +208,7 @@ function NavigationDrawerExample() {
   ];
 
   return (
-    <>
+    <div className="mt-4">
       <button style={btn()} onClick={drawer.open}>☰ Open Navigation</button>
       <CustomDrawer open={drawer.isOpen} onClose={drawer.close} placement="left" size="sm"
         title="My App" showClose backdrop="dim">
@@ -229,14 +233,14 @@ function NavigationDrawerExample() {
           </button>
         </div>
       </CustomDrawer>
-    </>
+    </div>
   );
 }
 
 function BottomSheetExample() {
   const drawer = useDrawer();
   return (
-    <>
+    <div className="mt-4">
       <button style={btn()} onClick={drawer.open}>Open Bottom Sheet</button>
       <CustomDrawer open={drawer.isOpen} onClose={drawer.close} placement="bottom" size={240}
         showHandle backdrop="dim" title="Share" description="Share this item">
@@ -250,7 +254,7 @@ function BottomSheetExample() {
           ))}
         </div>
       </CustomDrawer>
-    </>
+    </div>
   );
 }
 
@@ -273,89 +277,114 @@ export function DrawerPageContent() {
           
           <div className="grid gap-10 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50 relative overflow-hidden">
             
-            <div>
-              <SectionTitle title="1. Basic Usage" subtitle="Drop it in, trigger it." />
-              <BasicExample />
-            </div>
-
-            <Separator className="bg-slate-100" />
-            
-            <div>
-              <SectionTitle title="2. Placements" subtitle="Slide in from any direction." />
-              <PlacementsExample />
-            </div>
-
-            <Separator className="bg-slate-100" />
-            
-            <div>
-              <SectionTitle title="3. Variants" subtitle="Overlay, Push, or Floating panel behaviors." />
-              <VariantsExample />
-            </div>
-
-            <Separator className="bg-slate-100" />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <div>
-                <SectionTitle title="4. Sizes" subtitle="sm, md, lg, or full width." />
-                <SizesExample />
-              </div>
-              <div>
-                <SectionTitle title="5. Backdrops" subtitle="Dim, Blur, or no backdrop at all." />
-                <BackdropExample />
-              </div>
-            </div>
-
-            <Separator className="bg-slate-100" />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <div>
-                <SectionTitle title="6. Custom Header & Footer" subtitle="Replace the default slots." />
-                <CustomHeaderFooterExample />
-              </div>
-              <div>
-                <SectionTitle title="7. Navigation Drawer" subtitle="Sidebar navigation pattern." />
-                <NavigationDrawerExample />
-              </div>
-            </div>
-
-            <Separator className="bg-slate-100" />
-
-            <div>
-              <SectionTitle title="8. Bottom Sheet" subtitle="A mobile-oriented share sheet." />
-              <BottomSheetExample />
-            </div>
-
-            <CodeBlock
-              code={`import { useState } from "react";
-import CustomDrawer, { useDrawer, DrawerFooter } from "@/components/CustomDrawer";
+            <Section 
+              title="1. Basic Usage" 
+              description="Drop it in, trigger it."
+              code={`import CustomDrawer, { useDrawer } from "@/components/CustomDrawer";
 
 export default function App() {
   const drawer = useDrawer();
 
   return (
-    <div>
-      <button onClick={drawer.open}>Open Profile</button>
-      
-      <CustomDrawer
-        open={drawer.isOpen}
-        onClose={drawer.close}
-        title="Edit Profile"
-        variant="floating"
-        placement="right"
-        size="md"
-        backdrop="blur"
-        footer={
-          <DrawerFooter>
-            <button onClick={drawer.close}>Save</button>
-          </DrawerFooter>
-        }
+    <>
+      <button onClick={drawer.open}>Open Custom Drawer</button>
+      <CustomDrawer 
+        open={drawer.isOpen} 
+        onClose={drawer.close} 
+        title="Basic drawer" 
+        description="Slides in from the right"
       >
-        <p>Drawer Body Content Goes Here.</p>
+        <p>Drawer content goes here</p>
       </CustomDrawer>
-    </div>
+    </>
   );
 }`}
-            />
+            >
+              <BasicExample />
+            </Section>
+
+            <Separator className="bg-slate-100" />
+            
+            <Section 
+              title="2. Placements" 
+              description="Slide in from any direction."
+              code={`<CustomDrawer open={open} onClose={onClose} placement="left" title="Left drawer" />`}
+            >
+              <PlacementsExample />
+            </Section>
+
+            <Separator className="bg-slate-100" />
+            
+            <Section 
+              title="3. Variants" 
+              description="Overlay, Push, or Floating panel behaviors."
+              code={`<CustomDrawer open={open} onClose={onClose} variant="floating" borderRadius={16} />`}
+            >
+              <VariantsExample />
+            </Section>
+
+            <Separator className="bg-slate-100" />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <Section 
+                title="4. Sizes" 
+                description="sm, md, lg, or full width."
+                code={`<CustomDrawer open={open} onClose={onClose} size="lg" />`}
+              >
+                <SizesExample />
+              </Section>
+              
+              <Section 
+                title="5. Backdrops" 
+                description="Dim, Blur, or no backdrop at all."
+                code={`<CustomDrawer open={open} onClose={onClose} backdrop="blur" />`}
+              >
+                <BackdropExample />
+              </Section>
+            </div>
+
+            <Separator className="bg-slate-100" />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <Section 
+                title="6. Custom Header & Footer" 
+                description="Replace the default slots."
+                code={`<CustomDrawer
+  open={drawer.isOpen}
+  onClose={drawer.close}
+  header={<DrawerHeader onClose={drawer.close}><div>Custom Branding</div></DrawerHeader>}
+  footer={<DrawerFooter><button>Save</button></DrawerFooter>}
+>
+  <p>Body</p>
+</CustomDrawer>`}
+              >
+                <CustomHeaderFooterExample />
+              </Section>
+              
+              <Section 
+                title="7. Navigation Drawer" 
+                description="Sidebar navigation pattern."
+                code={`<CustomDrawer placement="left" size="sm" title="My App" showClose backdrop="dim">
+  <nav>
+    <button>Dashboard</button>
+  </nav>
+</CustomDrawer>`}
+              >
+                <NavigationDrawerExample />
+              </Section>
+            </div>
+
+            <Separator className="bg-slate-100" />
+
+            <Section 
+              title="8. Bottom Sheet" 
+              description="A mobile-oriented share sheet."
+              code={`<CustomDrawer placement="bottom" size={240} showHandle backdrop="dim" title="Share">
+  <div>Share Content Here</div>
+</CustomDrawer>`}
+            >
+              <BottomSheetExample />
+            </Section>
 
           </div>
         </div>

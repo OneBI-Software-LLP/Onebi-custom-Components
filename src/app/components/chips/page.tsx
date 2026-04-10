@@ -20,7 +20,7 @@ const AddIcon = () => (
 );
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
+  <div className="mt-6 border-t border-slate-100 pt-6">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
@@ -38,12 +38,13 @@ const CodeBlock = ({ code }: { code: string }) => (
   </div>
 );
 
-const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+const Section = ({ title, code, children }: { title: string; code?: string; children: React.ReactNode }) => (
   <div className="space-y-4">
     <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
       {title}
     </Label>
     {children}
+    {code && <CodeBlock code={code} />}
   </div>
 );
 
@@ -86,7 +87,10 @@ export default function ChipsPage() {
           
           <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
             
-            <Section title="Variants">
+            <Section title="Variants" code={`<ChipGroup mode="filter" color="blue" variant="filled" items={[{id:"1",label:"Filled"},{id:"2",label:"Selected"}]} defaultValue={["2"]} />
+<ChipGroup mode="filter" color="blue" variant="outlined" items={[{id:"1",label:"Outlined"},{id:"2",label:"Selected"}]} defaultValue={["2"]} />
+<ChipGroup mode="filter" color="blue" variant="soft" items={[{id:"1",label:"Soft"},{id:"2",label:"Selected"}]} defaultValue={["2"]} />
+<ChipGroup mode="filter" color="blue" variant="ghost" items={[{id:"1",label:"Ghost"},{id:"2",label:"Selected"}]} defaultValue={["2"]} />`}>
               <div className="flex flex-col gap-4">
                 <ChipGroup mode="filter" color="blue" variant="filled" items={[{id:"1",label:"Filled"},{id:"2",label:"Selected"},{id:"3",label:"Another"}]} defaultValue={["2"]} />
                 <ChipGroup mode="filter" color="blue" variant="outlined" items={[{id:"1",label:"Outlined"},{id:"2",label:"Selected"},{id:"3",label:"Another"}]} defaultValue={["2"]} />
@@ -97,7 +101,11 @@ export default function ChipsPage() {
 
             <Separator className="bg-slate-100" />
             
-            <Section title="Sizes">
+            <Section title="Sizes" code={`<ChipGroup mode="filter" color="default" variant="filled" size="xs" items={[{id:"a",label:"Unselected"},{id:"b",label:"Selected"}]} defaultValue={["b"]} />
+<ChipGroup mode="filter" color="default" variant="filled" size="sm" items={[{id:"a",label:"Unselected"},{id:"b",label:"Selected"}]} defaultValue={["b"]} />
+<ChipGroup mode="filter" color="default" variant="filled" size="md" items={[{id:"a",label:"Unselected"},{id:"b",label:"Selected"}]} defaultValue={["b"]} />
+<ChipGroup mode="filter" color="default" variant="filled" size="lg" items={[{id:"a",label:"Unselected"},{id:"b",label:"Selected"}]} defaultValue={["b"]} />
+<ChipGroup mode="filter" color="default" variant="filled" size="xl" items={[{id:"a",label:"Unselected"},{id:"b",label:"Selected"}]} defaultValue={["b"]} />`}>
               <div className="flex flex-col gap-3">
                 {(["xs","sm","md","lg","xl"] as const).map((sz) => (
                   <div key={sz} className="flex items-center gap-3">
@@ -113,7 +121,8 @@ export default function ChipsPage() {
 
             <Separator className="bg-slate-100" />
             
-            <Section title="Colors — filled & soft">
+            <Section title="Colors — filled & soft" code={`<Chip label="blue" color="blue" variant="filled" size="sm" />
+<Chip label="teal" color="teal" variant="soft" size="sm" />`}>
               <div className="flex flex-wrap gap-2 mb-3">
                 {COLOR_KEYS.map((c: any) => (
                   <Chip key={c} label={c} color={c} variant="filled" active size="sm" />
@@ -128,7 +137,25 @@ export default function ChipsPage() {
 
             <Separator className="bg-slate-100" />
             
-            <Section title="Filter chips — multi-select">
+            <Section title="Filter chips — multi-select" code={`import { ChipGroup } from "@/components/CustomChip";
+
+export default function Demo() {
+  const [filterSel, setFilterSel] = useState(["electronics"]);
+
+  return (
+    <ChipGroup
+      mode="filter"
+      color="blue"
+      variant="filled"
+      value={filterSel}
+      onChange={setFilterSel}
+      items={[
+        { id: "all", label: "All" },
+        { id: "electronics", label: "Electronics", count: 42 }
+      ]}
+    />
+  );
+}`}>
               <div className="space-y-3">
                 <p className="text-xs text-slate-500">Category</p>
                 <ChipGroup
@@ -152,7 +179,25 @@ export default function ChipsPage() {
 
             <Separator className="bg-slate-100" />
 
-            <Section title="Choice chips — single select">
+            <Section title="Choice chips — single select" code={`import { ChipGroup } from "@/components/CustomChip";
+
+export default function Demo() {
+  const [choiceSel, setChoiceSel] = useState(["monthly"]);
+
+  return (
+    <ChipGroup
+      mode="choice"
+      color="coral"
+      variant="filled"
+      value={choiceSel}
+      onChange={setChoiceSel}
+      items={[
+        { id: "daily", label: "Daily" },
+        { id: "monthly", label: "Monthly" }
+      ]}
+    />
+  );
+}`}>
               <ChipGroup
                 mode="choice"
                 color="coral"
@@ -170,7 +215,13 @@ export default function ChipsPage() {
 
             <Separator className="bg-slate-100" />
 
-            <Section title="Input chips — deletable tags">
+            <Section title="Input chips — deletable tags" code={`<ChipGroup
+  mode="input"
+  color="purple"
+  variant="outlined"
+  items={tags}
+  onDelete={(id, rest) => setTags(rest)}
+/>`}>
               <div className="space-y-3">
                 <ChipGroup
                   mode="input"
@@ -198,7 +249,7 @@ export default function ChipsPage() {
 
             <Separator className="bg-slate-100" />
 
-            <Section title="Status chips — static">
+            <Section title="Status chips — static" code={`<Chip label="Active" color="green" variant="soft" size="sm" leadingIcon={<Dot color="#3B6D11" />} />`}>
               <div className="flex flex-wrap gap-2">
                 {[
                   { id: "active",   label: "Active",   color: "green",   dot: "#3B6D11" },
@@ -223,7 +274,7 @@ export default function ChipsPage() {
 
             <Separator className="bg-slate-100" />
 
-            <Section title="Suggestion chips — actionable">
+            <Section title="Suggestion chips — actionable" code={`<Chip label="Add to calendar" color="default" variant="outlined" leadingIcon={<AddIcon />} clickable onClick={() => {}} />`}>
               <div className="flex flex-wrap gap-2">
                 {[
                   "Add to calendar", "Send reminder", "Schedule meeting",
@@ -245,7 +296,7 @@ export default function ChipsPage() {
 
             <Separator className="bg-slate-100" />
 
-            <Section title="Avatar chips">
+            <Section title="Avatar chips" code={`<Chip label="Anjali Sharma" avatar="Anjali Sharma" color="purple" variant="soft" deletable clickable />`}>
               <div className="flex flex-wrap gap-2">
                 {[
                   { label: "Anjali Sharma",  color: "purple" },
@@ -271,7 +322,10 @@ export default function ChipsPage() {
 
             <Separator className="bg-slate-100" />
 
-            <Section title="States">
+            <Section title="States" code={`<Chip label="Active" color="blue" variant="filled" active />
+<Chip label="Disabled" color="blue" variant="filled" disabled />
+<Chip label="Loading" color="blue" variant="filled" loading />
+<Chip label="With count" color="teal" variant="filled" count={24} />`}>
               <div className="flex flex-wrap items-center gap-2">
                 <Chip label="Default" color="blue" variant="filled" />
                 <Chip label="Active" color="blue" variant="filled" active />
@@ -283,33 +337,6 @@ export default function ChipsPage() {
               </div>
             </Section>
 
-            <CodeBlock
-              code={`import { Chip, ChipGroup } from "@/components/CustomChip";
-
-export default function ChipsDemo() {
-  const [filterSel, setFilterSel] = useState(["2"]);
-
-  return (
-    <div className="space-y-4">
-      {/* Individual Chip */}
-      <Chip label="Loading..." color="blue" loading />
-
-      {/* Chip Group (Multi-select) */}
-      <ChipGroup 
-        mode="filter" 
-        color="purple" 
-        variant="filled" 
-        items={[
-          { id: "1", label: "Option 1" },
-          { id: "2", label: "Option 2" }
-        ]} 
-        value={filterSel}
-        onChange={setFilterSel}
-      />
-    </div>
-  );
-}`}
-            />
           </div>
         </div>
       </div>

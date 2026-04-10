@@ -8,7 +8,7 @@ import CustomTooltip from "@/components/CustomTooltip";
 import CustomAvatar from "@/components/CustomAvatar";
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
+  <div className="mt-6 border-t border-slate-100 pt-6">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
@@ -26,13 +26,17 @@ const CodeBlock = ({ code }: { code: string }) => (
   </div>
 );
 
-function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) {
+function Section({ title, description, code, children }: { title: string; description?: string; code?: string; children: React.ReactNode }) {
   return (
-    <div className="mb-4 mt-8 first:mt-0">
-      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-        {title}
-      </Label>
-      <p className="text-sm text-slate-500 mt-1">{subtitle}</p>
+    <div className="space-y-4">
+      <div>
+        <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+          {title}
+        </Label>
+        {description && <p className="text-sm text-slate-500 mt-1">{description}</p>}
+      </div>
+      <div>{children}</div>
+      {code && <CodeBlock code={code} />}
     </div>
   );
 }
@@ -54,8 +58,17 @@ export default function TooltipPage() {
           <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
             
             {/* 1. Placements */}
-            <div>
-              <SectionTitle title="1. Placements" subtitle="Align the tooltip to any side of the trigger element." />
+            <Section 
+              title="1. Placements" 
+              description="Align the tooltip to any side of the trigger element."
+              code={`<CustomTooltip content="Appears on the top" placement="top">
+  <button>Top</button>
+</CustomTooltip>
+
+<CustomTooltip content="Appears on the right" placement="right">
+  <button>Right</button>
+</CustomTooltip>`}
+            >
               <div className="flex flex-wrap gap-8 items-center justify-center pt-8 pb-4">
                 <CustomTooltip content="Appears on the top" placement="top">
                   <button className="px-6 py-2.5 bg-indigo-50 text-indigo-700 font-semibold rounded-xl border border-indigo-100 hover:bg-indigo-100 transition-colors shadow-sm">Top</button>
@@ -73,14 +86,23 @@ export default function TooltipPage() {
                   <button className="px-6 py-2.5 bg-indigo-50 text-indigo-700 font-semibold rounded-xl border border-indigo-100 hover:bg-indigo-100 transition-colors shadow-sm">Right</button>
                 </CustomTooltip>
               </div>
-            </div>
+            </Section>
 
             <Separator className="bg-slate-100" />
 
             {/* 2. Themes & Triggers */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <div>
-                <SectionTitle title="2. Visual Themes" subtitle="Support for Dark (default) and Light themes." />
+              <Section 
+                title="2. Visual Themes" 
+                description="Support for Dark (default) and Light themes."
+                code={`<CustomTooltip content="I'm the default dark theme" theme="dark">
+  <span>Hover for Dark</span>
+</CustomTooltip>
+
+<CustomTooltip content="I'm the clean light theme" theme="light">
+  <span>Hover for Light</span>
+</CustomTooltip>`}
+              >
                 <div className="flex gap-4 items-center">
                   <CustomTooltip content="I'm the default dark theme" theme="dark">
                     <span className="px-3 py-1 rounded bg-slate-100 text-slate-600 text-sm cursor-pointer hover:bg-slate-200 transition-colors">Hover for Dark</span>
@@ -89,9 +111,19 @@ export default function TooltipPage() {
                     <span className="px-3 py-1 rounded bg-slate-100 text-slate-600 text-sm cursor-pointer hover:bg-slate-200 transition-colors">Hover for Light</span>
                   </CustomTooltip>
                 </div>
-              </div>
-              <div>
-                <SectionTitle title="3. Interactive Triggers" subtitle="Trigger on hover (default) or on click." />
+              </Section>
+              
+              <Section 
+                title="3. Interactive Triggers" 
+                description="Trigger on hover (default) or on click."
+                code={`<CustomTooltip content="Hover logic is standard" trigger="hover">
+  <button>Hover me</button>
+</CustomTooltip>
+
+<CustomTooltip content="Click outside to close this" trigger="click">
+  <button>Click me</button>
+</CustomTooltip>`}
+              >
                 <div className="flex gap-4 items-center">
                   <CustomTooltip content="Hover logic is standard" trigger="hover">
                     <button className="px-4 py-2 border rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">Hover me</button>
@@ -100,14 +132,25 @@ export default function TooltipPage() {
                     <button className="px-4 py-2 border rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-black transition-colors shadow-lg shadow-slate-200">Click me</button>
                   </CustomTooltip>
                 </div>
-              </div>
+              </Section>
             </div>
 
             <Separator className="bg-slate-100" />
 
             {/* 3. Real World Example */}
-            <div>
-              <SectionTitle title="4. Complex Content" subtitle="Tooltips can wrap any component and show rich fallback info." />
+            <Section 
+              title="4. Complex Content" 
+              description="Tooltips can wrap any component and show rich fallback info."
+              code={`<CustomTooltip content="John Doe (Online)" placement="right" theme="light">
+  <div>
+    <CustomAvatar initials="JD" size="lg" status="online" />
+  </div>
+</CustomTooltip>
+
+<CustomTooltip content="Minimalist style, no arrow." showArrow={false}>
+  <div>?</div>
+</CustomTooltip>`}
+            >
               <div className="flex gap-12 items-center">
                 <div className="flex items-center gap-4">
                   <CustomTooltip content="John Doe (Online)" placement="right" theme="light">
@@ -133,32 +176,8 @@ export default function TooltipPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Section>
 
-            <CodeBlock
-              code={`import CustomTooltip from "@/components/CustomTooltip";
-import CustomAvatar from "@/components/CustomAvatar";
-
-export default function Example() {
-  return (
-    <div className="flex gap-4">
-      {/* Basic hover tooltip */}
-      <CustomTooltip content="Click to save" placement="top">
-        <button>Save Changes</button>
-      </CustomTooltip>
-
-      {/* Light theme with click trigger */}
-      <CustomTooltip 
-        content="Profile Details" 
-        trigger="click" 
-        theme="light"
-      >
-        <CustomAvatar initials="JD" status="online" />
-      </CustomTooltip>
-    </div>
-  );
-}`}
-            />
           </div>
         </div>
       </div>

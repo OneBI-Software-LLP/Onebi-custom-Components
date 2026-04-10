@@ -9,7 +9,7 @@ import CustomAvatar from "@/components/CustomAvatar";
 import { Bell, Mail, Users, Check, AlertTriangle, XCircle, Info } from "lucide-react";
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
+  <div className="mt-6 border-t border-slate-100 pt-6">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
@@ -27,13 +27,17 @@ const CodeBlock = ({ code }: { code: string }) => (
   </div>
 );
 
-function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) {
+function Section({ title, description, code, children }: { title: string; description?: string; code?: string; children: React.ReactNode }) {
   return (
-    <div className="mb-4 mt-8 first:mt-0">
-      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-        {title}
-      </Label>
-      <p className="text-sm text-slate-500 mt-1">{subtitle}</p>
+    <div className="space-y-4">
+      <div>
+        <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+          {title}
+        </Label>
+        {description && <p className="text-sm text-slate-500 mt-1">{description}</p>}
+      </div>
+      <div>{children}</div>
+      {code && <CodeBlock code={code} />}
     </div>
   );
 }
@@ -55,8 +59,15 @@ export default function BadgePage() {
           <div className="grid gap-10 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
             
             {/* 1. Variants & Colors */}
-            <div>
-              <SectionTitle title="1. Variants & Colors" subtitle="Solid, Subtile, and Outline styles for every semantic context." />
+            <Section 
+              title="1. Variants & Colors" 
+              description="Solid, Subtile, and Outline styles for every semantic context."
+              code={`import CustomBadge from "@/components/CustomBadge";
+
+<CustomBadge variant="solid" color="primary">Solid Primary</CustomBadge>
+<CustomBadge variant="subtle" color="success">Approved</CustomBadge>
+<CustomBadge variant="outline" color="danger">Rejected</CustomBadge>`}
+            >
               <div className="flex flex-col gap-6">
                 <div className="flex flex-wrap gap-3">
                   <CustomBadge variant="solid" color="primary">Solid Primary</CustomBadge>
@@ -78,35 +89,60 @@ export default function BadgePage() {
                   <CustomBadge variant="outline" color="danger">Rejected</CustomBadge>
                 </div>
               </div>
-            </div>
+            </Section>
 
             <Separator className="bg-slate-100" />
 
             {/* 2. Sizes & Shapes */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <div>
-                <SectionTitle title="2. Sizes" subtitle="Scalable from sm to lg." />
+              <Section 
+                title="2. Sizes" 
+                description="Scalable from sm to lg."
+                code={`<CustomBadge size="lg" color="danger">Large</CustomBadge>`}
+              >
                 <div className="flex items-center gap-4">
                   <CustomBadge size="sm" color="primary">Small</CustomBadge>
                   <CustomBadge size="md" color="success">Medium</CustomBadge>
                   <CustomBadge size="lg" color="danger">Large</CustomBadge>
                 </div>
-              </div>
-              <div>
-                <SectionTitle title="3. Geometric Shapes" subtitle="Pill (default), Rounded, and Square." />
+              </Section>
+              
+              <Section 
+                title="3. Geometric Shapes" 
+                description="Pill (default), Rounded, and Square."
+                code={`<CustomBadge shape="square" color="danger">Square</CustomBadge>`}
+              >
                 <div className="flex items-center gap-4">
                   <CustomBadge shape="pill" color="neutral">Pill Shape</CustomBadge>
                   <CustomBadge shape="rounded" color="primary">Rounded</CustomBadge>
                   <CustomBadge shape="square" color="danger">Square</CustomBadge>
                 </div>
-              </div>
+              </Section>
             </div>
 
             <Separator className="bg-slate-100" />
 
             {/* 3. Overlay Notifications */}
-            <div>
-              <SectionTitle title="4. Overlay & Status Dots" subtitle="Absolute positioning for notification counts and status indicators." />
+            <Section 
+              title="4. Overlay & Status Dots" 
+              description="Absolute positioning for notification counts and status indicators."
+              code={`import { Bell } from "lucide-react";
+import CustomBadge from "@/components/CustomBadge";
+
+{/* Notification overlay */}
+<div className="relative inline-flex p-3">
+  <Bell className="w-6 h-6 text-slate-600" />
+  <CustomBadge position="top-right" color="danger" variant="solid" size="sm">
+    8
+  </CustomBadge>
+</div>
+
+{/* Status dot */}
+<div className="relative">
+  <img src="..." className="rounded-full" />
+  <CustomBadge position="bottom-right" isDot color="success" size="lg" />
+</div>`}
+            >
               <div className="flex flex-wrap gap-12 items-center pt-4 pb-4">
                 
                 {/* Notification Count */}
@@ -139,13 +175,21 @@ export default function BadgePage() {
                 </div>
 
               </div>
-            </div>
+            </Section>
 
             <Separator className="bg-slate-100" />
 
             {/* 4. Semantic Examples */}
-            <div>
-              <SectionTitle title="5. Semantic Status" subtitle="Common patterns for system feedback." />
+            <Section 
+              title="5. Semantic Status" 
+              description="Common patterns for system feedback."
+              code={`import { Check } from "lucide-react";
+              
+<CustomBadge variant="subtle" color="success" className="gap-1.5 pl-2 pr-3">
+  <Check className="w-3.5 h-3.5" />
+  Payment Success
+</CustomBadge>`}
+            >
               <div className="flex flex-wrap gap-4">
                 <CustomBadge variant="subtle" color="success" className="gap-1.5 pl-2 pr-3">
                   <Check className="w-3.5 h-3.5" />
@@ -164,45 +208,8 @@ export default function BadgePage() {
                   Update available
                 </CustomBadge>
               </div>
-            </div>
+            </Section>
 
-            <CodeBlock
-              code={`import CustomBadge from "@/components/CustomBadge";
-import { Bell } from "lucide-react";
-
-export default function Example() {
-  return (
-    <div className="flex gap-4">
-      {/* Simple semantic badge */}
-      <CustomBadge color="success" variant="subtle">
-        Verified
-      </CustomBadge>
-
-      {/* Notification overlay */}
-      <div className="relative inline-block">
-        <Bell className="w-6 h-6" />
-        <CustomBadge 
-          position="top-right" 
-          color="danger" 
-          size="sm"
-        >
-          3
-        </CustomBadge>
-      </div>
-
-      {/* Status indicator dot */}
-      <div className="relative">
-        <img src="..." className="rounded-full w-12 h-12" />
-        <CustomBadge 
-          position="bottom-right" 
-          isDot 
-          color="success" 
-        />
-      </div>
-    </div>
-  );
-}`}
-            />
           </div>
         </div>
       </div>

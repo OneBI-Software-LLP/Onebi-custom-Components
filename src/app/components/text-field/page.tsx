@@ -8,7 +8,7 @@ import { CustomTextField } from "@/components/CustomTextField";
 import { Search, Mail, AtSign, DollarSign, Lock } from "lucide-react";
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
+  <div className="mt-6 border-t border-slate-100 pt-6">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
@@ -25,6 +25,18 @@ const CodeBlock = ({ code }: { code: string }) => (
     </pre>
   </div>
 );
+
+function Section({ title, code, children }: { title: string; code?: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-4">
+      <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+        {title}
+      </Label>
+      {children}
+      {code && <CodeBlock code={code} />}
+    </div>
+  );
+}
 
 export default function TextFieldPage() {
   const [email, setEmail] = useState("");
@@ -46,10 +58,18 @@ export default function TextFieldPage() {
             </p>
           </div>
           <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Email Field
-              </Label>
+            
+            <Section title="Email Field" code={`<CustomTextField
+  type="email"
+  label="Email address"
+  placeholder="you@example.com"
+  leadingIcon={<Mail size={16} />}
+  helperText="We'll never share your email."
+  clearable
+  validateOn="blur"
+  errorMessage="Please enter a valid email address."
+  successMessage="Email looks good!"
+/>`}>
               <CustomTextField
                 type="email"
                 label="Email address"
@@ -63,14 +83,23 @@ export default function TextFieldPage() {
                 value={email}
                 onChange={(val) => setEmail(val)}
               />
-            </div>
+            </Section>
             
             <Separator className="bg-slate-100" />
             
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Username with Validation
-              </Label>
+            <Section title="Username with Validation" code={`<CustomTextField
+  type="text"
+  label="Username"
+  placeholder="only_letters_and_numbers"
+  leadingIcon={<AtSign size={16} />}
+  charCounter
+  maxLength={20}
+  minLength={3}
+  pattern="[a-zA-Z0-9_]+"
+  validateOn="input"
+  errorMessage="Only letters, numbers, and underscores allowed."
+  successMessage="Username is available!"
+/>`}>
               <CustomTextField
                 type="text"
                 label="Username"
@@ -88,14 +117,21 @@ export default function TextFieldPage() {
                 value={username}
                 onChange={(val) => setUsername(val)}
               />
-            </div>
+            </Section>
             
             <Separator className="bg-slate-100" />
             
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Number & Bounds
-              </Label>
+            <Section title="Number & Bounds" code={`<CustomTextField
+  type="number"
+  label="Amount (USD)"
+  placeholder="0.00"
+  leadingIcon={<DollarSign size={16} />}
+  min={1}
+  max={10000}
+  step={0.01}
+  validateOn="blur"
+  colors={{ focus: "#1D9E75", success: "#1D9E75" }}
+/>`}>
               <CustomTextField
                 type="number"
                 label="Amount (USD)"
@@ -112,14 +148,24 @@ export default function TextFieldPage() {
                 onChange={(val) => setAmount(val)}
                 colors={{ focus: "#1D9E75", success: "#1D9E75" }}
               />
-            </div>
+            </Section>
             
             <Separator className="bg-slate-100" />
             
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Password & Custom Validation
-              </Label>
+            <Section title="Password & Custom Validation" code={`<CustomTextField
+  type="password"
+  label="Password"
+  placeholder="At least 8 characters"
+  leadingIcon={<Lock size={16} />}
+  validateOn="blur"
+  validate={(val) => {
+    if (val.length < 8) return "Must be at least 8 characters.";
+    if (!/[A-Z]/.test(val)) return "Must contain an uppercase letter.";
+    if (!/[0-9]/.test(val)) return "Must contain a number.";
+    return true;
+  }}
+  successMessage="Strong password!"
+/>`}>
               <CustomTextField
                 type="password"
                 label="Password"
@@ -138,14 +184,20 @@ export default function TextFieldPage() {
                 value={password}
                 onChange={(val) => setPassword(val)}
               />
-            </div>
+            </Section>
             
             <Separator className="bg-slate-100" />
             
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Filled Search Variant
-              </Label>
+            <Section title="Filled Search Variant" code={`<CustomTextField
+  type="search"
+  placeholder="Search anything..."
+  leadingIcon={<Search size={16} />}
+  variant="filled"
+  clearable
+  size="md"
+  borderRadius={24}
+  colors={{ focus: "#BA7517" }}
+/>`}>
               <CustomTextField
                 type="search"
                 placeholder="Search anything..."
@@ -159,15 +211,32 @@ export default function TextFieldPage() {
                 onChange={(val) => setSearch(val)}
                 colors={{ focus: "#BA7517" }}
               />
-            </div>
+            </Section>
             
             <Separator className="bg-slate-100" />
             
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Other States
-              </Label>
-              <div className="space-y-6">
+            <Section title="Other States" code={`<CustomTextField
+  type="text"
+  label="Account ID"
+  value="ACC-2024-88f3a"
+  readOnly
+/>
+
+<CustomTextField
+  type="text"
+  label="Referral code"
+  value="PROMO2025"
+  disabled
+/>
+
+<CustomTextField
+  type="text"
+  label="Nickname"
+  variant="underline"
+  optional
+  size="lg"
+/>`}>
+              <div className="space-y-6 mt-4">
                 <CustomTextField
                   type="text"
                   label="Account ID"
@@ -197,31 +266,8 @@ export default function TextFieldPage() {
                   colors={{ focus: "#7F77DD" }}
                 />
               </div>
-            </div>
+            </Section>
 
-            <CodeBlock
-              code={`import { CustomTextField } from "@/components/CustomTextField";
-              
-export default function TextFieldDemo() {
-  const [email, setEmail] = useState("");
-
-  return (
-    <CustomTextField
-      type="email"
-      label="Email address"
-      placeholder="you@example.com"
-      leadingIcon={<Mail size={16} />}
-      helperText="We'll never share your email."
-      clearable
-      validateOn="blur"
-      errorMessage="Please enter a valid email address."
-      successMessage="Email looks good!"
-      value={email}
-      onChange={(val) => setEmail(val)}
-    />
-  );
-}`}
-            />
           </div>
         </div>
       </div>
