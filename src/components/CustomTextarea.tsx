@@ -1,5 +1,5 @@
 import React from 'react';
-import '@/components/ui/textarea.css';
+import '@/components/ui/styles/textarea.css';
 
 export type TextareaSize    = 'sm' | 'md' | 'lg';
 export type TextareaVariant = 'default' | 'filled' | 'flushed';
