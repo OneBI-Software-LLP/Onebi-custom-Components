@@ -1,5 +1,5 @@
 import React from 'react';
-import '@/styles/ui/radio-group.css';
+import './radio-group.css';
 
 // ─────────────────────────────────────────────────────────────
 //  TYPES

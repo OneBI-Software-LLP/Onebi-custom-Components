@@ -4,43 +4,64 @@ A robust, production-ready Node.js CLI tool inspired by `shadcn/ui`. It intellig
 
 ## 🚀 Features
 
-- **Intelligent Framework Detection:** Automatically determines whether your project uses **Next.js**, **Vite**, or raw **React** to configure the correct component paths out-of-the-box.
-- **Automatic Tailwind Setup:** Checks for an existing Tailwind configuration. If none is found, it automatically installs Tailwind CSS, PostCSS, Autoprefixer, generates `tailwind.config.js`, and injects the global design tokens.
-- **Recursive Dependency Installation:** When adding a component, the CLI fetches all required dependencies (e.g. `class-variance-authority`, `lucide-react`) and child components, resolving them dynamically.
-- **TypeScript / JavaScript Fallback:** Seamlessly swaps extensions (`.tsx` to `.jsx`) based on your `tsconfig.json`.
-- **Auto-Formatting:** Runs `prettier` dynamically on the added files so everything visually matches your specific project standard.
+- **Intelligent Framework Detection:** Automatically determines whether your project uses **Next.js**, **Vite**, or raw **React**.
+- **Automatic Tailwind Setup:** Checks for existing configuration and injects premium design tokens automatically.
+- **Recursive Dependency Installation:** Resolves and installs child components and npm packages (e.g. `framer-motion`, `lucide-react`) dynamically.
+- **Localized Component Structure:** Every component now includes its own localized CSS, ensuring a perfect look regardless of your global style setup.
+- **TypeScript / JavaScript Fallback:** Seamlessly supports both `.tsx` and `.jsx` environments.
 
 ***
 
 ## 📦 Usage
 
 ### 1. Initialize Project
-
-Run the initialization command in your fresh Next.js, React, or Vite project. This will generate your `onebi.config.json` and optionally set up Tailwind.
-
+Run this in your fresh Next.js, React, or Vite project to set up your configuration.
 ```bash
 npx onebi-ui@latest init
 ```
 
 ### 2. Add a Component
-
-Add any built-in component. The CLI will copy the raw React component code to your initialized folder.
-
 ```bash
 npx onebi-ui@latest add button
 ```
 
-You can pass multiple components at once:
-```bash
-npx onebi-ui@latest add button dialog sidebar
-```
-
 ***
 
-## 🛠 Advanced Features
+## 📋 Available Components
 
-### Configuration (`onebi.config.json`)
-Running `init` will leave you with a configuration pointing to your paths:
+Our library is divided into **Premium** (feature-rich, high-fidelity) and **Standard** (core building blocks) components.
+
+### 💎 Premium Components
+These components feature complex interactions, advanced styling, and built-in animations.
+
+| Component | CLI Command | Usage Example |
+| :--- | :--- | :--- |
+| **Navbar** | `add navbar` | `<Navbar brand={<Logo />} items={navLinks} />` |
+| **Chips** | `add chips` | `<Chips items={tags} variant="soft" />` |
+| **Filter Bar** | `add filter-bar` | `<FilterBar onFilter={handleFilter} />` |
+| **Multi Select** | `add multi-select` | `<MultiSelect options={options} />` |
+| **File Upload** | `add file-upload` | `<FileUpload onUpload={v => console.log(v)} />` |
+| **Search Input** | `add search-input` | `<SearchInput shortcutHint="⌘K" clearable />` |
+| **Command Palette**| `add command-palette`| `<CommandPalette groups={groups} open={isOpen} />` |
+| **Role Selector** | `add role-permission-selector` | `<RolePermissionSelector data={roles} />` |
+| **Text Field** | `add text-field` | `<TextField label="Email" status="error" />` |
+| **Modal** | `add modal` | `<Modal title="Account Settings">...</Modal>` |
+
+### 🧱 Standard Components
+Clean, accessible building blocks for any application.
+
+- **Actions**: `button`, `badge`, `spinner`
+- **Forms**: `input`, `textarea`, `checkbox`, `radio-group`, `switch`, `select`, `combo-box`, `label`, `form`, `password-input`
+- **Navigation**: `tabs`, `sheet`, `drawer`, `dropdown-menu`, `popover`, `separator`
+- **Data**: `table`, `card`, `accordion`, `empty-state`, `skeleton`
+- **Pickers**: `calendar`, `date-picker`
+- **Feedback**: `toast`, `tooltip`
+
+---
+
+## 🛠 Advanced Configuration (`onebi.config.json`)
+
+Your configuration file controls where components are placed and how they are handled.
 
 ```json
 {
@@ -52,8 +73,8 @@ Running `init` will leave you with a configuration pointing to your paths:
 }
 ```
 
-### Variants System
-All interactive components utilize `class-variance-authority` (CVA) allowing you to implement dynamic sizing, spacing, and styling flawlessly.
+## 🎨 Styling & Design Tokens
+When you run `init`, the CLI injects a set of "OneBI Design Tokens" into your CSS. Premium components rely on these variables (e.g., `--color-primary`, `--color-surface`) to maintain their high-fidelity look. All components are fully open-source—you can tweak the CSS directly in your project!
 
 ---
-Built by OneBI.
+Built by [OneBI](https://onebi.com).

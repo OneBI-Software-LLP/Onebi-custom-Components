@@ -18,16 +18,15 @@ async function buildRegistry() {
   console.log("Building Component Registry...");
 
   // 1. Copy global CSS for init command
-  const globalCssSrc = path.join(ROOT_DIR, "src", "styles", "components.css");
+  const globalCssSrc = path.join(ROOT_DIR, "src", "app", "globals.css");
   if (fs.existsSync(globalCssSrc)) {
     fs.copyFileSync(globalCssSrc, path.join(REGISTRY_DIR, "components.css"));
-    console.log("✅ Copied components.css");
+    console.log("✅ Copied globals.css to registry/components.css");
   }
 
   // 2. Loop through UI components and generate JSON definitions
   if (fs.existsSync(UI_SRC)) {
     const files = fs.readdirSync(UI_SRC).filter(f => f.endsWith(".tsx"));
-    const STYLES_DIR = path.join(ROOT_DIR, "src", "styles", "ui");
     
     let indexData = [];
 
@@ -59,11 +58,10 @@ async function buildRegistry() {
         }
       ];
 
-      // Check for matching CSS file in styles directory
-      // We look for both lowercase and original case CSS
+      // Check for matching CSS file in the same directory
       const cssPaths = [
-        path.join(STYLES_DIR, `${componentName}.css`),
-        path.join(STYLES_DIR, `${file.replace(".tsx", "")}.css`)
+        path.join(UI_SRC, `${componentName}.css`),
+        path.join(UI_SRC, `${file.replace(".tsx", "")}.css`)
       ];
 
       for (const cssPath of cssPaths) {

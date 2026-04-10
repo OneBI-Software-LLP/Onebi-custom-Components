@@ -1,5 +1,5 @@
 import React from 'react';
-import '@/styles/ui/navbar.css';
+import './navbar.css';
 
 // ─────────────────────────────────────────────────────────────
 //  TYPES
