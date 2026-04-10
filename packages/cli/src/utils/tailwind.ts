@@ -34,7 +34,7 @@ const GLOBAL_CSS_INJECTION = `
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
  
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
  
     --secondary: 210 40% 96.1%;
@@ -51,9 +51,27 @@ const GLOBAL_CSS_INJECTION = `
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 221.2 83.2% 53.3%;
  
     --radius: 0.5rem;
+
+    /* OneBI Extra Tokens */
+    --color-primary      : #1a1a1a;
+    --color-primary-hover: #333333;
+    --color-danger       : #dc2626;
+    --color-danger-hover : #b91c1c;
+    --color-success      : #16a34a;
+    --color-success-hover: #15803d;
+    --color-warning      : #d97706;
+    --color-warning-hover: #b45309;
+    --color-info         : #2563eb;
+    --color-info-hover   : #1d4ed8;
+    --color-surface      : #f3f4f6;
+    --color-surface-hover: #e5e7eb;
+    --color-border       : #d1d5db;
+    --color-text         : #111827;
+    --color-text-muted   : #6b7280;
+    --ring-primary       : rgba(0, 0, 0, 0.25);
   }
  
   .dark {
@@ -66,7 +84,7 @@ const GLOBAL_CSS_INJECTION = `
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
  
-    --primary: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
  
     --secondary: 217.2 32.6% 17.5%;
@@ -83,7 +101,17 @@ const GLOBAL_CSS_INJECTION = `
  
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 224.3 76.3% 48%;
+
+    /* OneBI Extra Tokens - Dark */
+    --color-primary      : #f9fafb;
+    --color-primary-hover: #e5e7eb;
+    --color-surface      : #1f2937;
+    --color-surface-hover: #374151;
+    --color-border       : #374151;
+    --color-text         : #f9fafb;
+    --color-text-muted   : #9ca3af;
+    --ring-primary       : rgba(249, 250, 251, 0.25);
   }
 }
  

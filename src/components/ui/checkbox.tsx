@@ -1,5 +1,5 @@
 import React from 'react';
-import '@/styles/ui/checkbox.css';
+import './checkbox.css';
 
 export type CheckboxSize    = 'sm' | 'md' | 'lg';
 export type CheckboxVariant = 'default' | 'filled' | 'card';
