@@ -4,7 +4,20 @@ import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { X, Plus } from "lucide-react";
+import { Chip, ChipGroup } from "@/components/CustomChip";
+
+// We'll bring back standard SVG icons here so the user has the exact demo
+const Dot = ({ color }: { color?: string }) => (
+  <svg width="7" height="7" viewBox="0 0 7 7">
+    <circle cx="3.5" cy="3.5" r="3.5" fill={color || "currentColor"} />
+  </svg>
+);
+
+const AddIcon = () => (
+  <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+    <path d="M5.5 1v9M1 5.5h9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
 
 const CodeBlock = ({ code }: { code: string }) => (
   <div className="mt-10 border-t border-slate-100 pt-8">
@@ -25,46 +38,38 @@ const CodeBlock = ({ code }: { code: string }) => (
   </div>
 );
 
-interface ChipProps {
-  label: string;
-  onRemove?: () => void;
-  variant?: "default" | "secondary" | "outline";
-}
-
-function Chip({ label, onRemove, variant = "default" }: ChipProps) {
-  return (
-    <div
-      className={`
-        inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all
-        ${variant === "default" ? "bg-indigo-500 text-white shadow-md shadow-indigo-100" : ""}
-        ${variant === "secondary" ? "bg-slate-100 text-slate-700 hover:bg-slate-200" : ""}
-        ${variant === "outline" ? "bg-white text-slate-700 border border-slate-200 hover:bg-slate-50" : ""}
-      `}
-    >
-      <span>{label}</span>
-      {onRemove && (
-        <button
-          onClick={onRemove}
-          className="p-0.5 rounded-full hover:bg-white/20 transition-colors"
-        >
-          <X className="h-3 w-3" />
-        </button>
-      )}
-    </div>
-  );
-}
+const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div className="space-y-4">
+    <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+      {title}
+    </Label>
+    {children}
+  </div>
+);
 
 export default function ChipsPage() {
-  const [chips, setChips] = useState([
-    { id: 1, label: "React", variant: "default" as const },
-    { id: 2, label: "TypeScript", variant: "secondary" as const },
-    { id: 3, label: "Next.js", variant: "outline" as const },
-    { id: 4, label: "Tailwind", variant: "default" as const },
+  const [filterSel, setFilterSel] = useState<string[]>(["electronics", "fashion"]);
+  const [choiceSel, setChoiceSel] = useState<string[]>(["monthly"]);
+  const [tags, setTags] = useState([
+    { id: "t1", label: "Design Systems" },
+    { id: "t2", label: "React" },
+    { id: "t3", label: "TypeScript" },
+    { id: "t4", label: "Accessibility" },
+    { id: "t5", label: "UI Kit" },
   ]);
+  const [tagInput, setTagInput] = useState("");
+  const [tagIdCounter, setTagIdCounter] = useState(100);
 
-  const removeChip = (id: number) => {
-    setChips(chips.filter((chip) => chip.id !== id));
+  const addTag = () => {
+    const val = tagInput.trim();
+    if (val && !tags.find((t) => t.label === val)) {
+      setTags([...tags, { id: `t${tagIdCounter}`, label: val }]);
+      setTagIdCounter((n) => n + 1);
+    }
+    setTagInput("");
   };
+
+  const COLOR_KEYS = ["default", "blue", "teal", "purple", "coral", "amber", "green", "red", "pink"];
 
   return (
     <div className="p-12 lg:p-24">
@@ -75,96 +80,232 @@ export default function ChipsPage() {
               Chips
             </h2>
             <p className="text-lg text-slate-500">
-              Compact interactive elements for filters, tags, and selections.
+              All modes, variants, sizes, and colors.
             </p>
           </div>
+          
           <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Chip Variants
-              </Label>
-              <div className="flex flex-wrap gap-3">
-                <Chip label="Default Chip" variant="default" />
-                <Chip label="Secondary Chip" variant="secondary" />
-                <Chip label="Outline Chip" variant="outline" />
+            
+            <Section title="Variants">
+              <div className="flex flex-col gap-4">
+                <ChipGroup mode="filter" color="blue" variant="filled" items={[{id:"1",label:"Filled"},{id:"2",label:"Selected"},{id:"3",label:"Another"}]} defaultValue={["2"]} />
+                <ChipGroup mode="filter" color="blue" variant="outlined" items={[{id:"1",label:"Outlined"},{id:"2",label:"Selected"},{id:"3",label:"Another"}]} defaultValue={["2"]} />
+                <ChipGroup mode="filter" color="blue" variant="soft" items={[{id:"1",label:"Soft"},{id:"2",label:"Selected"},{id:"3",label:"Another"}]} defaultValue={["2"]} />
+                <ChipGroup mode="filter" color="blue" variant="ghost" items={[{id:"1",label:"Ghost"},{id:"2",label:"Selected"},{id:"3",label:"Another"}]} defaultValue={["2"]} />
               </div>
-            </div>
+            </Section>
+
             <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Removable Chips (Tags)
-              </Label>
-              <div className="flex flex-wrap gap-3">
-                {chips.map((chip) => (
+            
+            <Section title="Sizes">
+              <div className="flex flex-col gap-3">
+                {(["xs","sm","md","lg","xl"] as const).map((sz) => (
+                  <div key={sz} className="flex items-center gap-3">
+                    <span className="text-[11px] text-slate-400 w-5">{sz}</span>
+                    <ChipGroup mode="filter" color="default" variant="filled" size={sz}
+                      items={[{id:"a",label:"Unselected"},{id:"b",label:"Selected"}]}
+                      defaultValue={["b"]}
+                    />
+                  </div>
+                ))}
+              </div>
+            </Section>
+
+            <Separator className="bg-slate-100" />
+            
+            <Section title="Colors — filled & soft">
+              <div className="flex flex-wrap gap-2 mb-3">
+                {COLOR_KEYS.map((c: any) => (
+                  <Chip key={c} label={c} color={c} variant="filled" active size="sm" />
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {COLOR_KEYS.map((c: any) => (
+                  <Chip key={c} label={c} color={c} variant="soft" size="sm" />
+                ))}
+              </div>
+            </Section>
+
+            <Separator className="bg-slate-100" />
+            
+            <Section title="Filter chips — multi-select">
+              <div className="space-y-3">
+                <p className="text-xs text-slate-500">Category</p>
+                <ChipGroup
+                  mode="filter"
+                  color="blue"
+                  variant="filled"
+                  size="sm"
+                  value={filterSel}
+                  onChange={(ids) => setFilterSel(ids)}
+                  items={[
+                    { id: "all", label: "All" },
+                    { id: "electronics", label: "Electronics", count: 42 },
+                    { id: "fashion", label: "Fashion", count: 18 },
+                    { id: "home", label: "Home", count: 31 },
+                    { id: "sports", label: "Sports", count: 9 },
+                    { id: "books", label: "Books", count: 55 },
+                  ]}
+                />
+              </div>
+            </Section>
+
+            <Separator className="bg-slate-100" />
+
+            <Section title="Choice chips — single select">
+              <ChipGroup
+                mode="choice"
+                color="coral"
+                variant="filled"
+                value={choiceSel}
+                onChange={(ids) => setChoiceSel(ids)}
+                items={[
+                  { id: "daily", label: "Daily" },
+                  { id: "weekly", label: "Weekly" },
+                  { id: "monthly", label: "Monthly" },
+                  { id: "yearly", label: "Yearly" },
+                ]}
+              />
+            </Section>
+
+            <Separator className="bg-slate-100" />
+
+            <Section title="Input chips — deletable tags">
+              <div className="space-y-3">
+                <ChipGroup
+                  mode="input"
+                  color="purple"
+                  variant="outlined"
+                  size="sm"
+                  items={tags}
+                  onDelete={(id, rest) => setTags(rest)}
+                />
+                <div className="flex gap-2 max-w-[300px]">
+                  <input
+                    type="text"
+                    value={tagInput}
+                    placeholder="Add a tag…"
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && addTag()}
+                    className="text-[13px] flex-1 px-3 py-1.5 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  />
+                  <button onClick={addTag} className="text-xs px-4 py-1.5 bg-slate-900 text-white rounded-md hover:bg-slate-800 transition-colors">
+                    Add
+                  </button>
+                </div>
+              </div>
+            </Section>
+
+            <Separator className="bg-slate-100" />
+
+            <Section title="Status chips — static">
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { id: "active",   label: "Active",   color: "green",   dot: "#3B6D11" },
+                  { id: "pending",  label: "Pending",  color: "amber",   dot: "#BA7517" },
+                  { id: "failed",   label: "Failed",   color: "red",     dot: "#E24B4A" },
+                  { id: "draft",    label: "Draft",    color: "default", dot: "#888" },
+                  { id: "review",   label: "In review",color: "blue",    dot: "#185FA5" },
+                  { id: "archived", label: "Archived", color: "default", dot: "#aaa" },
+                  { id: "new",      label: "New",      color: "teal",    dot: "#1D9E75" },
+                ].map((s) => (
                   <Chip
-                    key={chip.id}
-                    label={chip.label}
-                    variant={chip.variant}
-                    onRemove={() => removeChip(chip.id)}
+                    key={s.id as any}
+                    label={s.label}
+                    color={s.color as any}
+                    variant="soft"
+                    size="sm"
+                    leadingIcon={<Dot color={s.dot} />}
                   />
                 ))}
               </div>
-              {chips.length === 0 && (
-                <p className="text-sm text-slate-400 italic">All chips removed. Add more below!</p>
-              )}
-              <button
-                onClick={() =>
-                  setChips([
-                    ...chips,
-                    {
-                      id: Date.now(),
-                      label: `New Tag ${chips.length + 1}`,
-                      variant: "default",
-                    },
-                  ])
-                }
-                className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
-              >
-                <Plus className="h-4 w-4" />
-                Add Chip
-              </button>
-            </div>
+            </Section>
+
             <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Filter Chips
-              </Label>
-              <div className="flex flex-wrap gap-3">
-                {["All", "Active", "Pending", "Completed", "Archived"].map(
-                  (filter, idx) => (
-                    <Chip
-                      key={filter}
-                      label={filter}
-                      variant={idx === 0 ? "default" : "outline"}
-                    />
-                  )
-                )}
+
+            <Section title="Suggestion chips — actionable">
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "Add to calendar", "Send reminder", "Schedule meeting",
+                  "Export as PDF", "Share link", "Archive thread",
+                ].map((s) => (
+                  <Chip
+                    key={s}
+                    label={s}
+                    color="default"
+                    variant="outlined"
+                    size="md"
+                    leadingIcon={<AddIcon />}
+                    clickable
+                    onClick={() => {}}
+                  />
+                ))}
               </div>
-            </div>
+            </Section>
+
+            <Separator className="bg-slate-100" />
+
+            <Section title="Avatar chips">
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: "Anjali Sharma",  color: "purple" },
+                  { label: "Ben Okafor",     color: "teal" },
+                  { label: "Carmen López",   color: "coral" },
+                  { label: "David Kim",      color: "blue" },
+                  { label: "Eva Müller",     color: "amber" },
+                ].map((p) => (
+                  <Chip
+                    key={p.label}
+                    label={p.label}
+                    avatar={p.label}
+                    color={p.color as any}
+                    variant="soft"
+                    size="md"
+                    deletable
+                    clickable
+                    onClick={() => {}}
+                  />
+                ))}
+              </div>
+            </Section>
+
+            <Separator className="bg-slate-100" />
+
+            <Section title="States">
+              <div className="flex flex-wrap items-center gap-2">
+                <Chip label="Default" color="blue" variant="filled" />
+                <Chip label="Active" color="blue" variant="filled" active />
+                <Chip label="Disabled" color="blue" variant="filled" disabled />
+                <Chip label="Loading" color="blue" variant="filled" loading />
+                <Chip label="Deletable" color="blue" variant="outlined" deletable onDelete={() => {}} />
+                <Chip label="With count" color="teal" variant="filled" count={24} />
+                <Chip label="Max width" color="purple" variant="soft" maxWidth={100} />
+              </div>
+            </Section>
 
             <CodeBlock
-              code={`import { Chip } from "onebi-ui";
+              code={`import { Chip, ChipGroup } from "@/components/CustomChip";
 
 export default function ChipsDemo() {
-  const [tags, setTags] = useState([
-    { id: 1, label: "React", variant: "default" },
-    { id: 2, label: "Vue", variant: "secondary" },
-  ]);
-
-  const removeChip = (id) => {
-    setTags(tags.filter((chip) => chip.id !== id));
-  };
+  const [filterSel, setFilterSel] = useState(["2"]);
 
   return (
-    <div className="flex flex-wrap gap-2">
-      {tags.map((chip) => (
-        <Chip
-          key={chip.id}
-          label={chip.label}
-          variant={chip.variant}
-          onRemove={() => removeChip(chip.id)}
-        />
-      ))}
+    <div className="space-y-4">
+      {/* Individual Chip */}
+      <Chip label="Loading..." color="blue" loading />
+
+      {/* Chip Group (Multi-select) */}
+      <ChipGroup 
+        mode="filter" 
+        color="purple" 
+        variant="filled" 
+        items={[
+          { id: "1", label: "Option 1" },
+          { id: "2", label: "Option 2" }
+        ]} 
+        value={filterSel}
+        onChange={setFilterSel}
+      />
     </div>
   );
 }`}
