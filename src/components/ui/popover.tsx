@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import './popover.css';
+import './styles/popover.css';
 
 // ─────────────────────────────────────────────────────────────
 //  TYPES

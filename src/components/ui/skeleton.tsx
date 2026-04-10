@@ -1,5 +1,5 @@
 import React from 'react';
-import './skeleton.css';
+import './styles/skeleton.css';
 
 export type SkeletonVariant  = 'default' | 'shimmer' | 'wave' | 'pulse';
 export type SkeletonShape    = 'rectangle' | 'circle' | 'rounded' | 'pill';

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
-import './search-input.css';
+import './styles/search-input.css';
 
 // ─────────────────────────────────────────────────────────────
 //  SHARED TYPES
