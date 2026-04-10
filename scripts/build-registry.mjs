@@ -58,10 +58,10 @@ async function buildRegistry() {
         }
       ];
 
-      // Check for matching CSS file in the same directory
+      // Check for matching CSS file in the 'styles' subdirectory
       const cssPaths = [
-        path.join(UI_SRC, `${componentName}.css`),
-        path.join(UI_SRC, `${file.replace(".tsx", "")}.css`)
+        path.join(UI_SRC, "styles", `${componentName}.css`),
+        path.join(UI_SRC, "styles", `${file.replace(".tsx", "")}.css`)
       ];
 
       for (const cssPath of cssPaths) {

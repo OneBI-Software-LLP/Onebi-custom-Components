@@ -102,8 +102,14 @@ export const addCommand = new Command()
              fileName = fileName.replace(".ts", ".js");
           }
 
-          const targetPath = path.resolve(process.cwd(), config.componentsPath, fileName);
+          let targetPath = path.resolve(process.cwd(), config.componentsPath, fileName);
           
+          if (fileName.endsWith(".css")) {
+            const stylesDir = path.resolve(process.cwd(), config.componentsPath, "styles");
+            fs.ensureDirSync(stylesDir);
+            targetPath = path.join(stylesDir, fileName);
+          }
+
           if (fs.existsSync(targetPath)) {
             logger.warn(`\nFile ${fileName} already exists. Overwriting.`);
           }

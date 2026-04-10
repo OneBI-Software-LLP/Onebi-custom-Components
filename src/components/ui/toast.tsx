@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import "./toast.css";
+import "./styles/toast.css";
 
 // ─────────────────────────────────────────────────────────────
 //  TYPES

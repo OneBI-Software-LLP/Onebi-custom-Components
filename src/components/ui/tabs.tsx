@@ -1,5 +1,5 @@
 import React from 'react';
-import './tabs.css';
+import './styles/tabs.css';
 
 // ─────────────────────────────────────────────────────────────
 //  TYPES
