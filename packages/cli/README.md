@@ -35,6 +35,13 @@ You can pass multiple components at once:
 npx onebi-ui@latest add button dialog sidebar
 ```
 
+### 📋 Available Components
+
+The following components are ready to be added to your project:
+
+- **Premium Components**: `chips`, `dropdown`, `text-field`, `filter`, `accordion`, `card`, `modal`, `drawer`, `combo-box`, `file-upload`
+- **Standard Components**: `button`, `badge`, `input`, `textarea`, `checkbox`, `calendar`, `date-picker`, `dialog`, `dropdown-menu`, `empty-state`, `form`, `label`, `popover`, `radio-group`, `select`, `separator`, `sheet`, `skeleton`, `spinner`, `switch`, `table`, `tabs`, `toast`, `tooltip`
+
 ***
 
 ## 🛠 Advanced Features

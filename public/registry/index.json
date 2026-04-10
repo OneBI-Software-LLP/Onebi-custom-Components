@@ -1,5 +1,12 @@
 [
   {
+    "name": "accordion",
+    "dependencies": [],
+    "files": [
+      "accordion.tsx"
+    ]
+  },
+  {
     "name": "app-sidebar",
     "dependencies": [
       "lucide-react"
@@ -42,11 +49,32 @@
     ]
   },
   {
+    "name": "card",
+    "dependencies": [],
+    "files": [
+      "card.tsx"
+    ]
+  },
+  {
     "name": "checkbox",
     "dependencies": [],
     "files": [
       "checkbox.tsx",
       "checkbox.css"
+    ]
+  },
+  {
+    "name": "chips",
+    "dependencies": [],
+    "files": [
+      "chips.tsx"
+    ]
+  },
+  {
+    "name": "combo-box",
+    "dependencies": [],
+    "files": [
+      "combo-box.tsx"
     ]
   },
   {
@@ -86,12 +114,26 @@
     ]
   },
   {
+    "name": "drawer",
+    "dependencies": [],
+    "files": [
+      "drawer.tsx"
+    ]
+  },
+  {
     "name": "dropdown-menu",
     "dependencies": [
       "lucide-react"
     ],
     "files": [
       "dropdown-menu.tsx"
+    ]
+  },
+  {
+    "name": "dropdown",
+    "dependencies": [],
+    "files": [
+      "dropdown.tsx"
     ]
   },
   {
@@ -104,12 +146,35 @@
     ]
   },
   {
+    "name": "file-upload",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "file-upload.tsx"
+    ]
+  },
+  {
     "name": "filter-bar",
     "dependencies": [
       "lucide-react"
     ],
     "files": [
       "filter-bar.tsx"
+    ]
+  },
+  {
+    "name": "filter-panel",
+    "dependencies": [],
+    "files": [
+      "filter-panel.tsx"
+    ]
+  },
+  {
+    "name": "filter",
+    "dependencies": [],
+    "files": [
+      "filter.tsx"
     ]
   },
   {
@@ -135,6 +200,13 @@
     ],
     "files": [
       "label.tsx"
+    ]
+  },
+  {
+    "name": "modal",
+    "dependencies": [],
+    "files": [
+      "modal.tsx"
     ]
   },
   {
@@ -273,6 +345,13 @@
     "files": [
       "tabs.tsx",
       "tabs.css"
+    ]
+  },
+  {
+    "name": "text-field",
+    "dependencies": [],
+    "files": [
+      "text-field.tsx"
     ]
   },
   {
