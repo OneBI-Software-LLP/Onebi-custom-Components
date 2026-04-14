@@ -1,24 +1,140 @@
-import * as React from "react"
+import React from 'react';
+import '@/styles/ui/textarea.css';
 
-import { cn } from "@/lib/utils"
+export type TextareaSize    = 'sm' | 'md' | 'lg';
+export type TextareaVariant = 'default' | 'filled' | 'flushed';
+export type TextareaResize  = 'none' | 'vertical' | 'horizontal' | 'both' | 'auto';
 
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+export interface TextareaProps {
+  value?: string;
+  defaultValue?: string;
+  onChange?: (value: string) => void;
+  placeholder?: string;
+  label?: string;
+  description?: string;
+  error?: string;
+  hint?: string;
+  size?: TextareaSize;
+  variant?: TextareaVariant;
+  resize?: TextareaResize;
+  rows?: number;
+  maxLength?: number;
+  showCount?: boolean;
+  disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
+  autoFocus?: boolean;
+  id?: string;
+  name?: string;
+  className?: string;
+}
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, ...props }, ref) => {
-    return (
-      <textarea
-        className={cn(
-          "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-          className
-        )}
-        ref={ref}
-        {...props}
-      />
-    )
+export function Textarea({
+  value,
+  defaultValue,
+  onChange,
+  placeholder,
+  label,
+  description,
+  error,
+  hint,
+  size = 'md',
+  variant = 'default',
+  resize = 'vertical',
+  rows = 3,
+  maxLength,
+  showCount = false,
+  disabled = false,
+  readOnly = false,
+  required = false,
+  autoFocus,
+  id,
+  name,
+  className = '',
+}: TextareaProps) {
+  const [internal, setInternal] = React.useState(defaultValue ?? '');
+  const controlled = value !== undefined;
+  const current = controlled ? value! : internal;
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  React.useEffect(() => {
+    if (resize === 'auto' && textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [current, resize]);
+
+  function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    const val = e.target.value;
+    if (!controlled) setInternal(val);
+    onChange?.(val);
   }
-)
-Textarea.displayName = "Textarea"
 
-export { Textarea }
+  const hasError = !!error;
+  const footerMsg = error || hint;
+
+  const wrapCls = [
+    'ta-wrap',
+    `ta-size-${size}`,
+    `ta-variant-${variant}`,
+    hasError   ? 'ta-error'    : '',
+    disabled   ? 'ta-disabled' : '',
+    readOnly   ? 'ta-readonly' : '',
+    className,
+  ].filter(Boolean).join(' ');
+
+  return (
+    <div className={wrapCls}>
+      {label && (
+        <label className="ta-label" htmlFor={id}>
+          {label}
+          {required && <span className="ta-required" aria-hidden="true"> *</span>}
+        </label>
+      )}
+      {description && <p className="ta-description">{description}</p>}
+
+      <div className="ta-field-wrap">
+        <textarea
+          ref={textareaRef}
+          id={id}
+          name={name}
+          className="ta-field"
+          value={current}
+          placeholder={placeholder}
+          rows={resize === 'auto' ? 1 : rows}
+          maxLength={maxLength}
+          disabled={disabled}
+          readOnly={readOnly}
+          required={required}
+          autoFocus={autoFocus}
+          aria-invalid={hasError ? 'true' : undefined}
+          aria-describedby={footerMsg ? `${id}-msg` : undefined}
+          style={{ resize: resize === 'auto' ? 'none' : resize }}
+          onChange={handleChange}
+        />
+      </div>
+
+      {(footerMsg || (showCount && maxLength)) && (
+        <div className="ta-footer" id={`${id}-msg`}>
+          {footerMsg && (
+            <span className={hasError ? 'ta-error-msg' : 'ta-hint-msg'}>
+              {footerMsg}
+            </span>
+          )}
+          {showCount && maxLength && (
+            <span className="ta-count">
+              {current.length}/{maxLength}
+            </span>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function useTextarea(initial = '') {
+  const [value, setValue] = React.useState(initial);
+  return { value, onChange: (v: string) => setValue(v) };
+}
+
+export default Textarea;
