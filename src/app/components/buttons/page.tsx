@@ -37,7 +37,21 @@ const BellIcon = () => (
 const GearIcon = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="12" cy="12" r="3" />
-    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+  </svg>
+);
+
+const EyeIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const EyeOffIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+    <line x1="1" y1="1" x2="23" y2="23" />
   </svg>
 );
 
@@ -76,6 +90,7 @@ function Section({ label, code, children }: { label: string; code?: string; chil
 
 export default function ButtonsPage() {
   const [loading, setLoading] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   function handleSave() {
     setLoading(true);
@@ -210,6 +225,67 @@ import { GearIcon, TrashIcon } from "lucide-react";
                 <Button size="md" variant="outline" color="danger" iconOnly iconLeft={<TrashIcon />} />
                 <Button variant="ghost" shape="rounded" iconOnly iconLeft={<BellIcon />} />
               </Section>
+            </div>
+
+            <Separator className="bg-slate-100" />
+
+            {/* ══ CUSTOM className / ABSOLUTE POSITIONING ══ */}
+            <div className="space-y-4 flex flex-col">
+              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+                Custom className — Absolute Positioning (e.g. Password Eye Toggle)
+              </Label>
+
+              {/* Info callout */}
+              <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-sm text-blue-800 leading-relaxed">
+                <strong>Why this works now:</strong> Previously the <code className="font-mono bg-blue-100 px-1 rounded">.btn</code> CSS class
+                set <code className="font-mono bg-blue-100 px-1 rounded">position: relative</code>, which silently overrode
+                any utility class like <code className="font-mono bg-blue-100 px-1 rounded">absolute</code> you passed via <code className="font-mono bg-blue-100 px-1 rounded">className</code>.
+                That property has been removed from <code className="font-mono bg-blue-100 px-1 rounded">.btn</code> — so now
+                Tailwind (or any CSS framework) position classes work as expected.
+              </div>
+
+              {/* Live demo */}
+              <div className="relative w-full max-w-sm">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  defaultValue="MySecret123"
+                  className="w-full h-10 px-3 pr-10 border border-slate-300 rounded-lg text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition"
+                />
+                <Button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  iconOnly
+                  variant="ghost"
+                  size="sm"
+                  iconLeft={showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                />
+              </div>
+
+              <CodeBlock code={`import { Button } from "@/components/ui/button";
+import { Eye, EyeOff } from "lucide-react";
+
+// The parent <div> must be position:relative. The Button gets
+// className="absolute ..." which now works correctly.
+<div className="relative w-full">
+  <input
+    type={showPassword ? "text" : "password"}
+    className="w-full h-10 px-3 pr-10 border rounded-lg ..."
+  />
+
+  <Button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
+    aria-label={showPassword ? "Hide password" : "Show password"}
+    iconOnly
+    variant="ghost"
+    size="sm"
+    iconLeft={showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+  />
+</div>`} />
             </div>
 
             <Separator className="bg-slate-100" />

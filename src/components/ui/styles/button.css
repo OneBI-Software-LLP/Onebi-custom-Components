@@ -62,8 +62,8 @@
   cursor          : pointer;
   outline         : none;
   text-decoration : none;
-  position        : relative;
-  overflow        : visible;
+  /* NOTE: position is intentionally NOT set here so consumers can use
+     utility classes like `absolute`, `fixed`, `sticky` via className. */
   transition      : var(--btn-transition);
   -webkit-user-select: none;
   user-select     : none;

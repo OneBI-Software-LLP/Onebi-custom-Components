@@ -52,7 +52,20 @@ export interface CustomTextFieldProps extends Omit<React.InputHTMLAttributes<HTM
   borderWidth?: number | string;
   fontSize?: number | string;
 
-  onChange?: (value: string, e: React.ChangeEvent<HTMLInputElement>) => void;
+  /**
+   * Standard React onChange — receives the native event.
+   * Use this when you need `e.target.value` patterns:
+   *   onChange={(e) => setState(e.target.value)}
+   */
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+
+  /**
+   * Convenience callback — receives the string value directly.
+   * Useful for simple controlled state:
+   *   onValueChange={(value) => setState(value)}
+   */
+  onValueChange?: (value: string, e: React.ChangeEvent<HTMLInputElement>) => void;
+
   onBlur?: (value: string, e: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: (value: string, e: React.FocusEvent<HTMLInputElement>) => void;
   onClear?: () => void;
@@ -106,6 +119,7 @@ export const CustomTextField: React.FC<CustomTextFieldProps> = ({
   fontSize: fontSizeProp,
 
   onChange,
+  onValueChange,
   onBlur,
   onFocus,
   onClear,
@@ -213,7 +227,10 @@ export const CustomTextField: React.FC<CustomTextFieldProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     if (!isControlled) setInternalValue(val);
-    onChange?.(val, e);
+    // Standard React handler: onChange={(e) => setState(e.target.value)}
+    onChange?.(e);
+    // Convenience handler: onValueChange={(value) => setState(value)}
+    onValueChange?.(val, e);
     if (validateOn === 'input' && touched) runValidate(val);
   };
 
@@ -235,8 +252,9 @@ export const CustomTextField: React.FC<CustomTextFieldProps> = ({
 
   const handleClear = () => {
     if (!isControlled) setInternalValue('');
-    // @ts-ignore
-    onChange?.('', { target: { value: '' } });
+    const syntheticEvent = { target: { value: '' } } as React.ChangeEvent<HTMLInputElement>;
+    onChange?.(syntheticEvent);
+    onValueChange?.('', syntheticEvent);
     setValidationState({ status: 'idle', message: '' });
     onClear?.();
     inputRef.current?.focus();
