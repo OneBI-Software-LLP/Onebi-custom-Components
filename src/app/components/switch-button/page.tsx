@@ -1,17 +1,16 @@
 "use client";
 
-import React from "react";
-import { Switch } from "@/components/ui/switch";
+import React, { useState } from "react";
+import { CustomSwitch } from "@/components/CustomSwitch";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Wifi, Bell, Moon, Plane } from "lucide-react";
 
-const CodeBlock = ({ code }: { code: string }) => (
+const CodeBlock = ({ code, title = "Installation & Usage" }: { code: string, title?: string }) => (
   <div className="mt-10 border-t border-slate-100 pt-8">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-        Installation & Usage
+        {title}
       </Label>
       <Badge
         variant="outline"
@@ -27,114 +26,147 @@ const CodeBlock = ({ code }: { code: string }) => (
 );
 
 export default function SwitchButtonPage() {
+  const [wifiEnabled, setWifiEnabled] = useState(true);
+  const [airplaneMode, setAirplaneMode] = useState(false);
+
   return (
     <div className="p-12 lg:p-24">
       <div className="max-w-5xl mx-auto pb-24">
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="space-y-2">
             <h2 className="text-4xl font-black tracking-tight text-slate-900">
-              Switch Button
+              Custom Switch
             </h2>
             <p className="text-lg text-slate-500">
-              Toggle between on and off states with a smooth switch.
+              A highly customizable switch component with sizes, colors, and states.
             </p>
           </div>
           <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
+            
+            {/* Sizes & Colors section */}
             <div className="space-y-4">
               <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Basic Switch
+                Sizes & Colors
               </Label>
-              <div className="flex items-center space-x-3 p-5 border border-slate-100 rounded-2xl bg-slate-50/50 justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="switch-basic" className="cursor-pointer text-sm font-bold text-slate-700">Airplane Mode</Label>
-                  <p className="text-xs text-slate-400">Disable all wireless connectivity</p>
+              <div className="flex flex-col gap-6 p-5 border border-slate-100 rounded-2xl bg-slate-50/50">
+                <div className="flex flex-wrap items-center gap-8">
+                  <CustomSwitch size="sm" defaultChecked color="neutral" label="Small (sm)" />
+                  <CustomSwitch size="md" defaultChecked color="primary" label="Medium (md)" />
+                  <CustomSwitch size="lg" defaultChecked color="success" label="Large (lg)" />
                 </div>
-                <Switch id="switch-basic" />
-              </div>
-            </div>
-            <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Settings Toggles
-              </Label>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-5 border border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-indigo-50 rounded-lg">
-                      <Wifi className="h-5 w-5 text-indigo-600" />
-                    </div>
-                    <div>
-                      <Label className="text-sm font-bold text-slate-700">Wi-Fi</Label>
-                      <p className="text-xs text-slate-400 mt-0.5">Enable wireless network</p>
-                    </div>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
-                <div className="flex items-center justify-between p-5 border border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-orange-50 rounded-lg">
-                      <Bell className="h-5 w-5 text-orange-600" />
-                    </div>
-                    <div>
-                      <Label className="text-sm font-bold text-slate-700">Notifications</Label>
-                      <p className="text-xs text-slate-400 mt-0.5">Push notification alerts</p>
-                    </div>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
-                <div className="flex items-center justify-between p-5 border border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-50 rounded-lg">
-                      <Moon className="h-5 w-5 text-purple-600" />
-                    </div>
-                    <div>
-                      <Label className="text-sm font-bold text-slate-700">Dark Mode</Label>
-                      <p className="text-xs text-slate-400 mt-0.5">Switch to dark theme</p>
-                    </div>
-                  </div>
-                  <Switch />
+                <div className="flex flex-wrap items-center gap-8 pt-4">
+                   <CustomSwitch defaultChecked color="danger" label="Danger" />
+                   <CustomSwitch defaultChecked color="warning" label="Warning" />
                 </div>
               </div>
-            </div>
-            <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Disabled State
-              </Label>
-              <div className="flex items-center justify-between p-5 border border-slate-100 rounded-2xl bg-slate-50/50 opacity-60">
-                <div>
-                  <Label className="text-sm font-bold text-slate-700">Disabled Switch</Label>
-                  <p className="text-xs text-slate-400 mt-0.5">This switch cannot be toggled</p>
-                </div>
-                <Switch disabled />
-              </div>
+              <CodeBlock title="Sizes & Colors Usage" code={`import { CustomSwitch } from "@/components/CustomSwitch";
+
+<CustomSwitch size="sm" defaultChecked color="neutral" label="Small (sm)" />
+<CustomSwitch size="md" defaultChecked color="primary" label="Medium (md)" />
+<CustomSwitch size="lg" defaultChecked color="success" label="Large (lg)" />
+<CustomSwitch defaultChecked color="danger" label="Danger" />
+<CustomSwitch defaultChecked color="warning" label="Warning" />`} />
             </div>
 
-            <CodeBlock
-              code={`import { Switch, Label } from "onebi-ui";
+            <Separator className="bg-slate-100" />
 
-export default function SwitchDemo() {
+            {/* States section */}
+            <div className="space-y-4">
+              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+                States
+              </Label>
+              <div className="flex flex-wrap items-center gap-8 p-5 border border-slate-100 rounded-2xl bg-slate-50/50">
+                <CustomSwitch defaultChecked={false} label="Unchecked" />
+                <CustomSwitch defaultChecked={true} label="Checked" />
+                <CustomSwitch disabled defaultChecked={false} label="Disabled (Off)" />
+                <CustomSwitch disabled defaultChecked={true} color="success" label="Disabled (On)" />
+              </div>
+              <CodeBlock title="States Usage" code={`import { CustomSwitch } from "@/components/CustomSwitch";
+
+<CustomSwitch defaultChecked={false} label="Unchecked" />
+<CustomSwitch defaultChecked={true} label="Checked" />
+<CustomSwitch disabled defaultChecked={false} label="Disabled (Off)" />
+<CustomSwitch disabled defaultChecked={true} color="success" label="Disabled (On)" />`} />
+            </div>
+
+            <Separator className="bg-slate-100" />
+
+            {/* Real-World Settings Panel */}
+            <div className="space-y-4">
+              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+                Real-World Settings Panel
+              </Label>
+              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-slate-900">Wi-Fi</p>
+                    <p className="text-sm text-slate-500">Connect to available networks</p>
+                  </div>
+                  <CustomSwitch 
+                    checked={wifiEnabled} 
+                    onChange={setWifiEnabled} 
+                    color="primary" 
+                    size="lg"
+                  />
+                </div>
+
+                <Separator className="bg-slate-100" />
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-slate-900">Airplane Mode</p>
+                    <p className="text-sm text-slate-500">Disable all wireless connections</p>
+                  </div>
+                  <CustomSwitch 
+                    checked={airplaneMode} 
+                    onChange={setAirplaneMode} 
+                    color="warning" 
+                    size="lg"
+                  />
+                </div>
+              </div>
+
+              <CodeBlock
+                title="Real-World Usage"
+                code={`import { useState } from "react";
+import { CustomSwitch } from "@/components/CustomSwitch";
+
+export default function SettingsPanel() {
+  const [wifiEnabled, setWifiEnabled] = useState(true);
+  const [airplaneMode, setAirplaneMode] = useState(false);
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <Label htmlFor="notifications">Notifications</Label>
-          <p className="text-xs text-slate-400">Enable push notifications</p>
+          <p className="font-medium">Wi-Fi</p>
+          <p className="text-sm text-gray-500">Connect to available networks</p>
         </div>
-        <Switch id="notifications" defaultChecked />
+        <CustomSwitch 
+          checked={wifiEnabled} 
+          onChange={setWifiEnabled} 
+          color="primary" 
+          size="lg"
+        />
       </div>
-      
+
       <div className="flex items-center justify-between">
         <div>
-          <Label htmlFor="dark-mode">Dark Mode</Label>
-          <p className="text-xs text-slate-400">Switch to dark theme</p>
+          <p className="font-medium">Airplane Mode</p>
+          <p className="text-sm text-gray-500">Disable all wireless connections</p>
         </div>
-        <Switch id="dark-mode" />
+        <CustomSwitch 
+          checked={airplaneMode} 
+          onChange={setAirplaneMode} 
+          color="warning" 
+          size="lg"
+        />
       </div>
     </div>
   );
 }`}
-            />
+              />
+            </div>
           </div>
         </div>
       </div>

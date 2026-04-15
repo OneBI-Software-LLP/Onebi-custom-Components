@@ -1,18 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
+import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { ToastProvider } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
-import { Toaster } from "@/components/ui/toaster";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle, AlertCircle, XCircle, Info } from "lucide-react";
+import type { ToastVariant, ToastPosition } from "@/components/ui/toast";
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
+  <div className="mt-6 border-t border-slate-100 pt-6">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
@@ -30,141 +27,131 @@ const CodeBlock = ({ code }: { code: string }) => (
   </div>
 );
 
-function ToastDemoContent() {
-  const { toast } = useToast();
-
+function Section({ title, description, code, children }: { title: string; description?: string; code?: string; children: React.ReactNode }) {
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="space-y-2">
-        <h2 className="text-4xl font-black tracking-tight text-slate-900">
-          Toast
-        </h2>
-        <p className="text-lg text-slate-500">
-          Temporary notification messages that auto-dismiss.
-        </p>
+    <div className="space-y-4">
+      <div>
+        <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+          {title}
+        </Label>
+        {description && <p className="text-sm text-slate-500 mt-1">{description}</p>}
       </div>
-      <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
-        <div className="space-y-4">
-          <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-            Basic Toast
-          </Label>
-          <div className="flex flex-wrap gap-3">
-            <Button
-              variant="default"
-              onClick={() => {
-                toast({
-                  title: "Success!",
-                  description: "Your action was completed successfully.",
-                });
-              }}
-            >
-              Show Toast
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => {
-                toast({
-                  title: "Scheduled: Catch up",
-                  description: "Friday, February 10, 2024 at 5:57 PM",
-                  action: <ToastAction>Try again</ToastAction>,
-                });
-              }}
-            >
-              With Action
-            </Button>
-          </div>
-        </div>
-        <Separator className="bg-slate-100" />
-        <div className="space-y-4">
-          <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-            Toast Variants
-          </Label>
-          <div className="grid gap-3">
-            <Button
-              className="bg-green-600 hover:bg-green-700 justify-start h-auto py-4 px-6"
-              onClick={() => {
-                toast({
-                  title: "Success",
-                  description: "Operation completed successfully!",
-                });
-              }}
-            >
-              <CheckCircle className="h-5 w-5 mr-3" />
-              <div className="text-left">
-                <div className="font-bold">Success Toast</div>
-                <div className="text-xs opacity-80">Green success notification</div>
-              </div>
-            </Button>
-            <Button
-              variant="destructive"
-              className="justify-start h-auto py-4 px-6"
-              onClick={() => {
-                toast({
-                  variant: "destructive",
-                  title: "Error",
-                  description: "Something went wrong. Please try again.",
-                });
-              }}
-            >
-              <XCircle className="h-5 w-5 mr-3" />
-              <div className="text-left">
-                <div className="font-bold">Error Toast</div>
-                <div className="text-xs opacity-80">Red error notification</div>
-              </div>
-            </Button>
-            <Button
-              variant="outline"
-              className="justify-start h-auto py-4 px-6"
-              onClick={() => {
-                toast({
-                  title: "Information",
-                  description: "Here's some useful information.",
-                });
-              }}
-            >
-              <Info className="h-5 w-5 mr-3" />
-              <div className="text-left">
-                <div className="font-bold">Info Toast</div>
-                <div className="text-xs opacity-80">Blue info notification</div>
-              </div>
-            </Button>
-          </div>
-        </div>
-
-        <CodeBlock
-          code={`import { useToast } from "onebi-ui";
-
-export default function ToastDemo() {
-  const { toast } = useToast();
-
-  return (
-    <Button
-      onClick={() => {
-        toast({
-          title: "Success!",
-          description: "Your action was completed.",
-        });
-      }}
-    >
-      Show Toast
-    </Button>
-  );
-}`}
-        />
-      </div>
+      <div>{children}</div>
+      {code && <CodeBlock code={code} />}
     </div>
   );
 }
 
 export default function ToastPage() {
+  const showToast = (variant: ToastVariant, position: ToastPosition = "bottom-right") => {
+    toast({
+      title: `${variant.charAt(0).toUpperCase() + variant.slice(1)} Toast`,
+      description: `This is a ${variant} notification shown at ${position}.`,
+      variant,
+      position,
+      duration: 30000, // 30 seconds for verification
+    });
+  };
+
   return (
-    <ToastProvider>
-      <div className="p-12 lg:p-24">
-        <Toaster />
-        <div className="max-w-5xl mx-auto pb-24">
-          <ToastDemoContent />
+    <div className="p-12 lg:p-24">
+      <div className="max-w-5xl mx-auto pb-24">
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="space-y-2">
+            <h2 className="text-4xl font-black tracking-tight text-slate-900">
+              Toast Component
+            </h2>
+            <p className="text-lg text-slate-500">
+              Non-intrusive notifications for temporary feedback layered above your UI.
+            </p>
+          </div>
+          
+          <div className="grid gap-10 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
+            
+            <Section 
+              title="1. Interactive Variants" 
+              description="Different semantic statuses corresponding to system results."
+              code={`import { toast } from "@/hooks/use-toast";
+
+<Button onClick={() => toast({
+  title: "Success",
+  description: "Account created successfully!",
+  variant: "success",
+  position: "bottom-right",
+})}>
+  Show Toast
+</Button>`}
+            >
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                <Button onClick={() => showToast("default")} variant="outline" className="w-full">
+                  Default Toast
+                </Button>
+                <Button onClick={() => showToast("success")} className="w-full bg-green-600 hover:bg-green-700 text-white">
+                  Success Toast
+                </Button>
+                <Button onClick={() => showToast("warning")} className="w-full bg-amber-500 hover:bg-amber-600 text-white">
+                  Warning Toast
+                </Button>
+                <Button onClick={() => showToast("danger")} className="w-full bg-red-600 hover:bg-red-700 text-white">
+                  Error Toast
+                </Button>
+              </div>
+            </Section>
+
+            <Separator className="bg-slate-100" />
+
+            <Section 
+              title="2. Positioning Preview" 
+              description="Toasts support top/bottom and left/center/right anchors out of the box."
+              code={`toast({
+  title: "Update",
+  description: "System updated successfully.",
+  variant: "default",
+  position: "top-center" // 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
+});`}
+            >
+              <div className="bg-slate-50 dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-800 rounded-xl p-12 relative min-h-[400px] flex items-center justify-center mt-6">
+                <div className="text-slate-400 text-sm italic">Click a position to test</div>
+                
+                {/* Top Row */}
+                <div className="absolute top-4 left-4">
+                  <Button size="sm" variant="ghost" className="border border-slate-200" onClick={() => showToast("success", "top-left")}>
+                    Top Left
+                  </Button>
+                </div>
+                <div className="absolute top-4 left-1/2 -translate-x-1/2">
+                  <Button size="sm" variant="ghost" className="border border-slate-200" onClick={() => showToast("default", "top-center")}>
+                    Top Center
+                  </Button>
+                </div>
+                <div className="absolute top-4 right-4">
+                  <Button size="sm" variant="ghost" className="border border-slate-200" onClick={() => showToast("warning", "top-right")}>
+                    Top Right
+                  </Button>
+                </div>
+
+                {/* Bottom Row */}
+                <div className="absolute bottom-4 left-4">
+                  <Button size="sm" variant="ghost" className="border border-slate-200" onClick={() => showToast("danger", "bottom-left")}>
+                    Bottom Left
+                  </Button>
+                </div>
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
+                  <Button size="sm" variant="ghost" className="border border-slate-200" onClick={() => showToast("default", "bottom-center")}>
+                    Bottom Center
+                  </Button>
+                </div>
+                <div className="absolute bottom-4 right-4">
+                  <Button size="sm" variant="ghost" className="border border-slate-200" onClick={() => showToast("success", "bottom-right")}>
+                    Bottom Right
+                  </Button>
+                </div>
+              </div>
+            </Section>
+
+          </div>
         </div>
       </div>
-    </ToastProvider>
+    </div>
   );
 }

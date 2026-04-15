@@ -1,17 +1,17 @@
 "use client";
 
-import React from "react";
-import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command";
+import React, { useState } from "react";
+import { CustomComboBox, ComboBoxOption } from "@/components/CustomComboBox";
+import { CustomAvatar } from "@/components/CustomAvatar";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Check } from "lucide-react";
 
-const CodeBlock = ({ code }: { code: string }) => (
+const CodeBlock = ({ code, title = "Installation & Usage" }: { code: string, title?: string }) => (
   <div className="mt-10 border-t border-slate-100 pt-8">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-        Installation & Usage
+        {title}
       </Label>
       <Badge
         variant="outline"
@@ -26,14 +26,31 @@ const CodeBlock = ({ code }: { code: string }) => (
   </div>
 );
 
+const frameworkOptions: ComboBoxOption[] = [
+  { value: 'react', label: 'React', description: 'A JavaScript library for building user interfaces' },
+  { value: 'vue', label: 'Vue.js', description: 'The Progressive JavaScript Framework' },
+  { value: 'angular', label: 'Angular', description: "The modern web developer's platform" },
+  { value: 'svelte', label: 'Svelte', description: 'Cybernetically enhanced web apps' },
+];
+
+const userOptions: ComboBoxOption[] = [
+  { 
+    value: '1', 
+    label: 'John Doe', 
+    icon: <CustomAvatar size="sm" initials="JD" />,
+    description: 'Senior Developer'
+  },
+  { 
+    value: '2', 
+    label: 'Sarah Smith', 
+    icon: <CustomAvatar size="sm" initials="SS" />,
+    description: 'Product Manager'
+  },
+];
+
 export default function ComboboxPage() {
-  const frameworks = [
-    { value: "next.js", label: "Next.js", icon: "▲" },
-    { value: "sveltekit", label: "SvelteKit", icon: "◆" },
-    { value: "nuxt.js", label: "Nuxt.js", icon: "◆" },
-    { value: "remix", label: "Remix", icon: "◆" },
-    { value: "astro", label: "Astro", icon: "◆" },
-  ];
+  const [singleValue, setSingleValue] = useState("");
+  const [multiValue, setMultiValue] = useState<string[]>([]);
 
   return (
     <div className="p-12 lg:p-24">
@@ -41,104 +58,122 @@ export default function ComboboxPage() {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="space-y-2">
             <h2 className="text-4xl font-black tracking-tight text-slate-900">
-              Combobox
+              Custom Combobox
             </h2>
             <p className="text-lg text-slate-500">
-              Searchable dropdown with autocomplete functionality.
+              A highly configurable searchable dropdown with support for single select, multi-select, and custom rendering.
             </p>
           </div>
+          
           <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50 max-w-xl">
+            
+            {/* Searchable Single Select */}
             <div className="space-y-4">
               <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Basic Combobox
+                Searchable Single Select
               </Label>
-              <Command className="rounded-lg border border-slate-200 shadow-sm">
-                <CommandInput placeholder="Search framework..." className="h-12" />
-                <CommandList>
-                  <CommandEmpty>No framework found.</CommandEmpty>
-                  <CommandGroup>
-                    {frameworks.map((framework) => (
-                      <CommandItem
-                        key={framework.value}
-                        value={framework.value}
-                        className="cursor-pointer"
-                      >
-                        <span className="mr-2">{framework.icon}</span>
-                        {framework.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </div>
-            <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                With Selection State
-              </Label>
-              <Command className="rounded-lg border border-slate-200 shadow-sm">
-                <CommandInput placeholder="Select framework..." className="h-12" />
-                <CommandList>
-                  <CommandEmpty>No results found.</CommandEmpty>
-                  <CommandGroup heading="Suggestions">
-                    {frameworks.map((framework) => (
-                      <CommandItem
-                        key={framework.value}
-                        value={framework.value}
-                        className="flex items-center justify-between cursor-pointer"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg">{framework.icon}</span>
-                          {framework.label}
-                        </div>
-                        <Check className="h-4 w-4 text-indigo-600" />
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </div>
+              <div className="p-5 border border-slate-100 rounded-2xl bg-slate-50/50">
+                <CustomComboBox 
+                  label="Frontend Framework"
+                  options={frameworkOptions} 
+                  value={singleValue} 
+                  onChange={setSingleValue} 
+                  placeholder="Search frameworks..."
+                />
+                <p className="mt-4 text-sm font-semibold text-slate-600">
+                  Selected Value: <span className="text-indigo-600 font-normal">{singleValue || 'None'}</span>
+                </p>
+              </div>
+              <CodeBlock 
+                title="Single Select Usage"
+                code={`import { useState } from "react";
+import { CustomComboBox, ComboBoxOption } from "@/components/CustomComboBox";
 
-            <CodeBlock
-              code={`import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "onebi-ui";
-import { Check } from "lucide-react";
+const frameworkOptions: ComboBoxOption[] = [
+  { value: 'react', label: 'React', description: 'A JavaScript library' },
+  { value: 'vue', label: 'Vue.js', description: 'The Progressive JavaScript Framework' },
+  { value: 'angular', label: 'Angular', description: 'The modern web developer\\'s platform' }
+];
 
-export default function ComboboxDemo() {
-  const [selected, setSelected] = useState("");
+export default function SingleSelectDemo() {
+  const [value, setValue] = useState("");
 
   return (
-    <Command>
-      <CommandInput placeholder="Search..." />
-      <CommandList>
-        <CommandEmpty>No results.</CommandEmpty>
-        <CommandGroup>
-          {items.map((item) => (
-            <CommandItem
-              key={item.value}
-              value={item.value}
-              onSelect={setSelected}
-            >
-              <Check
-                className={cn(
-                  selected === item.value ? "opacity-100" : "opacity-0"
-                )}
-              />
-              {item.label}
-            </CommandItem>
-          ))}
-        </CommandGroup>
-      </CommandList>
-    </Command>
+    <CustomComboBox 
+      label="Frontend Framework"
+      options={frameworkOptions} 
+      value={value} 
+      onChange={setValue} 
+      placeholder="Search frameworks..."
+    />
   );
 }`}
-            />
+              />
+            </div>
+
+            <Separator className="bg-slate-100" />
+
+            {/* Multi-Select with Custom Rendering */}
+            <div className="space-y-4">
+              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+                Multi-Select with Custom Rendering
+              </Label>
+              <div className="p-5 border border-slate-100 rounded-2xl bg-slate-50/50">
+                <CustomComboBox 
+                  label="Assign Team Members"
+                  multiple
+                  options={userOptions} 
+                  value={multiValue} 
+                  onChange={setMultiValue} 
+                  placeholder="Find users..."
+                />
+                <div className="mt-4 flex flex-wrap gap-2 min-h-[28px]">
+                  {multiValue.length === 0 && <span className="text-sm text-slate-400">No users selected</span>}
+                  {multiValue.map(id => (
+                    <Badge key={id} variant="secondary" className="bg-indigo-100 text-indigo-700 hover:bg-indigo-200">
+                      ID: {id}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              <CodeBlock 
+                title="Multi-Select Usage"
+                code={`import { useState } from "react";
+import { CustomComboBox, ComboBoxOption } from "@/components/CustomComboBox";
+import { CustomAvatar } from "@/components/CustomAvatar";
+
+const userOptions: ComboBoxOption[] = [
+  { 
+    value: '1', 
+    label: 'John Doe', 
+    icon: <CustomAvatar size="sm" initials="JD" />,
+    description: 'Senior Developer'
+  },
+  { 
+    value: '2', 
+    label: 'Sarah Smith', 
+    icon: <CustomAvatar size="sm" initials="SS" />,
+    description: 'Product Manager'
+  }
+];
+
+export default function MultiSelectDemo() {
+  const [values, setValues] = useState<string[]>([]);
+
+  return (
+    <CustomComboBox 
+      label="Assign Team Members"
+      multiple
+      options={userOptions} 
+      value={values} 
+      onChange={setValues} 
+      placeholder="Find users..."
+    />
+  );
+}`}
+              />
+            </div>
+
           </div>
         </div>
       </div>

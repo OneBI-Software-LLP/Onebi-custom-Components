@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
+import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { CustomDropdown } from "@/components/CustomDropdown";
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
+  <div className="mt-6 border-t border-slate-100 pt-6">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
@@ -25,95 +25,163 @@ const CodeBlock = ({ code }: { code: string }) => (
   </div>
 );
 
+function Section({ title, description, code, children }: { title: string; description?: string; code?: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+          {title}
+        </Label>
+        {description && <p className="text-sm text-slate-500 mt-1">{description}</p>}
+      </div>
+      <div>{children}</div>
+      {code && <CodeBlock code={code} />}
+    </div>
+  );
+}
+
 export default function DropdownPage() {
+  const [user, setUser] = useState();
+  const [tags, setTags] = useState<string[]>([]);
+  const [payment, setPayment] = useState();
+
   return (
     <div className="p-12 lg:p-24">
       <div className="max-w-5xl mx-auto pb-24">
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="space-y-2">
             <h2 className="text-4xl font-black tracking-tight text-slate-900">
-              Dropdown
+              Dropdown Component
             </h2>
             <p className="text-lg text-slate-500">
-              Select from a dropdown list of options.
+              Fully configurable dropdown supporting single selection, multi-select tags, searching capabilities, and totally custom render options.
             </p>
           </div>
-          <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50 max-w-xl">
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Basic Dropdown
-              </Label>
-              <Select>
-                <SelectTrigger className="h-12 rounded-xl border-slate-200 shadow-sm focus:ring-4 focus:ring-indigo-50">
-                  <SelectValue placeholder="Select an option" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl border-slate-100 shadow-2xl">
-                  <SelectItem value="option-1">Option One</SelectItem>
-                  <SelectItem value="option-2">Option Two</SelectItem>
-                  <SelectItem value="option-3">Option Three</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                With Label
-              </Label>
-              <div className="space-y-3">
-                <Label className="text-sm font-bold text-slate-700">Framework</Label>
-                <Select defaultValue="next">
-                  <SelectTrigger className="h-12 rounded-xl border-slate-200 shadow-sm focus:ring-4 focus:ring-indigo-50">
-                    <SelectValue placeholder="Choose framework" />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-xl border-slate-100 shadow-2xl">
-                    <SelectItem value="next">Next.js</SelectItem>
-                    <SelectItem value="react">React</SelectItem>
-                    <SelectItem value="vue">Vue.js</SelectItem>
-                    <SelectItem value="angular">Angular</SelectItem>
-                    <SelectItem value="svelte">Svelte</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Disabled State
-              </Label>
-              <Select disabled>
-                <SelectTrigger className="h-12 rounded-xl border-slate-200 shadow-sm">
-                  <SelectValue placeholder="Disabled dropdown" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl border-slate-100">
-                  <SelectItem value="disabled">Cannot select this</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
 
-            <CodeBlock
-              code={`import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "onebi-ui";
+          <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
+            
+            <Section 
+              title="Basic Single Select" 
+              description="A standard dropdown for picking a single option from a predefined list."
+              code={`import { CustomDropdown } from "@/components/CustomDropdown";
 
-export default function DropdownDemo() {
+export default function Example() {
+  const [user, setUser] = useState();
+
   return (
-    <Select onValueChange={(value) => console.log(value)}>
-      <SelectTrigger>
-        <SelectValue placeholder="Theme" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="light">Light</SelectItem>
-        <SelectItem value="dark">Dark</SelectItem>
-        <SelectItem value="system">System</SelectItem>
-      </SelectContent>
-    </Select>
+    <CustomDropdown 
+      options={[
+        { label: 'Alice', value: '1' },
+        { label: 'Bob', value: '2' }
+      ]}
+      value={user}
+      onChange={setUser}
+      placeholder="Select a user"
+    />
   );
 }`}
-            />
+            >
+              <div className="max-w-sm">
+                <CustomDropdown 
+                  options={[
+                    { label: 'Alice', value: '1' },
+                    { label: 'Bob', value: '2' }
+                  ]}
+                  value={user}
+                  onChange={setUser}
+                  placeholder="Select a user"
+                />
+              </div>
+            </Section>
+
+            <Separator className="bg-slate-100" />
+            
+            <Section 
+              title="Searchable Multi-Select" 
+              description="Filter through options locally, picking multiple choices that render as removable inline tags."
+              code={`import { CustomDropdown } from "@/components/CustomDropdown";
+
+export default function Example() {
+  const [tags, setTags] = useState<string[]>([]);
+
+  return (
+    <CustomDropdown 
+      multiple
+      searchable
+      clearable
+      options={[
+        { label: 'React', value: 'react' },
+        { label: 'Vue', value: 'vue' },
+        { label: 'Angular', value: 'angular' }
+      ]}
+      value={tags}
+      onChange={setTags}
+      placeholder="Filter frameworks..."
+    />
+  );
+}`}
+            >
+              <div className="max-w-sm">
+                <CustomDropdown 
+                  multiple
+                  searchable
+                  clearable
+                  options={[
+                    { label: 'React', value: 'react' },
+                    { label: 'Vue', value: 'vue' },
+                    { label: 'Angular', value: 'angular' }
+                  ]}
+                  value={tags}
+                  onChange={setTags}
+                  placeholder="Filter frameworks..."
+                />
+              </div>
+            </Section>
+
+            <Separator className="bg-slate-100" />
+            
+            <Section 
+              title="Custom Option Rendering" 
+              description="Pass a 'renderOption' method to dynamically construct dropdown elements utilizing icons, descriptions, and disabling logic."
+              code={`<CustomDropdown 
+  options={[
+    { value: 'stripe', label: 'Stripe', description: 'Credit Card processing', icon: '💳' },
+    { value: 'bank', label: 'Bank Transfer', disabled: true, description: 'Currently unavailable' }
+  ]}
+  value={payment}
+  onChange={setPayment}
+  renderOption={(option, isSelected) => (
+    <div className="flex items-center gap-3">
+      <div className="text-xl">{option.icon}</div>
+      <div>
+        <div className={isSelected ? 'font-bold' : ''}>{option.label}</div>
+        <div className="text-xs opacity-50">{option.description}</div>
+      </div>
+    </div>
+  )}
+/>`}
+            >
+              <div className="max-w-sm">
+                <CustomDropdown 
+                  options={[
+                    { value: 'stripe', label: 'Stripe', description: 'Credit Card processing', icon: '💳' },
+                    { value: 'paypal', label: 'PayPal', description: 'Pay with your balance', icon: '🅿️' },
+                    { value: 'bank', label: 'Bank Transfer', disabled: true, description: 'Currently unavailable' }
+                  ]}
+                  value={payment}
+                  onChange={setPayment}
+                  renderOption={(option, isSelected) => (
+                    <div className="flex items-center gap-3">
+                      <div className="text-xl">{option.icon}</div>
+                      <div>
+                        <div className={isSelected ? 'font-bold' : ''}>{option.label}</div>
+                        <div className="text-xs opacity-50">{option.description}</div>
+                      </div>
+                    </div>
+                  )}
+                />
+              </div>
+            </Section>
           </div>
         </div>
       </div>

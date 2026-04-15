@@ -18,21 +18,20 @@ async function buildRegistry() {
   console.log("Building Component Registry...");
 
   // 1. Copy global CSS for init command
-  const globalCssSrc = path.join(ROOT_DIR, "src", "styles", "components.css");
+  const globalCssSrc = path.join(ROOT_DIR, "src", "app", "globals.css");
   if (fs.existsSync(globalCssSrc)) {
     fs.copyFileSync(globalCssSrc, path.join(REGISTRY_DIR, "components.css"));
-    console.log("✅ Copied components.css");
+    console.log("✅ Copied globals.css to registry/components.css");
   }
 
   // 2. Loop through UI components and generate JSON definitions
   if (fs.existsSync(UI_SRC)) {
     const files = fs.readdirSync(UI_SRC).filter(f => f.endsWith(".tsx"));
-    const STYLES_DIR = path.join(ROOT_DIR, "src", "styles", "ui");
     
     let indexData = [];
 
     for (const file of files) {
-      const componentName = file.replace(".tsx", "");
+      const componentName = file.replace(".tsx", "").toLowerCase();
       const content = fs.readFileSync(path.join(UI_SRC, file), "utf8");
       
       // Basic dependency inference
@@ -46,23 +45,34 @@ async function buildRegistry() {
       if (content.includes("clsx")) dependencies.push("clsx");
       if (content.includes("tailwind-merge")) dependencies.push("tailwind-merge");
 
+      // Manual registry dependencies
+      if (componentName === "toaster") {
+        registryDependencies.push("toast", "use-toast");
+      }
+
       // Files to include in the component manifest
       const componentFiles = [
         {
-          name: `${componentName}.tsx`,
+          name: file, // Keep original filename for the code
           content
         }
       ];
 
-      // Check for matching CSS file in styles directory
-      const cssFileName = `${componentName}.css`;
-      const cssPath = path.join(STYLES_DIR, cssFileName);
-      if (fs.existsSync(cssPath)) {
-        componentFiles.push({
-          name: cssFileName,
-          content: fs.readFileSync(cssPath, "utf8")
-        });
-        console.log(`  📎 Attached ${cssFileName} to ${componentName}`);
+      // Check for matching CSS file in the 'styles' subdirectory
+      const cssPaths = [
+        path.join(UI_SRC, "styles", `${componentName}.css`),
+        path.join(UI_SRC, "styles", `${file.replace(".tsx", "")}.css`)
+      ];
+
+      for (const cssPath of cssPaths) {
+        if (fs.existsSync(cssPath) && !componentFiles.some(f => f.name.endsWith(".css"))) {
+          const cssName = path.basename(cssPath);
+          componentFiles.push({
+            name: cssName,
+            content: fs.readFileSync(cssPath, "utf8")
+          });
+          console.log(`  📎 Attached ${cssName} to ${componentName}`);
+        }
       }
 
       const componentDef = {

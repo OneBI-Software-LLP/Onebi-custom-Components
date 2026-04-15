@@ -1,0 +1,332 @@
+/* ─────────────────────────────────────────────────────────────
+   RADIO GROUP — CSS
+   Token / class-naming mirrors tabs.css
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Circle (the radio input) ── */
+  --rg-circle-size     : 1rem;
+  --rg-circle-border   : 1.5px solid #cbd5e1;
+  --rg-circle-radius   : 50%;
+  --rg-circle-bg       : #ffffff;
+  --rg-dot-size        : 0.4375rem;
+
+  /* ── Item ── */
+  --rg-item-gap        : 0.625rem;
+  --rg-label-color     : #0f172a;
+  --rg-desc-color      : #64748b;
+  --rg-disabled-opacity: 0.45;
+
+  /* ── Colors ── */
+  --rg-color-primary  : #6366f1;
+  --rg-color-secondary: #64748b;
+  --rg-color-danger   : #ef4444;
+  --rg-color-success  : #22c55e;
+  --rg-color-warning  : #f59e0b;
+  --rg-color-info     : #0ea5e9;
+
+  /* ── Size tokens ── */
+  --rg-fz-xs : 0.75rem;
+  --rg-fz-sm : 0.8125rem;
+  --rg-fz-md : 0.875rem;
+  --rg-fz-lg : 0.9375rem;
+  --rg-fz-xl : 1rem;
+
+  --rg-circle-xs : 0.8125rem;
+  --rg-circle-sm : 0.875rem;
+  --rg-circle-md : 1rem;
+  --rg-circle-lg : 1.125rem;
+  --rg-circle-xl : 1.25rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ROOT
+   ══════════════════════════════════════════════════════════════ */
+
+.rg-root {
+  border  : none;
+  padding : 0;
+  margin  : 0;
+  min-width: 0;
+}
+
+.rg-legend {
+  font-size   : 0.8125rem;
+  font-weight : 500;
+  color       : #64748b;
+  margin-bottom: 0.625rem;
+  padding     : 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   VARIANT: default — simple inline radio
+   ══════════════════════════════════════════════════════════════ */
+
+.rg-list {
+  display       : flex;
+  flex-direction: column;
+  gap           : 0.5rem;
+}
+
+.rg-horizontal .rg-list {
+  flex-direction: row;
+  flex-wrap     : wrap;
+  gap           : 1rem;
+}
+
+/* Item */
+.rg-item {
+  display    : flex;
+  align-items: flex-start;
+  gap        : var(--rg-item-gap);
+  cursor     : pointer;
+  user-select: none;
+  position   : relative;
+}
+
+.rg-item.disabled {
+  opacity       : var(--rg-disabled-opacity);
+  cursor        : not-allowed;
+  pointer-events: none;
+}
+
+/* Hidden native input */
+.rg-input {
+  position: absolute;
+  opacity : 0;
+  width   : 0;
+  height  : 0;
+  pointer-events: none;
+}
+
+/* Custom circle */
+.rg-circle {
+  flex-shrink    : 0;
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+  width          : var(--rg-circle-size);
+  height         : var(--rg-circle-size);
+  border-radius  : var(--rg-circle-radius);
+  border         : var(--rg-circle-border);
+  background     : var(--rg-circle-bg);
+  margin-top     : 0.125rem;
+  transition     : border-color 140ms, background 140ms, box-shadow 140ms;
+}
+
+.rg-dot {
+  width        : var(--rg-dot-size);
+  height       : var(--rg-dot-size);
+  border-radius: 50%;
+  background   : transparent;
+  transition   : background 140ms, transform 140ms;
+  transform    : scale(0);
+}
+
+/* Hover */
+.rg-item:hover .rg-circle {
+  border-color: var(--rg-accent, var(--rg-color-primary));
+}
+
+/* Focus */
+.rg-item:focus-within .rg-circle {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rg-accent, var(--rg-color-primary)) 20%, transparent);
+}
+
+/* Checked */
+.rg-item.checked .rg-circle {
+  border-color: var(--rg-accent, var(--rg-color-primary));
+  background  : var(--rg-accent, var(--rg-color-primary));
+}
+.rg-item.checked .rg-dot {
+  background: #ffffff;
+  transform : scale(1);
+}
+
+/* Text */
+.rg-text {
+  display       : flex;
+  flex-direction: column;
+  gap           : 0.125rem;
+  line-height   : 1.5;
+}
+.rg-label {
+  font-size  : var(--rg-fz-md);
+  font-weight: 500;
+  color      : var(--rg-label-color);
+}
+.rg-description {
+  font-size: var(--rg-fz-md);
+  color    : var(--rg-desc-color);
+}
+
+/* icon — hidden in default variant */
+.rg-variant-default .rg-icon,
+.rg-variant-default .rg-check { display: none; }
+
+/* check mark — hidden in default variant */
+.rg-check { display: none; }
+
+
+/* ── Size modifiers ── */
+.rg-size-xs .rg-label, .rg-size-xs .rg-description { font-size: var(--rg-fz-xs); }
+.rg-size-xs .rg-circle { width: var(--rg-circle-xs); height: var(--rg-circle-xs); }
+
+.rg-size-sm .rg-label, .rg-size-sm .rg-description { font-size: var(--rg-fz-sm); }
+.rg-size-sm .rg-circle { width: var(--rg-circle-sm); height: var(--rg-circle-sm); }
+
+.rg-size-md .rg-label, .rg-size-md .rg-description { font-size: var(--rg-fz-md); }
+.rg-size-md .rg-circle { width: var(--rg-circle-md); height: var(--rg-circle-md); }
+
+.rg-size-lg .rg-label, .rg-size-lg .rg-description { font-size: var(--rg-fz-lg); }
+.rg-size-lg .rg-circle { width: var(--rg-circle-lg); height: var(--rg-circle-lg); }
+
+.rg-size-xl .rg-label, .rg-size-xl .rg-description { font-size: var(--rg-fz-xl); }
+.rg-size-xl .rg-circle { width: var(--rg-circle-xl); height: var(--rg-circle-xl); }
+
+/* ── Color modifiers ── */
+.rg-color-primary   { --rg-accent: var(--rg-color-primary);   }
+.rg-color-secondary { --rg-accent: var(--rg-color-secondary); }
+.rg-color-danger    { --rg-accent: var(--rg-color-danger);    }
+.rg-color-success   { --rg-accent: var(--rg-color-success);   }
+.rg-color-warning   { --rg-accent: var(--rg-color-warning);   }
+.rg-color-info      { --rg-accent: var(--rg-color-info);      }
+
+
+/* ══════════════════════════════════════════════════════════════
+   VARIANT: card — bordered selectable card
+   ══════════════════════════════════════════════════════════════ */
+
+.rg-variant-card .rg-list {
+  gap: 0.5rem;
+}
+.rg-variant-card.rg-horizontal .rg-list {
+  flex-direction: row;
+}
+
+.rg-variant-card .rg-item {
+  align-items    : center;
+  padding        : 0.75rem 1rem;
+  border         : 1px solid #e2e8f0;
+  border-radius  : 0.625rem;
+  background     : #ffffff;
+  transition     : border-color 140ms, box-shadow 140ms;
+}
+.rg-variant-card .rg-item:hover {
+  border-color: var(--rg-accent, var(--rg-color-primary));
+}
+.rg-variant-card .rg-item.checked {
+  border-color: var(--rg-accent, var(--rg-color-primary));
+  box-shadow  : 0 0 0 1px var(--rg-accent, var(--rg-color-primary));
+}
+
+/* Show check, hide circle in card variant */
+.rg-variant-card .rg-circle { display: none; }
+.rg-variant-card .rg-check {
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+  margin-left    : auto;
+  width          : 1.25rem;
+  height         : 1.25rem;
+  border-radius  : 50%;
+  border         : 1.5px solid #e2e8f0;
+  flex-shrink    : 0;
+  color          : transparent;
+  transition     : background 140ms, border-color 140ms, color 140ms;
+}
+.rg-variant-card .rg-item.checked .rg-check {
+  background  : var(--rg-accent, var(--rg-color-primary));
+  border-color: var(--rg-accent, var(--rg-color-primary));
+  color       : #ffffff;
+}
+
+/* icon in card */
+.rg-variant-card .rg-icon {
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+  width          : 2rem;
+  height         : 2rem;
+  border-radius  : 0.5rem;
+  background     : #f1f5f9;
+  color          : #475569;
+  flex-shrink    : 0;
+  transition     : background 140ms, color 140ms;
+}
+.rg-variant-card .rg-item.checked .rg-icon {
+  background: color-mix(in srgb, var(--rg-accent, var(--rg-color-primary)) 12%, transparent);
+  color     : var(--rg-accent, var(--rg-color-primary));
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   VARIANT: button — pill/button group
+   ══════════════════════════════════════════════════════════════ */
+
+.rg-variant-button .rg-list {
+  flex-direction : row;
+  flex-wrap      : wrap;
+  gap            : 0.375rem;
+  background     : #f1f5f9;
+  border-radius  : 0.75rem;
+  padding        : 0.25rem;
+  width          : fit-content;
+}
+
+.rg-variant-button .rg-item {
+  align-items  : center;
+  padding      : 0 1rem;
+  height       : 2.25rem;
+  border-radius: 0.5rem;
+  background   : transparent;
+  transition   : background 140ms, color 140ms, box-shadow 140ms;
+}
+.rg-variant-button .rg-item:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+.rg-variant-button .rg-item.checked {
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(15,23,42,0.10), 0 0 0 1px rgba(15,23,42,0.06);
+}
+
+/* Circle, check, icon hidden in button variant */
+.rg-variant-button .rg-circle,
+.rg-variant-button .rg-check  { display: none; }
+.rg-variant-button .rg-icon   { display: flex; align-items: center; }
+
+.rg-variant-button .rg-label {
+  font-weight: 500;
+  color      : #64748b;
+  white-space: nowrap;
+}
+.rg-variant-button .rg-item.checked .rg-label {
+  color      : var(--rg-accent, var(--rg-color-primary));
+  font-weight: 600;
+}
+.rg-variant-button .rg-description { display: none; }
+
+/* size in button variant */
+.rg-size-xs.rg-variant-button .rg-item { height: 1.75rem; padding: 0 0.625rem; }
+.rg-size-sm.rg-variant-button .rg-item { height: 2rem;    padding: 0 0.875rem; }
+.rg-size-lg.rg-variant-button .rg-item { height: 2.625rem; padding: 0 1.25rem; }
+.rg-size-xl.rg-variant-button .rg-item { height: 3rem;    padding: 0 1.5rem; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   VARIANT: soft — tinted active row
+   ══════════════════════════════════════════════════════════════ */
+
+.rg-variant-soft .rg-item {
+  padding      : 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  transition   : background 140ms;
+}
+.rg-variant-soft .rg-item:hover {
+  background: #f1f5f9;
+}
+.rg-variant-soft .rg-item.checked {
+  background: color-mix(in srgb, var(--rg-accent, var(--rg-color-primary)) 10%, transparent);
+}
+.rg-variant-soft .rg-check  { display: none; }
+.rg-variant-soft .rg-icon   { display: flex; align-items: center; }

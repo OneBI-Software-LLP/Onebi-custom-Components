@@ -1,15 +1,14 @@
 "use client";
 
 import React from "react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Info, Plus, Trash2, Edit, Share2 } from "lucide-react";
+import CustomTooltip from "@/components/CustomTooltip";
+import CustomAvatar from "@/components/CustomAvatar";
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
+  <div className="mt-6 border-t border-slate-100 pt-6">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
@@ -27,6 +26,21 @@ const CodeBlock = ({ code }: { code: string }) => (
   </div>
 );
 
+function Section({ title, description, code, children }: { title: string; description?: string; code?: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+          {title}
+        </Label>
+        {description && <p className="text-sm text-slate-500 mt-1">{description}</p>}
+      </div>
+      <div>{children}</div>
+      {code && <CodeBlock code={code} />}
+    </div>
+  );
+}
+
 export default function TooltipPage() {
   return (
     <div className="p-12 lg:p-24">
@@ -37,149 +51,133 @@ export default function TooltipPage() {
               Tooltip
             </h2>
             <p className="text-lg text-slate-500">
-              Informative text popup on hover for additional context.
+              A highly configurable popup component for providing contextual information on hover or click.
             </p>
           </div>
+          
           <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Basic Tooltip
-              </Label>
-              <TooltipProvider>
-                <div className="flex items-center gap-3">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="outline" size="icon">
-                        <Info className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>This is a helpful tooltip</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <span className="text-sm text-slate-600">Hover over the info icon</span>
-                </div>
-              </TooltipProvider>
-            </div>
+            
+            {/* 1. Placements */}
+            <Section 
+              title="1. Placements" 
+              description="Align the tooltip to any side of the trigger element."
+              code={`<CustomTooltip content="Appears on the top" placement="top">
+  <button>Top</button>
+</CustomTooltip>
+
+<CustomTooltip content="Appears on the right" placement="right">
+  <button>Right</button>
+</CustomTooltip>`}
+            >
+              <div className="flex flex-wrap gap-8 items-center justify-center pt-8 pb-4">
+                <CustomTooltip content="Appears on the top" placement="top">
+                  <button className="px-6 py-2.5 bg-indigo-50 text-indigo-700 font-semibold rounded-xl border border-indigo-100 hover:bg-indigo-100 transition-colors shadow-sm">Top</button>
+                </CustomTooltip>
+
+                <CustomTooltip content="Appears on the bottom" placement="bottom">
+                  <button className="px-6 py-2.5 bg-indigo-50 text-indigo-700 font-semibold rounded-xl border border-indigo-100 hover:bg-indigo-100 transition-colors shadow-sm">Bottom</button>
+                </CustomTooltip>
+
+                <CustomTooltip content="Appears on the left" placement="left">
+                  <button className="px-6 py-2.5 bg-indigo-50 text-indigo-700 font-semibold rounded-xl border border-indigo-100 hover:bg-indigo-100 transition-colors shadow-sm">Left</button>
+                </CustomTooltip>
+
+                <CustomTooltip content="Appears on the right" placement="right">
+                  <button className="px-6 py-2.5 bg-indigo-50 text-indigo-700 font-semibold rounded-xl border border-indigo-100 hover:bg-indigo-100 transition-colors shadow-sm">Right</button>
+                </CustomTooltip>
+              </div>
+            </Section>
+
             <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Action Tooltips
-              </Label>
-              <TooltipProvider>
-                <div className="flex gap-4">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="outline" size="icon">
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Add new item</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="outline" size="icon">
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Edit item</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="outline" size="icon">
-                        <Share2 className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Share with others</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="outline" size="icon" className="text-red-500 hover:text-red-600">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="text-red-500">Delete item</p>
-                    </TooltipContent>
-                  </Tooltip>
+
+            {/* 2. Themes & Triggers */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <Section 
+                title="2. Visual Themes" 
+                description="Support for Dark (default) and Light themes."
+                code={`<CustomTooltip content="I'm the default dark theme" theme="dark">
+  <span>Hover for Dark</span>
+</CustomTooltip>
+
+<CustomTooltip content="I'm the clean light theme" theme="light">
+  <span>Hover for Light</span>
+</CustomTooltip>`}
+              >
+                <div className="flex gap-4 items-center">
+                  <CustomTooltip content="I'm the default dark theme" theme="dark">
+                    <span className="px-3 py-1 rounded bg-slate-100 text-slate-600 text-sm cursor-pointer hover:bg-slate-200 transition-colors">Hover for Dark</span>
+                  </CustomTooltip>
+                  <CustomTooltip content="I'm the clean light theme" theme="light">
+                    <span className="px-3 py-1 rounded bg-slate-100 text-slate-600 text-sm cursor-pointer hover:bg-slate-200 transition-colors">Hover for Light</span>
+                  </CustomTooltip>
                 </div>
-              </TooltipProvider>
-            </div>
-            <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Tooltip Positions
-              </Label>
-              <TooltipProvider>
-                <div className="flex flex-wrap gap-4">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="outline">Top</Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">
-                      <p>Tooltip on top</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="outline">Bottom</Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom">
-                      <p>Tooltip on bottom</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="outline">Left</Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="left">
-                      <p>Tooltip on left</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="outline">Right</Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="right">
-                      <p>Tooltip on right</p>
-                    </TooltipContent>
-                  </Tooltip>
+              </Section>
+              
+              <Section 
+                title="3. Interactive Triggers" 
+                description="Trigger on hover (default) or on click."
+                code={`<CustomTooltip content="Hover logic is standard" trigger="hover">
+  <button>Hover me</button>
+</CustomTooltip>
+
+<CustomTooltip content="Click outside to close this" trigger="click">
+  <button>Click me</button>
+</CustomTooltip>`}
+              >
+                <div className="flex gap-4 items-center">
+                  <CustomTooltip content="Hover logic is standard" trigger="hover">
+                    <button className="px-4 py-2 border rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">Hover me</button>
+                  </CustomTooltip>
+                  <CustomTooltip content="Click outside to close this" trigger="click">
+                    <button className="px-4 py-2 border rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-black transition-colors shadow-lg shadow-slate-200">Click me</button>
+                  </CustomTooltip>
                 </div>
-              </TooltipProvider>
+              </Section>
             </div>
 
-            <CodeBlock
-              code={`import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "onebi-ui";
-import { Info } from "lucide-react";
+            <Separator className="bg-slate-100" />
 
-export default function TooltipDemo() {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="outline" size="icon">
-            <Info className="h-4 w-4" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Helpful information here!</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-}`}
-            />
+            {/* 3. Real World Example */}
+            <Section 
+              title="4. Complex Content" 
+              description="Tooltips can wrap any component and show rich fallback info."
+              code={`<CustomTooltip content="John Doe (Online)" placement="right" theme="light">
+  <div>
+    <CustomAvatar initials="JD" size="lg" status="online" />
+  </div>
+</CustomTooltip>
+
+<CustomTooltip content="Minimalist style, no arrow." showArrow={false}>
+  <div>?</div>
+</CustomTooltip>`}
+            >
+              <div className="flex gap-12 items-center">
+                <div className="flex items-center gap-4">
+                  <CustomTooltip content="John Doe (Online)" placement="right" theme="light">
+                    <div className="cursor-pointer">
+                      <CustomAvatar initials="JD" size="lg" status="online" />
+                    </div>
+                  </CustomTooltip>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-slate-900">User Profile</span>
+                    <span className="text-sm text-slate-500">Hover avatar for status</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <CustomTooltip content="Minimalist style, no arrow." showArrow={false}>
+                    <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white cursor-help shadow-lg">
+                      ?
+                    </div>
+                  </CustomTooltip>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-slate-900">No Arrow</span>
+                    <span className="text-sm text-slate-500">Cleaner minimalist look</span>
+                  </div>
+                </div>
+              </div>
+            </Section>
+
           </div>
         </div>
       </div>

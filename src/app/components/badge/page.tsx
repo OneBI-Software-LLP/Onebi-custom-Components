@@ -1,13 +1,15 @@
 "use client";
 
 import React from "react";
-import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Check, X, AlertCircle, Info } from "lucide-react";
+import CustomBadge from "@/components/CustomBadge";
+import CustomAvatar from "@/components/CustomAvatar";
+import { Bell, Mail, Users, Check, AlertTriangle, XCircle, Info } from "lucide-react";
 
 const CodeBlock = ({ code }: { code: string }) => (
-  <div className="mt-10 border-t border-slate-100 pt-8">
+  <div className="mt-6 border-t border-slate-100 pt-6">
     <div className="flex items-center justify-between mb-4">
       <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
         Installation & Usage
@@ -25,6 +27,21 @@ const CodeBlock = ({ code }: { code: string }) => (
   </div>
 );
 
+function Section({ title, description, code, children }: { title: string; description?: string; code?: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
+          {title}
+        </Label>
+        {description && <p className="text-sm text-slate-500 mt-1">{description}</p>}
+      </div>
+      <div>{children}</div>
+      {code && <CodeBlock code={code} />}
+    </div>
+  );
+}
+
 export default function BadgePage() {
   return (
     <div className="p-12 lg:p-24">
@@ -35,107 +52,164 @@ export default function BadgePage() {
               Badge
             </h2>
             <p className="text-lg text-slate-500">
-              Status indicators and count tags with multiple variants.
+              Dynamic status indicators, semantic labels, and notification overlays.
             </p>
           </div>
-          <div className="grid gap-8 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Variants
-              </Label>
-              <div className="flex flex-wrap gap-3 items-center">
-                <Badge className="px-3 py-1 bg-indigo-500 text-white border-none shadow-md shadow-indigo-100">Default</Badge>
-                <Badge variant="secondary" className="px-3 py-1">Secondary</Badge>
-                <Badge variant="outline" className="px-3 py-1 text-slate-500 border-slate-200">Outline</Badge>
-                <Badge variant="destructive" className="px-3 py-1 border-none shadow-md shadow-red-100">Destructive</Badge>
+          
+          <div className="grid gap-10 p-10 border border-slate-200 rounded-[2rem] bg-white shadow-xl shadow-slate-200/50">
+            
+            {/* 1. Variants & Colors */}
+            <Section 
+              title="1. Variants & Colors" 
+              description="Solid, Subtile, and Outline styles for every semantic context."
+              code={`import CustomBadge from "@/components/CustomBadge";
+
+<CustomBadge variant="solid" color="primary">Solid Primary</CustomBadge>
+<CustomBadge variant="subtle" color="success">Approved</CustomBadge>
+<CustomBadge variant="outline" color="danger">Rejected</CustomBadge>`}
+            >
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-wrap gap-3">
+                  <CustomBadge variant="solid" color="primary">Solid Primary</CustomBadge>
+                  <CustomBadge variant="solid" color="success">Success</CustomBadge>
+                  <CustomBadge variant="solid" color="warning">Warning</CustomBadge>
+                  <CustomBadge variant="solid" color="danger">Danger</CustomBadge>
+                  <CustomBadge variant="solid" color="neutral">Neutral</CustomBadge>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <CustomBadge variant="subtle" color="primary">Subtle Primary</CustomBadge>
+                  <CustomBadge variant="subtle" color="success">Approved</CustomBadge>
+                  <CustomBadge variant="subtle" color="warning">Pending</CustomBadge>
+                  <CustomBadge variant="subtle" color="danger">Failed</CustomBadge>
+                  <CustomBadge variant="subtle" color="neutral">Draft</CustomBadge>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <CustomBadge variant="outline" color="primary">Outline Blue</CustomBadge>
+                  <CustomBadge variant="outline" color="success">Success</CustomBadge>
+                  <CustomBadge variant="outline" color="danger">Rejected</CustomBadge>
+                </div>
               </div>
-            </div>
+            </Section>
+
             <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Status Badges
-              </Label>
-              <div className="flex flex-wrap gap-3 items-center">
-                <Badge className="bg-green-500 text-white border-none">
-                  <Check className="h-3 w-3 mr-1" />
-                  Active
-                </Badge>
-                <Badge className="bg-yellow-500 text-white border-none">
-                  <AlertCircle className="h-3 w-3 mr-1" />
-                  Pending
-                </Badge>
-                <Badge className="bg-red-500 text-white border-none">
-                  <X className="h-3 w-3 mr-1" />
-                  Inactive
-                </Badge>
-                <Badge className="bg-blue-500 text-white border-none">
-                  <Info className="h-3 w-3 mr-1" />
-                  Info
-                </Badge>
-              </div>
+
+            {/* 2. Sizes & Shapes */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <Section 
+                title="2. Sizes" 
+                description="Scalable from sm to lg."
+                code={`<CustomBadge size="lg" color="danger">Large</CustomBadge>`}
+              >
+                <div className="flex items-center gap-4">
+                  <CustomBadge size="sm" color="primary">Small</CustomBadge>
+                  <CustomBadge size="md" color="success">Medium</CustomBadge>
+                  <CustomBadge size="lg" color="danger">Large</CustomBadge>
+                </div>
+              </Section>
+              
+              <Section 
+                title="3. Geometric Shapes" 
+                description="Pill (default), Rounded, and Square."
+                code={`<CustomBadge shape="square" color="danger">Square</CustomBadge>`}
+              >
+                <div className="flex items-center gap-4">
+                  <CustomBadge shape="pill" color="neutral">Pill Shape</CustomBadge>
+                  <CustomBadge shape="rounded" color="primary">Rounded</CustomBadge>
+                  <CustomBadge shape="square" color="danger">Square</CustomBadge>
+                </div>
+              </Section>
             </div>
+
             <Separator className="bg-slate-100" />
-            <div className="space-y-4">
-              <Label className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                Count & Notification Badges
-              </Label>
-              <div className="flex flex-wrap gap-4 items-center">
-                <div className="relative">
-                  <button className="px-4 py-2 bg-slate-100 rounded-lg">
-                    Notifications
-                  </button>
-                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-red-500 text-white border-none text-xs">
-                    5
-                  </Badge>
+
+            {/* 3. Overlay Notifications */}
+            <Section 
+              title="4. Overlay & Status Dots" 
+              description="Absolute positioning for notification counts and status indicators."
+              code={`import { Bell } from "lucide-react";
+import CustomBadge from "@/components/CustomBadge";
+
+{/* Notification overlay */}
+<div className="relative inline-flex p-3">
+  <Bell className="w-6 h-6 text-slate-600" />
+  <CustomBadge position="top-right" color="danger" variant="solid" size="sm">
+    8
+  </CustomBadge>
+</div>
+
+{/* Status dot */}
+<div className="relative">
+  <img src="..." className="rounded-full" />
+  <CustomBadge position="bottom-right" isDot color="success" size="lg" />
+</div>`}
+            >
+              <div className="flex flex-wrap gap-12 items-center pt-4 pb-4">
+                
+                {/* Notification Count */}
+                <div className="relative inline-flex p-3 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm">
+                  <Bell className="w-6 h-6 text-slate-600" />
+                  <CustomBadge position="top-right" color="danger" variant="solid" size="sm" className="ring-2 ring-white">
+                    8
+                  </CustomBadge>
                 </div>
-                <div className="relative">
-                  <button className="px-4 py-2 bg-slate-100 rounded-lg">
-                    Messages
-                  </button>
-                  <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-indigo-500 text-white border-none text-xs">
-                    12
-                  </Badge>
+
+                {/* Unread Dot */}
+                <div className="relative inline-flex items-center gap-2 px-4 py-2 border border-slate-900 bg-slate-900 text-white rounded-xl shadow-lg ring-offset-2 hover:bg-black transition-all cursor-pointer group">
+                  <Mail className="w-4 h-4" />
+                  <span className="text-sm font-semibold">Inbox</span>
+                  <CustomBadge position="top-right" isDot color="primary" size="md" className="ring-2 ring-white" />
                 </div>
+
+                {/* Avatar Status */}
                 <div className="relative">
-                  <button className="px-4 py-2 bg-slate-100 rounded-lg">
-                    Updates
-                  </button>
-                  <Badge className="absolute -top-2 -right-2 h-2 w-2 rounded-full p-0 bg-green-500 border-none">
-                  </Badge>
+                   <CustomAvatar initials="JD" size="lg" />
+                   <CustomBadge position="bottom-right" isDot color="success" size="lg" className="ring-4 ring-white shadow-none" />
                 </div>
+
+                {/* Team Group Count */}
+                <div className="relative inline-flex p-3 bg-indigo-50 border border-indigo-100 rounded-full">
+                  <Users className="w-6 h-6 text-indigo-600" />
+                  <CustomBadge position="top-right" color="primary" variant="solid" size="sm" className="ring-2 ring-white px-2">
+                    +12
+                  </CustomBadge>
+                </div>
+
               </div>
-            </div>
+            </Section>
 
-            <CodeBlock
-              code={`import { Badge } from "onebi-ui";
-import { Check } from "lucide-react";
+            <Separator className="bg-slate-100" />
 
-export default function BadgeDemo() {
-  return (
-    <div className="space-x-2">
-      {/* Basic variants */}
-      <Badge>Default</Badge>
-      <Badge variant="secondary">Secondary</Badge>
-      <Badge variant="outline">Outline</Badge>
-      <Badge variant="destructive">Destructive</Badge>
+            {/* 4. Semantic Examples */}
+            <Section 
+              title="5. Semantic Status" 
+              description="Common patterns for system feedback."
+              code={`import { Check } from "lucide-react";
+              
+<CustomBadge variant="subtle" color="success" className="gap-1.5 pl-2 pr-3">
+  <Check className="w-3.5 h-3.5" />
+  Payment Success
+</CustomBadge>`}
+            >
+              <div className="flex flex-wrap gap-4">
+                <CustomBadge variant="subtle" color="success" className="gap-1.5 pl-2 pr-3">
+                  <Check className="w-3.5 h-3.5" />
+                  Payment Success
+                </CustomBadge>
+                <CustomBadge variant="subtle" color="warning" className="gap-1.5 pl-2 pr-3">
+                  <AlertTriangle className="w-3.5 h-3.5" />
+                  Attention
+                </CustomBadge>
+                <CustomBadge variant="subtle" color="danger" className="gap-1.5 pl-2 pr-3">
+                  <XCircle className="w-3.5 h-3.5" />
+                  Connection Error
+                </CustomBadge>
+                <CustomBadge variant="subtle" color="primary" className="gap-1.5 pl-2 pr-3">
+                  <Info className="w-3.5 h-3.5" />
+                  Update available
+                </CustomBadge>
+              </div>
+            </Section>
 
-      {/* With icons */}
-      <Badge className="bg-green-500">
-        <Check className="h-3 w-3 mr-1" />
-        Success
-      </Badge>
-
-      {/* Notification count */}
-      <div className="relative">
-        <button>Messages</button>
-        <Badge className="absolute -top-2 -right-2 rounded-full">
-          12
-        </Badge>
-      </div>
-    </div>
-  );
-}`}
-            />
           </div>
         </div>
       </div>
