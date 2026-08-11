@@ -336,7 +336,8 @@
     "name": "table",
     "dependencies": [],
     "files": [
-      "table.tsx"
+      "table.tsx",
+      "table.css"
     ]
   },
   {

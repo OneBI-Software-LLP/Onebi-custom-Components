@@ -12,50 +12,99 @@ A robust, production-ready Node.js CLI tool inspired by `shadcn/ui`. It intellig
 
 ***
 
-## 📦 Usage
+## 📦 How to Install and Use
+
+Getting started with OneBI UI is incredibly simple. Our CLI manages everything from installing dependencies to placing the components right into your source code.
 
 ### 1. Initialize Project
-Run this in your fresh Next.js, React, or Vite project to set up your configuration.
+Run this in your existing Next.js, React, or Vite project to set up your configuration. This will configure Tailwind and inject the global CSS tokens automatically.
+
 ```bash
 npx onebi-ui@latest init
 ```
 
-### 2. Add a Component
+*Note: The CLI will prompt you to confirm your framework and base paths.*
+
+### 2. Add Components
+You can now add any component directly into your project!
+
 ```bash
-npx onebi-ui@latest add button
+npx onebi-ui@latest add <component-name>
+```
+
+For instance, to add a button and a table, simply run:
+```bash
+npx onebi-ui@latest add buttons table
+```
+
+### 3. Use in your App
+Once added, the components will typically be available in `src/components/ui/` (or your configured path). You can import and use them like any other standard React component, modifying them deeply if needed.
+
+```tsx
+import { Button } from "@/components/ui/buttons";
+import { Table } from "@/components/ui/table";
+
+export default function MyPage() {
+  return (
+    <div className="p-4">
+      <Table data={myAwesomeData} />
+      <Button variant="primary">Submit Data</Button>
+    </div>
+  );
+}
 ```
 
 ***
 
 ## 📋 Available Components
 
-Our library is divided into **Premium** (feature-rich, high-fidelity) and **Standard** (core building blocks) components.
+Our library components are carefully crafted, feature-rich, and ready to be used. They are organized neatly so you can scale your UI seamlessly.
 
-### 💎 Premium Components
-These components feature complex interactions, advanced styling, and built-in animations.
+### 🧩 Layout & Navigation
+| Component | CLI Command |
+| :--- | :--- |
+| **Drawer** | `npx onebi-ui@latest add drawer` |
+| **Footer** | `npx onebi-ui@latest add footer` |
+| **Navbar** | `npx onebi-ui@latest add navbar` |
+| **Sidebar** | `npx onebi-ui@latest add sidebar` |
+| **Tab** | `npx onebi-ui@latest add tab` |
 
-| Component | CLI Command | Usage Example |
-| :--- | :--- | :--- |
-| **Navbar** | `add navbar` | `<Navbar brand={<Logo />} items={navLinks} />` |
-| **Chips** | `add chips` | `<Chips items={tags} variant="soft" />` |
-| **Filter Bar** | `add filter-bar` | `<FilterBar onFilter={handleFilter} />` |
-| **Multi Select** | `add multi-select` | `<MultiSelect options={options} />` |
-| **File Upload** | `add file-upload` | `<FileUpload onUpload={v => console.log(v)} />` |
-| **Search Input** | `add search-input` | `<SearchInput shortcutHint="⌘K" clearable />` |
-| **Command Palette**| `add command-palette`| `<CommandPalette groups={groups} open={isOpen} />` |
-| **Role Selector** | `add role-permission-selector` | `<RolePermissionSelector data={roles} />` |
-| **Text Field** | `add text-field` | `<TextField label="Email" status="error" />` |
-| **Modal** | `add modal` | `<Modal title="Account Settings">...</Modal>` |
+### 📊 Data Display
+| Component | CLI Command |
+| :--- | :--- |
+| **Accordion** | `npx onebi-ui@latest add accordion` |
+| **Card** | `npx onebi-ui@latest add card` |
+| **Table** | `npx onebi-ui@latest add table` |
 
-### 🧱 Standard Components
-Clean, accessible building blocks for any application.
+### 📝 Inputs & Forms
+| Component | CLI Command |
+| :--- | :--- |
+| **Buttons** | `npx onebi-ui@latest add buttons` |
+| **Checkbox** | `npx onebi-ui@latest add checkbox` |
+| **Combobox** | `npx onebi-ui@latest add combobox` |
+| **Date Picker** | `npx onebi-ui@latest add date-picker` |
+| **Dropdown** | `npx onebi-ui@latest add dropdown` |
+| **File Upload** | `npx onebi-ui@latest add file-upload` |
+| **Filter** | `npx onebi-ui@latest add filter` |
+| **Radiobox** | `npx onebi-ui@latest add radiobox` |
+| **Search** | `npx onebi-ui@latest add search` |
+| **Switch Button** | `npx onebi-ui@latest add switch-button` |
+| **Text Area** | `npx onebi-ui@latest add text-area` |
+| **Text Field** | `npx onebi-ui@latest add text-field` |
+| **Time Picker** | `npx onebi-ui@latest add time-picker` |
 
-- **Actions**: `button`, `badge`, `spinner`
-- **Forms**: `input`, `textarea`, `checkbox`, `radio-group`, `switch`, `select`, `combo-box`, `label`, `form`, `password-input`
-- **Navigation**: `tabs`, `sheet`, `drawer`, `dropdown-menu`, `popover`, `separator`
-- **Data**: `table`, `card`, `accordion`, `empty-state`, `skeleton`
-- **Pickers**: `calendar`, `date-picker`
-- **Feedback**: `toast`, `tooltip`
+### 💡 Feedback & Overlays
+| Component | CLI Command |
+| :--- | :--- |
+| **Avatar** | `npx onebi-ui@latest add avatar` |
+| **Badge** | `npx onebi-ui@latest add badge` |
+| **Chips** | `npx onebi-ui@latest add chips` |
+| **Modal** | `npx onebi-ui@latest add modal` |
+| **Popover** | `npx onebi-ui@latest add popover` |
+| **Skeleton Loader** | `npx onebi-ui@latest add skeleton-loader` |
+| **Spinner** | `npx onebi-ui@latest add spinner` |
+| **Toast** | `npx onebi-ui@latest add toast` |
+| **Tooltip** | `npx onebi-ui@latest add tooltip` |
 
 ---
 

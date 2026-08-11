@@ -1,7 +1,7 @@
 import React from 'react';
 import { cn } from "@/lib/utils";
 
-export interface CustomBadgeProps {
+export interface CustomBadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   /** The content of the badge */
   children?: React.ReactNode;
   /** The visual style */
@@ -82,6 +82,7 @@ export const CustomBadge: React.FC<CustomBadgeProps> = ({
   isDot = false,
   position = 'none',
   className = '',
+  ...props
 }) => {
   const baseClasses = "inline-flex items-center justify-center font-bold tracking-tight leading-none whitespace-nowrap z-10 shrink-0 border transition-all duration-200";
   
@@ -91,14 +92,17 @@ export const CustomBadge: React.FC<CustomBadgeProps> = ({
   const currentColorStyle = colorVariantClasses[variant][color];
 
   return (
-    <span className={cn(
-      baseClasses,
-      currentSize,
-      currentShape,
-      currentPosition,
-      currentColorStyle,
-      className
-    )}>
+    <span
+      className={cn(
+        baseClasses,
+        currentSize,
+        currentShape,
+        currentPosition,
+        currentColorStyle,
+        className
+      )}
+      {...props}
+    >
       {!isDot && children}
     </span>
   );

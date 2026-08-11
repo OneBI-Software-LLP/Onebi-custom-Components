@@ -15,7 +15,7 @@ import {
   OnboardIcon,
   FilterIcon,
 } from "@/components/CustomTable";
-import type { Employee, ActionItem } from "@/components/CustomTable";
+import type { Employee, ActionItem, ColumnDef } from "@/components/CustomTable";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 
@@ -488,6 +488,120 @@ function DefaultBlock() {
   );
 }
 
+/* ── 8. Fully Customizable Data & Columns ── */
+interface Product {
+  sku: string;
+  name: string;
+  category: string;
+  price: number;
+  stockStatus: 'In Stock' | 'Low Stock' | 'Out of Stock';
+}
+
+function FullyCustomBlock() {
+  const products: Product[] = [
+    { sku: "PRD-9901", name: "Wireless Noise-Canceling Headphones", category: "Audio", price: 299.99, stockStatus: "In Stock" },
+    { sku: "PRD-9902", name: "Ergonomic Mechanical Keyboard", category: "Peripherals", price: 149.50, stockStatus: "Low Stock" },
+    { sku: "PRD-9903", name: "Ultra-Wide 4K Gaming Monitor", category: "Displays", price: 699.00, stockStatus: "In Stock" },
+    { sku: "PRD-9904", name: "USB-C Multi-Port Hub", category: "Accessories", price: 49.99, stockStatus: "Out of Stock" },
+  ];
+
+  const columns: ColumnDef<Product>[] = [
+    { id: "sku", header: "SKU", accessorKey: "sku", className: "font-mono text-indigo-600 font-semibold" },
+    { id: "name", header: "Product Name", accessorKey: "name", className: "font-medium text-slate-800" },
+    { id: "category", header: "Category", accessorKey: "category" },
+    {
+      id: "price",
+      header: "Price",
+      align: "right",
+      cell: ({ value }) => <span className="font-bold text-slate-900">${Number(value).toFixed(2)}</span>,
+    },
+    {
+      id: "stockStatus",
+      header: "Stock Status",
+      align: "center",
+      cell: ({ value }) => {
+        const colorMap: Record<string, string> = {
+          "In Stock": "bg-emerald-100 text-emerald-800 border-emerald-200",
+          "Low Stock": "bg-amber-100 text-amber-800 border-amber-200",
+          "Out of Stock": "bg-rose-100 text-rose-800 border-rose-200",
+        };
+        return (
+          <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold border ${colorMap[value] || ""}`}>
+            {value}
+          </span>
+        );
+      },
+    },
+  ];
+
+  return (
+    <Section label="Fully Customizable — Pass Any Props, Custom Data & Columns"
+      ts={`import { DataTable } from "onebi-ui";
+import type { ColumnDef } from "onebi-ui";
+
+interface Product {
+  sku: string;
+  name: string;
+  category: string;
+  price: number;
+  stockStatus: string;
+}
+
+const products: Product[] = [...];
+
+const columns: ColumnDef<Product>[] = [
+  { id: "sku", header: "SKU", accessorKey: "sku", className: "font-mono text-indigo-600 font-semibold" },
+  { id: "name", header: "Product Name", accessorKey: "name" },
+  { id: "category", header: "Category", accessorKey: "category" },
+  {
+    id: "price", header: "Price", align: "right",
+    cell: ({ value }) => <span>\${Number(value).toFixed(2)}</span>,
+  },
+  {
+    id: "stockStatus", header: "Stock Status", align: "center",
+    cell: ({ value }) => <span className="badge">{value}</span>,
+  },
+];
+
+export default function CustomTableDemo() {
+  return (
+    <DataTable
+      title="Inventory Catalog"
+      searchPlaceholder="Search products by SKU or name..."
+      data={products}
+      columns={columns}
+      rowKey="sku"
+      hideActions
+    />
+  );
+}`}
+      js={`import { DataTable } from "onebi-ui";
+
+export default function CustomTableDemo() {
+  return (
+    <DataTable
+      title="Inventory Catalog"
+      searchPlaceholder="Search products by SKU or name..."
+      data={products}
+      columns={columns}
+      rowKey="sku"
+      hideActions
+    />
+  );
+}`}
+    >
+      <DataTable
+        title="Inventory Catalog"
+        searchPlaceholder="Search products by SKU or name..."
+        data={products}
+        columns={columns}
+        rowKey="sku"
+        hideActions
+      />
+    </Section>
+  );
+}
+
 // ── Page ───────────────────────────────────────────────────────────────────
 
 export default function DataTablePage() {
@@ -522,6 +636,9 @@ export default function DataTablePage() {
             <Separator className="bg-slate-100" />
 
             <ComposableIconsBlock />
+            <Separator className="bg-slate-100" />
+
+            <FullyCustomBlock />
             <Separator className="bg-slate-100" />
 
             <DefaultBlock />

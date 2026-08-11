@@ -37,6 +37,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   // Left Side Components
+  { id: "theme-demo", name: "Theme Provider", icon: Zap, category: "left" },
   { id: "card", name: "Card", icon: LayoutDashboard, category: "left" },
   { id: "accordion", name: "Accordion", icon: ChevronDown, category: "left" },
   { id: "table", name: "Table", icon: TableIcon, category: "left" },

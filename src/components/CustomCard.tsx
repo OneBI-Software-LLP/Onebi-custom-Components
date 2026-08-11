@@ -450,7 +450,7 @@ export const CardDivider: React.FC<CardDividerProps> = ({ style = {} }) => {
 
 // ─── Root Card ───────────────────────────────────────────────────────────────
 
-export interface CustomCardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CustomCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   variant?: 'elevated' | 'outlined' | 'filled' | 'ghost';
   radius?: 'sm' | 'md' | 'lg' | 'xl' | 'none';
   shadow?: 'none' | 'sm' | 'md' | 'lg';

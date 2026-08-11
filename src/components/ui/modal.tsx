@@ -6,7 +6,7 @@ import React, {
   useContext,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { CustomButton } from './CustomButton';
+import { CustomButton } from '../CustomButton';
 
 // ─── Animation keyframes (injected once) ────────────────────────────────────
 

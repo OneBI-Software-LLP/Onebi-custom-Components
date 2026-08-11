@@ -9,7 +9,7 @@ export interface DropdownOption {
   description?: string;
 }
 
-export interface DropdownProps {
+export interface DropdownProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'value'> {
   options: DropdownOption[];
   value?: any; // string | number | array
   onChange: (value: any) => void;
@@ -20,6 +20,8 @@ export interface DropdownProps {
   loading?: boolean;
   clearable?: boolean;
   error?: string;
+  className?: string;
+  style?: React.CSSProperties;
   // Render Prop for total custom control over how options look
   renderOption?: (option: DropdownOption, isSelected: boolean) => React.ReactNode; 
 }
@@ -53,6 +55,9 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
   clearable = false,
   error,
   renderOption,
+  className = '',
+  style,
+  ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -74,10 +79,12 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
     return options.filter((opt) =>
       opt.label.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [options, searchTerm]);
+  }, [searchTerm, options]);
 
   // Handlers
-  const handleToggle = () => !disabled && setIsOpen((prev) => !prev);
+  const handleToggle = () => {
+    if (!disabled) setIsOpen((prev) => !prev);
+  };
   
   const handleSelect = (option: DropdownOption) => {
     if (option.disabled) return;
@@ -109,7 +116,12 @@ export const CustomDropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <div className="relative w-full text-sm font-sans" ref={dropdownRef}>
+    <div
+      className={['relative w-full text-sm font-sans', className].filter(Boolean).join(' ')}
+      ref={dropdownRef}
+      style={style}
+      {...props}
+    >
       {/* TRIGGER BUTTON / INPUT */}
       <div
         onClick={handleToggle}

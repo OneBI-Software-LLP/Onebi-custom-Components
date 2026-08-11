@@ -47,8 +47,10 @@
   background   : var(--tb-bg);
   border       : var(--tb-border);
   border-radius: var(--tb-radius);
-  overflow     : hidden;
+  overflow     : visible;  /* must NOT be hidden/auto/scroll — kills position:sticky on children */
   font-family  : inherit;
+  display      : flex;
+  flex-direction: column;
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -63,6 +65,10 @@
   border-bottom  : var(--tb-border);
   gap            : 12px;
   flex-wrap      : wrap;
+  position       : sticky;
+  top            : 0;
+  z-index        : 30;
+  background     : var(--tb-bg);
 }
 
 .tb-toolbar-left  { display: flex; align-items: center; gap: 8px; }
@@ -136,6 +142,10 @@
   border-bottom  : var(--tb-border);
   gap            : 8px;
   flex-wrap      : wrap;
+  position       : sticky;
+  top            : 0;
+  z-index        : 28;
+  background     : var(--tb-bg);
 }
 
 .tb-actions-left { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -199,11 +209,23 @@
    TABLE
    ══════════════════════════════════════════════════════════════ */
 
-.tb-table-wrap { overflow-x: auto; width: 100%; }
+.tb-table-wrap {
+  overflow-x: auto;
+  overflow-y: auto;
+  width: 100%;
+  position: relative;  /* establishes stacking context for sticky children */
+}
 
 .tb-table { width: 100%; border-collapse: collapse; }
 
 .tb-table thead tr { border-bottom: var(--tb-border); }
+
+/* Sticky table header within scroll container */
+.tb-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+}
 
 .tb-th {
   font-size  : var(--tb-fz-sm);
@@ -217,6 +239,49 @@
 }
 
 .tb-th-check { width: 40px; padding-left: 16px; }
+
+/* ── Sticky Floating Columns (Left & Right) ── */
+.tb-th-sticky-left,
+.tb-td-sticky-left {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background-color: var(--tb-bg);
+}
+.tb-th-sticky-left {
+  z-index: 20;
+}
+.tb-row:hover .tb-td-sticky-left {
+  background-color: var(--tb-bg-hover);
+}
+.tb-row.tb-row-selected .tb-td-sticky-left {
+  background-color: var(--tb-bg-selected);
+}
+.tb-row.tb-row-selected:hover .tb-td-sticky-left {
+  background-color: var(--tb-bg-selected-hover);
+}
+
+.tb-th-sticky-right,
+.tb-td-sticky-right {
+  position: sticky;
+  right: 0;
+  z-index: 10;
+  background-color: var(--tb-bg);
+  box-shadow: -4px 0px 8px rgba(0, 0, 0, 0.04);
+  border-left: var(--tb-border);
+}
+.tb-th-sticky-right {
+  z-index: 20;
+}
+.tb-row:hover .tb-td-sticky-right {
+  background-color: var(--tb-bg-hover);
+}
+.tb-row.tb-row-selected .tb-td-sticky-right {
+  background-color: var(--tb-bg-selected);
+}
+.tb-row.tb-row-selected:hover .tb-td-sticky-right {
+  background-color: var(--tb-bg-selected-hover);
+}
 
 /* ── Rows ── */
 

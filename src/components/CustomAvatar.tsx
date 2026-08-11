@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { cn } from "@/lib/utils";
 
-export interface CustomAvatarProps {
+export interface CustomAvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   /** The image URL for the avatar */
   src?: string;
   /** Alt text for screen readers */
@@ -19,7 +19,7 @@ export interface CustomAvatarProps {
   /** Additional custom classes */
   className?: string;
   /** Optional click handler */
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const sizeClasses = {
@@ -57,6 +57,7 @@ export const CustomAvatar: React.FC<CustomAvatarProps> = ({
   statusPosition = 'bottom-right',
   className = '',
   onClick,
+  ...props
 }) => {
   const [imgError, setImgError] = useState(false);
 
@@ -77,6 +78,7 @@ export const CustomAvatar: React.FC<CustomAvatarProps> = ({
         onClick ? 'cursor-pointer hover:scale-105 active:scale-95 transition-transform duration-200' : ''
       )}
       onClick={onClick}
+      {...props}
     >
       {/* Primary Image or Fallback */}
       {src && !imgError ? (
