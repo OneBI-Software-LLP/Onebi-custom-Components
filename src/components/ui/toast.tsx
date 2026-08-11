@@ -115,3 +115,6 @@ export const ToastViewport = React.forwardRef<HTMLDivElement, React.HTMLAttribut
 );
 
 ToastViewport.displayName = "ToastViewport";
+
+export const CustomToast = Toast;
+export default Toast;

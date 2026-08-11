@@ -6,7 +6,6 @@ import React, {
   useContext,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { CustomButton } from '../CustomButton';
 
 // ─── Animation keyframes (injected once) ────────────────────────────────────
 
@@ -667,8 +666,8 @@ const ModalRoot: React.FC<CustomModalProps> = ({
             <ModalFooter>
               {footer || (
                 <>
-                  <CustomButton variant="secondary" onClick={onClose}>Cancel</CustomButton>
-                  <CustomButton onClick={onClose}>Confirm</CustomButton>
+                  <ModalButton variant="secondary" onClick={onClose}>Cancel</ModalButton>
+                  <ModalButton variant="primary" onClick={onClose}>Confirm</ModalButton>
                 </>
               )}
             </ModalFooter>

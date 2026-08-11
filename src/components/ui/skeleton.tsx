@@ -188,4 +188,5 @@ export function SkeletonTable({
   );
 }
 
+export const CustomSkeleton = Skeleton;
 export default Skeleton;

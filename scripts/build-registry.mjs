@@ -9,6 +9,19 @@ const ROOT_DIR = path.resolve(__dirname, "..");
 const UI_SRC = path.join(ROOT_DIR, "src", "components", "ui");
 const REGISTRY_DIR = path.join(ROOT_DIR, "public", "registry");
 
+// Map alias names to primary component names
+const ALIASES = {
+  "skeleton-loader": "skeleton",
+  "chip": "chips",
+  "custom-avatar": "avatar",
+  "custom-badge": "badge",
+  "custom-modal": "modal",
+  "custom-popover": "popover",
+  "custom-spinner": "spinner",
+  "custom-toast": "toast",
+  "custom-tooltip": "tooltip",
+};
+
 // Ensure registry folder exists
 if (!fs.existsSync(REGISTRY_DIR)) {
   fs.mkdirSync(REGISTRY_DIR, { recursive: true });
@@ -82,7 +95,7 @@ async function buildRegistry() {
         files: componentFiles
       };
 
-      // Write individual component JSON
+      // Write primary component JSON
       fs.writeFileSync(
         path.join(REGISTRY_DIR, `${componentName}.json`),
         JSON.stringify(componentDef, null, 2)
@@ -94,6 +107,25 @@ async function buildRegistry() {
         files: componentFiles.map(f => f.name)
       });
       console.log(`✅ Built metadata for ${componentName}`);
+    }
+
+    // Generate alias JSON manifests
+    for (const [aliasName, primaryName] of Object.entries(ALIASES)) {
+      const primaryPath = path.join(REGISTRY_DIR, `${primaryName}.json`);
+      if (fs.existsSync(primaryPath)) {
+        const primaryDef = JSON.parse(fs.readFileSync(primaryPath, "utf8"));
+        const aliasDef = { ...primaryDef, name: aliasName };
+        fs.writeFileSync(
+          path.join(REGISTRY_DIR, `${aliasName}.json`),
+          JSON.stringify(aliasDef, null, 2)
+        );
+        indexData.push({
+          name: aliasName,
+          dependencies: primaryDef.dependencies,
+          files: primaryDef.files.map(f => f.name)
+        });
+        console.log(`✅ Created alias manifest ${aliasName} -> ${primaryName}`);
+      }
     }
 
     // Generate main index

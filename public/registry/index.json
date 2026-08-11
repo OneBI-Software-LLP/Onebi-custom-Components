@@ -318,9 +318,7 @@
   },
   {
     "name": "spinner",
-    "dependencies": [
-      "lucide-react"
-    ],
+    "dependencies": [],
     "files": [
       "spinner.tsx"
     ]
@@ -390,6 +388,74 @@
     "dependencies": [],
     "files": [
       "use-toast.tsx"
+    ]
+  },
+  {
+    "name": "skeleton-loader",
+    "dependencies": [],
+    "files": [
+      "skeleton.tsx",
+      "skeleton.css"
+    ]
+  },
+  {
+    "name": "chip",
+    "dependencies": [],
+    "files": [
+      "chips.tsx"
+    ]
+  },
+  {
+    "name": "custom-avatar",
+    "dependencies": [],
+    "files": [
+      "avatar.tsx"
+    ]
+  },
+  {
+    "name": "custom-badge",
+    "dependencies": [
+      "class-variance-authority"
+    ],
+    "files": [
+      "badge.tsx"
+    ]
+  },
+  {
+    "name": "custom-modal",
+    "dependencies": [],
+    "files": [
+      "modal.tsx"
+    ]
+  },
+  {
+    "name": "custom-popover",
+    "dependencies": [],
+    "files": [
+      "popover.tsx",
+      "popover.css"
+    ]
+  },
+  {
+    "name": "custom-spinner",
+    "dependencies": [],
+    "files": [
+      "spinner.tsx"
+    ]
+  },
+  {
+    "name": "custom-toast",
+    "dependencies": [],
+    "files": [
+      "toast.tsx",
+      "toast.css"
+    ]
+  },
+  {
+    "name": "custom-tooltip",
+    "dependencies": [],
+    "files": [
+      "tooltip.tsx"
     ]
   }
 ]

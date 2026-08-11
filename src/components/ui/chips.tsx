@@ -561,7 +561,7 @@ export function ChipGroup({
       }
 
       if (!isControlled) setInternalSelected(next);
-      onChange?.([...next], chipItems.filter((i) => next.has(i.id)));
+      onChange?.(Array.from(next), chipItems.filter((i) => next.has(i.id)));
     },
     [mode, selected, isControlled, onChange, onSuggest, chipItems]
   );
@@ -646,3 +646,6 @@ export function ChipGroup({
     </div>
   );
 }
+
+export const CustomChip = Chip;
+export default Chip;

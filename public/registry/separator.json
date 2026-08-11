@@ -5,7 +5,7 @@
   "files": [
     {
       "name": "separator.tsx",
-      "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {\n  orientation?: \"horizontal\" | \"vertical\"\n  decorative?: boolean\n}\n\nconst Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(\n  (\n    { className, orientation = \"horizontal\", decorative = true, ...props },\n    ref\n  ) => (\n    <div\n      ref={ref}\n      role={decorative ? undefined : \"separator\"}\n      aria-orientation={decorative ? undefined : orientation}\n      className={cn(\n        \"shrink-0 bg-border\",\n        orientation === \"horizontal\" ? \"h-[1px] w-full\" : \"h-full w-[1px]\",\n        className\n      )}\n      {...props}\n    />\n  )\n)\nSeparator.displayName = \"Separator\"\n\nexport { Separator }\n"
+      "content": "import * as React from \"react\"\r\nimport { cn } from \"@/lib/utils\"\r\n\r\nexport interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {\r\n  orientation?: \"horizontal\" | \"vertical\"\r\n  decorative?: boolean\r\n}\r\n\r\nconst Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(\r\n  (\r\n    { className, orientation = \"horizontal\", decorative = true, ...props },\r\n    ref\r\n  ) => (\r\n    <div\r\n      ref={ref}\r\n      role={decorative ? undefined : \"separator\"}\r\n      aria-orientation={decorative ? undefined : orientation}\r\n      className={cn(\r\n        \"shrink-0 bg-border\",\r\n        orientation === \"horizontal\" ? \"h-[1px] w-full\" : \"h-full w-[1px]\",\r\n        className\r\n      )}\r\n      {...props}\r\n    />\r\n  )\r\n)\r\nSeparator.displayName = \"Separator\"\r\n\r\nexport { Separator }\r\n"
     }
   ]
 }

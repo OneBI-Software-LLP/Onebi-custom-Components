@@ -389,7 +389,7 @@ export function CustomAccordion({
         if (!allowMultiple) next.clear();
         next.add(val);
       }
-      onChange?.([...next]);
+      onChange?.(Array.from(next));
       return next;
     });
   }, [allowMultiple, collapsible, onChange]);

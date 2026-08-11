@@ -229,7 +229,7 @@ export default function Demo() {
                   variant="outlined"
                   size="sm"
                   items={tags}
-                  onDelete={(id, rest) => setTags(rest)}
+                  onDelete={(id) => setTags(tags.filter((t) => t.id !== id))}
                 />
                 <div className="flex gap-2 max-w-[300px]">
                   <input

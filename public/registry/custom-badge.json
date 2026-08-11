@@ -1,5 +1,5 @@
 {
-  "name": "badge",
+  "name": "custom-badge",
   "dependencies": [
     "class-variance-authority"
   ],

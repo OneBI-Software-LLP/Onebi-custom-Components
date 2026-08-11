@@ -261,7 +261,7 @@ function BottomSheetExample() {
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN PAGE EXPORT
 // ─────────────────────────────────────────────────────────────────────────────
-export function DrawerPageContent() {
+function DrawerPageContent() {
   return (
     <div className="p-12 lg:p-24">
       <div className="max-w-5xl mx-auto pb-24">

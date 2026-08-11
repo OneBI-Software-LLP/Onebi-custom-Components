@@ -27,6 +27,9 @@ export type ButtonShape = 'default' | 'rounded' | 'square';
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  href?: string;
+  target?: string;
+  rel?: string;
   /** Visual style family. Default: 'solid' */
   variant?: ButtonVariant;
 

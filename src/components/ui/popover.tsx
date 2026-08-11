@@ -716,4 +716,5 @@ export function PopoverRich({
   );
 }
 
+export const CustomPopover = Popover;
 export default Popover;
