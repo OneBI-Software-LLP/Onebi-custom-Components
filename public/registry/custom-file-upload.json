@@ -1,5 +1,5 @@
 {
-  "name": "file-upload",
+  "name": "custom-file-upload",
   "dependencies": [
     "lucide-react"
   ],

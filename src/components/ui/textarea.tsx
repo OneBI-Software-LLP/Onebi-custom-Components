@@ -137,4 +137,7 @@ export function useTextarea(initial = '') {
   return { value, onChange: (v: string) => setValue(v) };
 }
 
+export const CustomTextarea = Textarea;
+export type CustomTextareaProps = TextareaProps;
 export default Textarea;
+

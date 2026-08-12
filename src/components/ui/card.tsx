@@ -644,4 +644,7 @@ export const CustomCard = Object.assign(CardRoot, {
   Divider: CardDivider,
 });
 
+export const Card = CustomCard;
+export type CardProps = CustomCardProps;
 export default CustomCard;
+

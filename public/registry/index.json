@@ -406,6 +406,13 @@
     ]
   },
   {
+    "name": "custom-accordion",
+    "dependencies": [],
+    "files": [
+      "accordion.tsx"
+    ]
+  },
+  {
     "name": "custom-avatar",
     "dependencies": [],
     "files": [
@@ -419,6 +426,59 @@
     ],
     "files": [
       "badge.tsx"
+    ]
+  },
+  {
+    "name": "custom-card",
+    "dependencies": [],
+    "files": [
+      "card.tsx"
+    ]
+  },
+  {
+    "name": "custom-combo-box",
+    "dependencies": [],
+    "files": [
+      "combo-box.tsx"
+    ]
+  },
+  {
+    "name": "custom-date-picker",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "date-picker.tsx"
+    ]
+  },
+  {
+    "name": "custom-drawer",
+    "dependencies": [],
+    "files": [
+      "drawer.tsx"
+    ]
+  },
+  {
+    "name": "custom-dropdown",
+    "dependencies": [],
+    "files": [
+      "dropdown.tsx"
+    ]
+  },
+  {
+    "name": "custom-file-upload",
+    "dependencies": [
+      "lucide-react"
+    ],
+    "files": [
+      "file-upload.tsx"
+    ]
+  },
+  {
+    "name": "custom-input",
+    "dependencies": [],
+    "files": [
+      "input.tsx"
     ]
   },
   {
@@ -441,6 +501,36 @@
     "dependencies": [],
     "files": [
       "spinner.tsx"
+    ]
+  },
+  {
+    "name": "custom-switch",
+    "dependencies": [],
+    "files": [
+      "switch.tsx"
+    ]
+  },
+  {
+    "name": "custom-table",
+    "dependencies": [],
+    "files": [
+      "table.tsx",
+      "table.css"
+    ]
+  },
+  {
+    "name": "custom-text-field",
+    "dependencies": [],
+    "files": [
+      "text-field.tsx"
+    ]
+  },
+  {
+    "name": "custom-textarea",
+    "dependencies": [],
+    "files": [
+      "textarea.tsx",
+      "textarea.css"
     ]
   },
   {

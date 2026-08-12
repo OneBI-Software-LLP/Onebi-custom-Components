@@ -694,4 +694,7 @@ export const CustomModal = Object.assign(ModalRoot, {
   Stepper: ModalStepper,
 });
 
+export const Modal = CustomModal;
+export type ModalProps = CustomModalProps;
 export default CustomModal;
+

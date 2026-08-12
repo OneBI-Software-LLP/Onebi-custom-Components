@@ -171,3 +171,10 @@ export const CustomComboBox: React.FC<ComboBoxProps> = ({
     </div>
   );
 };
+
+export const ComboBox = CustomComboBox;
+export type CustomComboBoxProps = ComboBoxProps;
+export default CustomComboBox;
+
+
+

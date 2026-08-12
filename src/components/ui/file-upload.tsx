@@ -218,4 +218,7 @@ export const CustomFileUpload: React.FC<FileUploadProps> = ({
   );
 };
 
+export const FileUpload = CustomFileUpload;
+export type CustomFileUploadProps = FileUploadProps;
 export default CustomFileUpload;
+

@@ -774,6 +774,10 @@ export function DataTable<T = any>({
   );
 }
 
+export const CustomTable = DataTable;
+export type CustomTableProps = DataTableProps;
+export default CustomTable;
+
 export {
   Table,
   TableHeader,
@@ -784,3 +788,4 @@ export {
   TableCell,
   TableCaption,
 };
+

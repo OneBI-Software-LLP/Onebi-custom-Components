@@ -438,4 +438,7 @@ export function useAccordion(items: string[] = [], initial: string[] = []) {
   return { open, setOpen, expandAll, collapseAll };
 }
 
+export const Accordion = CustomAccordion;
+export type CustomAccordionProps = AccordionProps;
 export default CustomAccordion;
+

@@ -13,14 +13,28 @@ const REGISTRY_DIR = path.join(ROOT_DIR, "public", "registry");
 const ALIASES = {
   "skeleton-loader": "skeleton",
   "chip": "chips",
+  "custom-accordion": "accordion",
   "custom-avatar": "avatar",
   "custom-badge": "badge",
+  "custom-card": "card",
+  "custom-combo-box": "combo-box",
+  "custom-date-picker": "date-picker",
+  "custom-drawer": "drawer",
+  "custom-dropdown": "dropdown",
+  "custom-file-upload": "file-upload",
+  "custom-input": "input",
   "custom-modal": "modal",
   "custom-popover": "popover",
   "custom-spinner": "spinner",
+  "custom-switch": "switch",
+  "custom-table": "table",
+  "custom-text-field": "text-field",
+  "custom-textarea": "textarea",
   "custom-toast": "toast",
   "custom-tooltip": "tooltip",
 };
+
+
 
 // Ensure registry folder exists
 if (!fs.existsSync(REGISTRY_DIR)) {

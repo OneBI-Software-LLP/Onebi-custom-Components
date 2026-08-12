@@ -400,4 +400,8 @@ export function useDrawer(defaultOpen = false) {
   return { isOpen, open, close, toggle, setIsOpen };
 }
 
+export const Drawer = CustomDrawer;
+export type CustomDrawerProps = DrawerProps;
 export default CustomDrawer;
+
+

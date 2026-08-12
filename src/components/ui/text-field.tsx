@@ -542,7 +542,15 @@ export const CustomTextField: React.FC<CustomTextFieldProps> = ({
             {charCount} / {maxLength}
           </span>
         )}
+
       </div>
     </div>
   );
 };
+
+export const TextField = CustomTextField;
+export type TextFieldProps = CustomTextFieldProps;
+export default CustomTextField;
+
+
+
